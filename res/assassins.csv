@@ -1,0 +1,23 @@
+Name,Level,Power,Damage,Ability,Description,Bonus
+Frontman,2,5,3,- 2 Opp Damage Min 3,The Front looks nice and accomodating and usually handles the business of the Assassins with new clients.,- 2 Opp Power Min 1
+Fake Colleague,2,4,3,- 2 Opp Power Min 1,The Fake Colleague infiltrates work gatherings and jobs to get into every house and every corner of the city.,- 2 Opp Power Min 1
+Tracker,2,6,2,+ 4 Attack,The Tracker uses his trusty dogs to find anyone in the city.,- 2 Opp Power Min 1
+Traveling Cook,2,7,1,Poison 2 Min 5,The Traveling Cook knows his way around poisons and is able to cook hearty meals that make your heart stop.,- 2 Opp Power Min 1
+Detective,2,5,2,Stop Opp Ability,The Detective knows which clues to look for to find his next victim or find those that killed someone. He likes to smoke his pipe.,- 2 Opp Power Min 1
+Dissolver,3,7,1,- 2 Opp Life Min 0,"The Dissolver is somewhat an alchemist, though he only knows his way around acids. Three of his fingers and many of his teeth are already missing, just like all of his victims.",- 2 Opp Power Min 1
+Infiltrator,3,6,3,- 2 Opp Power Min 5,"The Infiltrator can get into any building at any time to the day. A grappling hook, rope and some lockpicks are all he needs.",- 2 Opp Power Min 1
+Cutthroat,3,8,2,- 4 Opp Attack Min 1,"The Cutthroat comes at you when its most unexpected and rams a knife into your throat, leaving you to bleed out while he is already gone.",- 2 Opp Power Min 1
+Madlad,3,5,5,Courage: + 2 Power,The Madlab takes jobs no other Assassin may be sane enough to do and he doesn't shy away from killing people in broad daylight or right next to the guards.,- 2 Opp Power Min 1
+Suicide Bomber,3,6,4,Defeat: Poison 2 Min 5,"The Suicide Bomber only has one job, which is to blow shit up. Equipped with an explosive vest if things go wrong, he can blow everyone else up with him. However, so far his bombs sufficed.",- 2 Opp Power Min 1
+Separator,3,7,2,Stop Opp Bonus,The Separator likes to cut up his victims into small pieces and mail them to their family members.,- 2 Opp Power Min 1
+Coordinator,3,4,5,Support: - 3 Opp Attack Min 12,"The Coordinator knows which Assassin is where, plans escape routes and generally makes sure that the Assassins themselves don't cross paths if they are doing solo jobs.",- 2 Opp Power Min 1
+Blackmailer,4,7,3,- 3 Opp Potion Min 2,The Blackmailer is not so much an Assassins as he knows to psychologically kill his victims by extorting money through body parts of missing family members or regular visits at their homes.,- 2 Opp Power Min 1
+Butcher,4,5,5,- 3 Opp Power Min 4,"The Butcher fronts as a simple worker, but he likes it bloody and covers as much of the killing scene as he can in blood.",- 2 Opp Power Min 1
+Mass Murderer,4,6,4,+ 1 Life per Damage,The Mass Murderer relishes the thoughs of his former kills and is ready to kill again. ,- 2 Opp Power Min 1
+Number A,4,6,6,Courage: + 2 Damage,Number A is figure shrouded in black that is sent first when someone needs to be killed fast.,- 2 Opp Power Min 1
+Number B,4,6,6,Courage: + 2 Power,Number B is figure shrouded in grey that is sent second when someone needs to be killed fast.,- 2 Opp Power Min 1
+Overwhelmer,4,7,4,Stop Opp Ability,"The Overwhelmer is able to do so much at once, people's brains overload when he is out killing. Tables get thrown around and a multitude of knives are in the air when he is around.",- 2 Opp Power Min 1
+Mr. Plan Z,5,8,5,- 3 Opp Damage Min 3,"Mr. Plan Z always has a plan, always knows where to go and always knows what to say. He is a force of nature, a brute and a charmer.",- 2 Opp Power Min 1
+Brother Rage,5,7,4,Revenge: - 4 Opp Life Min 0,"When Brother Rage is on a job, everything goes to shits. Houses collapse, trade routes disappear, entire meetings end in bloodbaths.",- 2 Opp Power Min 1
+Sister Jealousy,5,7,7,Revenge: + 2 Power,"Sister Jealousy cares for her jobs and only takes high value ones. When she is out and about you hope that you have less than her, as her jewelry is just for her and no one should have more than her.",- 2 Opp Power Min 1
+Master Tactician,5,8,5,Stop Opp Bonus,"The Master Tactition uses battle plans, floor plans, city plans, staffing plans and any other plans he can get his hands on to plan the perfect kill.",- 2 Opp Power Min 1

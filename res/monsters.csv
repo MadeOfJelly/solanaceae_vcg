@@ -1,0 +1,22 @@
+Name,Level,Power,Damage,Ability,Description,Bonus
+Rabies Bison,2,6,2,+ 2 Damage,A bison with rabies. It is volatile and angry.,+ 2 Power
+Giant Centipede,2,4,4,+ 8 Attack,A giant centipede.,+ 2 Power
+Blood Fly,2,5,4,Courage: + 1 Life,"Blood flies have different colors based on the fauna that surrounds them. They possess a large stinger at the back of their tail that they use to paralyze and then kill their targets. Their four wings allow them to fly in nearly any direction out of any position, though they seem to have problems flying higher than a few feet off the ground.",+ 2 Power
+Basilisk,3,7,4,- 1 Opp Power Min 5,"The Basilisk is a hard skinned monster with greyish skin that turns any living creature that looks at it too long into stone. Its blue eyes pierce the night, while is teeth are not only sharp but can easily devour stone.",+ 2 Power
+Burrower,3,6,4,+ 2 Power,A mole like creature with blade-like claws and a sturdy armor like an armadillo.,+ 2 Power
+Storm Shark,3,8,3,Defeat: - 1 Opp Life Min 4,A snake like creature with small legs that moves very fast. Lightning arcs across its greyish blue body.,+ 2 Power
+Troll,3,6,3,Heal 2 Max 13,"A large troll that regenerates from wounds. It has brackish skin and is otherwise humanoid, though quite ugly.",+ 2 Power
+Hell Hornet,3,6,4,Poison 1 Min 1,A giant red-black hornet with a burning venom in its stinger.,+ 2 Power
+Flooded Spirit,3,6,5,Revenge: Stop Opp Bonus,A creature made of mud that can cover large distances quickly and resembles a flowing humanoid.,+ 2 Power
+Werewolf,3,5,5,Steal: - 1 Opp Life Min 1,A fucking werewolf.,+ 2 Power
+Poison Lizard,3,6,4,Stop Opp Ability,"A poisonous lizard, which is emitting a disgusting stench.",+ 2 Power
+Snapper,3,7,2,Support: + 1 Damage,"A small, t-rex like creature that hunts in packs.",+ 2 Power
+Living Gargoyle,4,5,8,- 1 Opp Damage Min 4,"A living gargoyle out of stone with four arms and leathery wings, perched on a medieval house.",+ 2 Power
+Slicing Mantis,4,6,6,Courage: + 3 Power,A mantis like monster with wings. Extremely dangerous and hungry.,+ 2 Power
+Mutated Gorilla,4,7,6,Revenge: + 1 Power,"Usually found in jungle-like biomes, this gorilla like monster possesses 4 massive arms to are able to break any creature.",+ 2 Power
+Hydra,4,7,6,Stop: + 1 Damage,A five-headed hydra.,+ 2 Power
+Sandworm,4,6,7,Stop: + 1 Power,A gargantuan sandworm that expulses sand at high speeds from its body and grinds down its victims with endless teeth.,+ 2 Power
+Mountain Troll,5,7,8,- 2 Opp Damage Min 5,A gargantuan ape-like creature covered in heavy fur with stone-like skin.,+ 2 Power
+Beast of the Fields,5,8,6,- 8 Opp Attack Min 3,An ape-like creature with a wolf's head and a bone-blade arm. Extremely dangerous and deadly.,+ 2 Power
+Red Dragon,5,8,6,+ 2 Damage,A red dragon that spews mountains of fire at its victims.,+ 2 Power
+Sea Serpent,5,7,7,Poison 1 Min 1,A gargantuan serpent that not only poisons but also devours its victims entirely if they are small enough.,+ 2 Power

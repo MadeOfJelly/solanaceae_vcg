@@ -1,0 +1,20 @@
+Name,Level,Power,Damage,Ability,Description,Bonus
+Scout,2,6,2,- 2 Opp Damage Min 1,The Scout is hidden in the bushes and takes watch.,- 8 Opp Attack Min 3
+Field Medic,2,5,3,Heal 2 Max 10,"The Field Medic knows how to treat wounds that appear on the battlefield, but he doesn't know how to fight himself.",- 8 Opp Attack Min 3
+Pillager,2,5,3,Steal: - 1 Opp Life Min 1,The Pillager burns down anything he finds after he has taken all the valuables.,- 8 Opp Attack Min 3
+Archer,2,6,2,Stop Opp Bonus,The Archer is skilled with his bow and attacks from a distance.,- 8 Opp Attack Min 3
+Polisher,3,6,4,+ 8 Attack,The Polisher makes sure that the equipment of the Invaders is clean and in good shape.,- 8 Opp Attack Min 3
+Ration Keeper,3,6,3,+ 3 Life,The Ration Keeper gives out food and water and is almost a small king among the Invaders.,- 8 Opp Attack Min 3
+Poisoner,3,7,3,Poison 2 Min 3,"The Poisoner only knows how to create poisons, though he is good at that. These poisons can be used on all kinds of sharp weapons or arrows.",- 8 Opp Attack Min 3
+Wallclimber,3,7,3,Stop Opp Ability,The Wallclimber knows how to climb any wall and is able to get over them easily.,- 8 Opp Attack Min 3
+Foreign Soldier,3,6,4,Stop Opp Bonus,The Foreign Soldier comes from another country and employs unknown fighting techniques and weaponry like scimitars.,- 8 Opp Attack Min 3
+Brandisher,3,5,4,Support: - 1 Opp Power Min 4,"The Brandisher knows how to swing around a multitude of weapons all at once, but he needs to be provided with them.",- 8 Opp Attack Min 3
+Demolitionist,4,7,4,- 3 Opp Life Min 2,"The Demolitionist knows how to make bombs and blow up buildings or palisades. His skin is burned, but he is still smiling.",- 8 Opp Attack Min 3
+Strategist,4,6,6,- 8 Opp Attack Min 3,The Strategist knows when to enter a village and how. He creates small battlemaps while still leading the charge in his heavy plate armor.,- 8 Opp Attack Min 3
+Polymath,4,6,6,Stop Opp Ability,The Polymath calculates the flight path of catapults and cannons and also knows about local fauna and flora. He is old and has grey hair.,- 8 Opp Attack Min 3
+Flanker,4,5,7,Stop: - 3 Opp Power Min 3,The Flanker comes from behind usually and is able to bring chaos to enemy troups.,- 8 Opp Attack Min 3
+Sharpener,4,6,6,Support: + 3 Attack,"The Sharpener loves to sharpen swords, axes and arrow heads to maximize their impact.",- 8 Opp Attack Min 3
+Commander,5,7,6,- 4 Opp Damage Min 2,The Commander leads the troups into battle and is usually on a horse.,- 8 Opp Attack Min 3
+Cannonist,5,6,8,Courage: - 12 Opp Attack Min 12,The Cannonist knows how to angle a cannon to hit the target.,- 8 Opp Attack Min 3
+Warlord,5,8,6,Courage: - 3 Opp Power Min 4,"The Warlord has come to conquer and he will conquer. No one will stand in his way, when he comes with his traditional armor.",- 8 Opp Attack Min 3
+Foreign King,5,7,7,Stop Opp Bonus,The Foreign King wants to increase the size of his country and has therefore determined that your city will be included in his empire. For this he can chill in his throne room and his throne and wear his crown.,- 8 Opp Attack Min 3

@@ -1,0 +1,21 @@
+Name,Level,Power,Damage,Ability,Description,Bonus
+Mass Servant,2,5,3,- 2 Opp Damage Min 1,The Mass Serant is dressed in simple robes and always there to accomodate the priests and Clerics.,Stop Opp Ability
+Hollow Cleric,4,7,3,- 4 Opp Life Min 2,The Hollow Cleric is ready to fill the emptyness in your heart. His robes are of a dark blue color and reflect the sunlight.,Stop Opp Ability
+Prophet,4,8,2,- 4 Opp Potion Min 2,"The Prophet is one of a kind, foretold by the scriptures. He is as charismatic as he is strong and he wears the finest Cleric clothes.",Stop Opp Ability
+Peace Cleric,4,7,3,- 5 Opp Damage Min 2,The Piece Cleric is keeping peace among all. He wears simple brown robes and is very old.,Stop Opp Ability
+Tempest Cleric,3,8,2,- 8 Opp Attack Min 3,"The Tempest Cleric's robes are of grey color and very light, almost floaty.",Stop Opp Ability
+Water Cleric,4,5,6,+ 12 Attack,The Water Cleric wears bright blue robes and is mostly found blessing barrels and fountains of water.,Stop Opp Ability
+Life Cleric,5,6,2,+ 3 Life per Damage,"The Life Cleric wears golden robes and heals everyone, poor or rings.",Stop Opp Ability
+Nature Cleric,3,7,2,+ 3 Potion,The Nature Cleric has green robes and knows how to tend plants.,Stop Opp Ability
+War Cleric,4,7,5,Courage: + 3 Power,The War Cleric wears heavy metal armor underneath his robes and carries a battleaxe and shield.,Stop Opp Ability
+Oracle,4,5,5,Defeat: - 3 Opp Life Min 0,The Oracle wears ragged clothing and is mostly found in its room with different smells and scents.,Stop Opp Ability
+Acolyte,3,7,3,Heal 1 Max 15,The Acolyte is there to help in the masses and help the Clerics with things.,Stop Opp Ability
+Preacher,2,6,2,Heal 2 Max 10,The Preacher stands out on the marketplace and ushers citizens to the temples of the Clerics.,Stop Opp Ability
+Death Cleric,5,8,1,Poison 3 Min 0,The Death Cleric wears dark green robes and carries an orb with him.,Stop Opp Ability
+Nightmare Cleric,3,4,6,Revenge: + 3 Power,The Nightmare Cleric helps people with their nightmares and is wrapped in bright white robes with dark dots.,Stop Opp Ability
+Vengeance Cleric,5,7,5,Revenge: + 5 Damage,The Vengeance Cleric has a small piece of paper with him at all times. His robes are of red color.,Stop Opp Ability
+Pastor,3,6,4,Stop Opp Bonus,The Pastor prays to the gods and has information from the many people that talk to him.,Stop Opp Ability
+Stability Cleric,4,7,5,Stop Opp Bonus,The Stability Cleric keeps things as they are and is mostly carrying around scriptures and books. His robes are of silver color.,Stop Opp Ability
+Inquisitor,3,7,1,Stop: + 6 Damage,The Inquisitor is there to charge those that do wrong. He wears heavy brown robes and metal armor underneath.,Stop Opp Ability
+Mass Preparer,2,6,1,Support: + 1 Life,"The Mass Preparer is most often found in the backrooms of temples, helping to set up the masses.",Stop Opp Ability
+Union Cleric,3,6,3,Support: + 1 Power,"The Union Cleric is there to help all Clerics together. He wears no robes at all, but a uniform. Although he still carries a priest's staff with him.",Stop Opp Ability
