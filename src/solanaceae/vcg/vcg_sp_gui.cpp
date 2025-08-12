@@ -5,6 +5,8 @@
 
 #include "./sp_gui_states.hpp"
 
+#include "./cards/easy_cards.hpp"
+
 #include <imgui.h>
 
 #include <memory>
@@ -342,7 +344,7 @@ VCGSPGUI::~VCGSPGUI(void) {
 float VCGSPGUI::render(float delta) {
 	if (ImGui::Begin("VCG sp")) {
 		if (ImGui::Button("new game")) {
-			const auto cards = getAllCards();
+			const auto cards = Cards::easy_cards();
 
 			std::default_random_engine rng{std::random_device{}()};
 

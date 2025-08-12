@@ -6,6 +6,9 @@ add_library(solanaceae_vcg
 	./solanaceae/vcg/card.hpp
 	./solanaceae/vcg/card.cpp
 
+	./solanaceae/vcg/cards/easy_cards.hpp
+	./solanaceae/vcg/cards/easy_cards.cpp
+
 	./solanaceae/vcg/game_state.hpp
 	./solanaceae/vcg/game_state.cpp
 

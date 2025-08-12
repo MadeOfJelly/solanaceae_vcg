@@ -1,5 +1,6 @@
 #include "./card.hpp"
 #include "./game_state.hpp"
+#include "./cards/easy_cards.hpp"
 
 #include <cstdint>
 #include <iostream>
@@ -95,7 +96,7 @@ static size_t decide_winning_card(
 }
 
 int main(void) {
-	const auto cards = getAllCards();
+	const auto cards = Cards::easy_cards();
 
 	//for (const auto& card : cards) {
 	//    std::cout << "C:" << card.name << "\n";

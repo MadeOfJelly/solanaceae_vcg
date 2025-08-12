@@ -75,5 +75,3 @@ struct Card {
 	std::string toStringNLPD(void) const;
 };
 
-std::vector<Card> getAllCards(void);
-
