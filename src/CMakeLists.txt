@@ -2,6 +2,13 @@ cmake_minimum_required(VERSION 3.9...3.24 FATAL_ERROR)
 
 project(solanaceae)
 
+add_executable(vcg_csv_to_cpp
+	./solanaceae/vcg/csv_to_cpp.cpp
+)
+target_compile_features(vcg_csv_to_cpp PUBLIC cxx_std_20)
+
+########################################
+
 add_library(solanaceae_vcg
 	./solanaceae/vcg/card.hpp
 	./solanaceae/vcg/card.cpp
@@ -36,4 +43,12 @@ add_executable(test1
 )
 
 target_link_libraries(test1 PUBLIC solanaceae_vcg)
+
+########################################
+
+add_executable(test_abilities
+	./solanaceae/vcg/test_abilities.cpp
+)
+
+target_link_libraries(test_abilities PUBLIC solanaceae_vcg)
 

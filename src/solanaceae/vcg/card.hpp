@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
 #include <variant>
 #include <string>
 
@@ -21,6 +20,16 @@ namespace Abilities {
 		int16_t to_at_least {0};
 	};
 
+	struct OppLife {
+		int16_t value {0};
+		int16_t to_at_least {0};
+	};
+
+	struct OppPotion {
+		int16_t value {0};
+		int16_t to_at_least {0};
+	};
+
 	struct Damage {
 		int16_t value {0};
 	};
@@ -31,6 +40,53 @@ namespace Abilities {
 
 	struct Attack {
 		int16_t value {0};
+	};
+
+	struct Life {
+		int16_t value {0};
+	};
+
+	struct Potion {
+		int16_t value {0};
+	};
+
+	struct CopyDamage {
+	};
+
+	struct CopyPower {
+	};
+
+	struct LifePerDamage {
+		int16_t value {0};
+	};
+
+	struct Heal {
+		int16_t value {0};
+		int16_t to_at_most {0};
+	};
+
+	struct Poison {
+		int16_t value {0};
+		int16_t to_at_least {0};
+	};
+
+	struct RecoverPotions {
+	};
+
+	struct StopOppAbility {
+	};
+
+	struct StopOppBonus {
+	};
+
+	template<typename Inner>
+	struct Defeat {
+		Inner inner;
+	};
+
+	template<typename Inner>
+	struct Stop {
+		Inner inner;
 	};
 }
 
@@ -44,10 +100,37 @@ struct Ability {
 		Abilities::OppDamage,
 		Abilities::OppPower,
 		Abilities::OppAttack,
+		Abilities::OppLife,
+		Abilities::OppPotion,
 
 		Abilities::Damage,
 		Abilities::Power,
-		Abilities::Attack
+		Abilities::Attack,
+		Abilities::Life,
+		Abilities::Potion,
+
+		Abilities::CopyDamage,
+		Abilities::CopyPower,
+
+		Abilities::LifePerDamage,
+
+		Abilities::Heal,
+		Abilities::Poison,
+		Abilities::RecoverPotions,
+
+		Abilities::StopOppAbility,
+		Abilities::StopOppBonus,
+
+		// all current variants
+		Abilities::Defeat<Abilities::Life>,
+		Abilities::Defeat<Abilities::Poison>,
+		Abilities::Defeat<Abilities::Heal>,
+		Abilities::Defeat<Abilities::OppLife>,
+		Abilities::Defeat<Abilities::Potion>,
+		Abilities::Defeat<Abilities::RecoverPotions>,
+		// extra for compat
+		Abilities::Defeat<Abilities::OppPotion>,
+		Abilities::Defeat<Abilities::LifePerDamage>
 	> a;
 
 	std::string string;
