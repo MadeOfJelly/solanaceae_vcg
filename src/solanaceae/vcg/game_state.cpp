@@ -102,6 +102,11 @@ bool GameState::update(
 	const size_t player_lost = (player_won+1)%2;
 	vols.at(player_lost).hp -= round.card_temps.at(won_ridx).damage;
 
+	vols.at(player0).hp += round.volatile_changes.at(0).hp;
+	vols.at(player0).pots += round.volatile_changes.at(0).pots;
+	vols.at(player1).hp += round.volatile_changes.at(1).hp;
+	vols.at(player1).pots += round.volatile_changes.at(1).pots;
+
 	return true;
 }
 

@@ -38,9 +38,18 @@ struct CardTemp {
 	int16_t attack {0};
 };
 
+struct PlayerVolatiles {
+	int16_t pots {12};
+	int16_t hp {12};
+};
+
 struct Round {
 	std::vector<TurnSelection> turns;
 	std::array<CardTemp, 2> card_temps;
+
+	std::array<PlayerVolatiles, 2> volatile_changes {{
+		PlayerVolatiles{0, 0}, PlayerVolatiles{0, 0},
+	}};
 
 	std::array<size_t, 2> players;
 
@@ -64,10 +73,6 @@ struct GameState {
 	std::array<std::vector<Card>, 2> cards;
 	std::array<std::vector<bool>, 2> cards_used;
 
-	struct PlayerVolatiles {
-		int16_t pots {12};
-		int16_t hp {12};
-	};
 	std::array<PlayerVolatiles, 2> vols;
 
 	std::vector<Round> rounds;

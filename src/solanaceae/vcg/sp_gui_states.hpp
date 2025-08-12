@@ -52,6 +52,8 @@ struct PhaseRevealSelections : public PhaseI {
 
 // ?
 struct PhaseBattle : public PhaseI {
+	std::default_random_engine _rng{std::random_device{}()};
+
 	~PhaseBattle(void) override {}
 
 	std::unique_ptr<PhaseI> render_impl(GameState& gs, std::optional<Round>& round, float delta) override;

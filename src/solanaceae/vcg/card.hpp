@@ -7,27 +7,27 @@
 namespace Abilities {
 	struct OppDamage {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct OppPower {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct OppAttack {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct OppLife {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct OppPotion {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct Damage {
@@ -62,12 +62,12 @@ namespace Abilities {
 
 	struct Heal {
 		int16_t value {0};
-		int16_t to_at_most {0};
+		int16_t max {0};
 	};
 
 	struct Poison {
 		int16_t value {0};
-		int16_t to_at_least {0};
+		int16_t min {0};
 	};
 
 	struct RecoverPotions {
@@ -98,40 +98,38 @@ struct Ability {
 	Ability(const std::string& string);
 
 	std::variant<
-		Abilities::OppDamage,
-		Abilities::OppPower,
-		Abilities::OppAttack,
-		Abilities::OppLife,
-		Abilities::OppPotion,
+		Abilities::OppDamage,	// w
+		Abilities::OppPower,	// w
+		Abilities::OppAttack,	// w
+		Abilities::OppLife,		// w
+		Abilities::OppPotion,	// w
 
-		Abilities::Damage,
-		Abilities::Power,
-		Abilities::Attack,
-		Abilities::Life,
-		Abilities::Potion,
+		Abilities::Damage,		// w
+		Abilities::Power,		// w
+		Abilities::Attack,		// w
+		Abilities::Life,		// w
+		Abilities::Potion,		// w
 
-		Abilities::CopyDamage,
-		Abilities::CopyPower,
+		Abilities::CopyDamage,	// i
+		Abilities::CopyPower,	// i
 
-		Abilities::LifePerDamage,
+		Abilities::LifePerDamage,	// i
 
 		Abilities::Heal,
 		Abilities::Poison,
-		Abilities::RecoverPotions,
+		Abilities::RecoverPotions,	// i
 
 		Abilities::StopOppAbility,
 		Abilities::StopOppBonus,
 
-		// all current variants
-		Abilities::Defeat<Abilities::Life>,
-		Abilities::Defeat<Abilities::Poison>,
-		Abilities::Defeat<Abilities::Heal>,
-		Abilities::Defeat<Abilities::OppLife>,
-		Abilities::Defeat<Abilities::Potion>,
-		Abilities::Defeat<Abilities::RecoverPotions>,
-		// extra for compat
+		Abilities::Defeat<Abilities::OppLife>,			// w
 		Abilities::Defeat<Abilities::OppPotion>,
-		Abilities::Defeat<Abilities::LifePerDamage>
+		Abilities::Defeat<Abilities::Life>,				// w
+		Abilities::Defeat<Abilities::Potion>,			// w
+		Abilities::Defeat<Abilities::LifePerDamage>, // ???
+		Abilities::Defeat<Abilities::Heal>,
+		Abilities::Defeat<Abilities::Poison>,
+		Abilities::Defeat<Abilities::RecoverPotions>	// i
 	> a;
 
 	std::string string;

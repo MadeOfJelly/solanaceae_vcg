@@ -30,7 +30,7 @@ static bool apply_ability(int16_t& value, const Ability& a) {
 		// if has min and avv is < 0
 		if constexpr (ability_has_min<T>()) {
 			if (a_v.value < 0) {
-				value = std::min<int16_t>(value_before, std::max<int16_t>(value, a_v.to_at_least));
+				value = std::min<int16_t>(value_before, std::max<int16_t>(value, a_v.min));
 			} // TODO: max(min()) for > 0?
 		}
 		return true;
@@ -50,7 +50,7 @@ static std::vector<Card> drawCards(RNG& rng, const std::vector<Card>& full_deck)
 }
 
 template<typename RNG>
-static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, std::vector<bool>& cards_used, GameState::PlayerVolatiles& vol) {
+static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, std::vector<bool>& cards_used, PlayerVolatiles& vol) {
 	size_t extra_pots = rng()%(vol.pots + 1);
 	vol.pots -= extra_pots;
 

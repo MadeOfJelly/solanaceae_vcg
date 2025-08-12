@@ -15,6 +15,8 @@ add_library(solanaceae_vcg
 
 	./solanaceae/vcg/cards/easy_cards.hpp
 	./solanaceae/vcg/cards/easy_cards.cpp
+	./solanaceae/vcg/cards/random.hpp
+	./solanaceae/vcg/cards/random.cpp
 
 	./solanaceae/vcg/game_state.hpp
 	./solanaceae/vcg/game_state.cpp
@@ -23,6 +25,7 @@ add_library(solanaceae_vcg
 	./solanaceae/vcg/vcg.cpp
 
 	./solanaceae/vcg/sp_gui_states.hpp
+	./solanaceae/vcg/sp_gui_states.cpp
 	./solanaceae/vcg/vcg_sp_gui.hpp
 	./solanaceae/vcg/vcg_sp_gui.cpp
 )
