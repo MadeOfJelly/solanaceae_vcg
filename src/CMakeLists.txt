@@ -46,9 +46,12 @@ target_link_libraries(test1 PUBLIC solanaceae_vcg)
 
 ########################################
 
-add_executable(test_abilities
-	./solanaceae/vcg/test_abilities.cpp
-)
+if(BUILD_TESTING)
+	add_executable(vcg_test_abilities
+		./solanaceae/vcg/test_abilities.cpp
+	)
 
-target_link_libraries(test_abilities PUBLIC solanaceae_vcg)
+	target_link_libraries(vcg_test_abilities PUBLIC solanaceae_vcg)
+	add_test(NAME vcg_test_abilities COMMAND vcg_test_abilities)
+endif()
 

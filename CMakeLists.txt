@@ -62,6 +62,10 @@ if (SOLANACEAE_VCG_STANDALONE)
 
 endif()
 
+# TODO: rename
+if(BUILD_TESTING)
+	include(CTest)
+endif()
 # cmake setup end
 
 add_subdirectory(./src)
