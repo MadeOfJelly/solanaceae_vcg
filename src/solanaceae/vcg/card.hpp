@@ -83,6 +83,7 @@ namespace Abilities {
 	struct Defeat {
 		Inner inner;
 	};
+	template<typename Inner> Defeat( Inner ) -> Defeat<Inner>;
 
 	template<typename Inner>
 	struct Stop {
