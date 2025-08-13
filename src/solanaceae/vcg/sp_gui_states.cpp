@@ -3,9 +3,9 @@
 #include "./card.hpp"
 #include "./game_state.hpp"
 
-#include <cstdint>
 #include <imgui.h>
 
+#include <cstdint>
 #include <memory>
 #include <numeric>
 #include <optional>
@@ -478,13 +478,6 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	ImGui::Text("bot  attack: %hd", round->card_temps.at(bot_idx).attack);
 	ImGui::Text("your attack: %hd", round->card_temps.at(human_idx).attack);
 
-	ImGui::SeparatorText("resulting in");
-	ImGui::Text("bot  hp: %d (%+d)", round->volatile_temps.at(bot_idx).hp, round->volatile_temps.at(bot_idx).hp - gs.vols.at(1).hp);
-	ImGui::Text("your hp: %d (%+d)", round->volatile_temps.at(human_idx).hp, round->volatile_temps.at(human_idx).hp - gs.vols.at(0).hp);
-
-	ImGui::Text("bot  pots: %d", round->volatile_temps.at(bot_idx).pots);
-	ImGui::Text("your pots: %d", round->volatile_temps.at(human_idx).pots);
-
 	// show winner
 	auto [win_ridx, reason] = round->decide_winning_card();
 	const auto winning_player = round->players.at(win_ridx);
@@ -504,6 +497,12 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 			ImGui::TextUnformatted("by default");
 			break;
 	}
+
+	ImGui::SeparatorText("resulting in");
+	ImGui::Text("bot  hp: %d (%+d)", round->volatile_temps.at(bot_idx).hp, round->volatile_temps.at(bot_idx).hp - gs.vols.at(1).hp);
+	ImGui::Text("your hp: %d (%+d)", round->volatile_temps.at(human_idx).hp, round->volatile_temps.at(human_idx).hp - gs.vols.at(0).hp);
+	ImGui::Text("bot  pots: %d (%+d)", round->volatile_temps.at(bot_idx).pots, round->volatile_temps.at(bot_idx).pots - gs.vols.at(1).pots);
+	ImGui::Text("your pots: %d (%+d)", round->volatile_temps.at(human_idx).pots, round->volatile_temps.at(human_idx).pots - gs.vols.at(0).pots);
 
 	if (ImGui::Button("continue")) {
 		// apply dmg here? or ad end of battle?
