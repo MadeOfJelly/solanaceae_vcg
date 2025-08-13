@@ -35,14 +35,22 @@ std::vector<Card> Cards::random(void) {
 		//{"Destruction Mage",5,8,4,{"- 5 Opp Potion Min 5"},{"+ 2 Damage"},"The Destruction Mage evaporates matter, no matter if it is organic or not. When he points his finger at someone, they turn to dust."},
 
 		// crafters
-		{"Toymaker",2,5,3,{"- 3 Opp Damage Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Loved by the kids, the Toymaker is a specialist for small craftsmenship. His smile is calm and inviting, just like his white shirt with straps. However, don't forget that carving equipment for wooden toys can still be used on flesh."},
-		{"Cobbler",3,5,5,{"- 3 Opp Power Min 5"},{"Defeat: Recover 1 of 2 Potion"},"As an important personality in the city, the Cobbler is always asked for. Everyone wants to walk the walk and talk the talk, but only with his shoes that is possible. Though as good they can be, they can be bad and the cobbling tools might also get used in a different way."},
-		{"Leatherworker",4,7,5,{"- 5 Opp Damage Min 4"},{"Defeat: Recover 1 of 2 Potion"},"The Leatherworker can be found tanning leather or crafting clothing from leather in his shop."},
-		{"Blacksmith",5,8,6,{"+ 12 Attack"},{"Defeat: Recover 1 of 2 Potion"},"The Blacksmith is a blacksmith and known for making things out of metal. Weapons are a speciality of his."},
-		{"Baker",3,7,3,{"+ 3 Life"},{"Defeat: Recover 1 of 2 Potion"},"The Baker is known around the city, as many people interact with him daily. Always a bit dusty from the flower, but boasting large forearms, he knows how to knead."},
-		{"Head Alchemist",5,7,7,{"+ 3 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Head Alchemist is a master of potions and brews. His shop is littered with potion bottles of all colors."},
-		{"Enchanter",5,6,8,{"+ 3 Power"},{"Defeat: Recover 1 of 2 Potion"},"The Enchanter is highly sought after, as he magically enchants both common household items and combat equipment as well."},
-		{"Storage Keeper",2,6,2,{"Defeat: - 2 Opp Life Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Always seen around the warehouse, the Storage Keeper boasts a large key chain. He knows his warehouse by heart and where which key fits."},
-		{"Recycler",3,6,5,{"Defeat: Recover 1 of 2 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Recycler is always tinkering with things and able to extract gems from jewelery and special parts from toys, while also being able to work on potions."},
+		//{"Toymaker",2,5,3,{"- 3 Opp Damage Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Loved by the kids, the Toymaker is a specialist for small craftsmenship. His smile is calm and inviting, just like his white shirt with straps. However, don't forget that carving equipment for wooden toys can still be used on flesh."},
+		//{"Cobbler",3,5,5,{"- 3 Opp Power Min 5"},{"Defeat: Recover 1 of 2 Potion"},"As an important personality in the city, the Cobbler is always asked for. Everyone wants to walk the walk and talk the talk, but only with his shoes that is possible. Though as good they can be, they can be bad and the cobbling tools might also get used in a different way."},
+		//{"Leatherworker",4,7,5,{"- 5 Opp Damage Min 4"},{"Defeat: Recover 1 of 2 Potion"},"The Leatherworker can be found tanning leather or crafting clothing from leather in his shop."},
+		//{"Blacksmith",5,8,6,{"+ 12 Attack"},{"Defeat: Recover 1 of 2 Potion"},"The Blacksmith is a blacksmith and known for making things out of metal. Weapons are a speciality of his."},
+		//{"Baker",3,7,3,{"+ 3 Life"},{"Defeat: Recover 1 of 2 Potion"},"The Baker is known around the city, as many people interact with him daily. Always a bit dusty from the flower, but boasting large forearms, he knows how to knead."},
+		//{"Head Alchemist",5,7,7,{"+ 3 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Head Alchemist is a master of potions and brews. His shop is littered with potion bottles of all colors."},
+		//{"Enchanter",5,6,8,{"+ 3 Power"},{"Defeat: Recover 1 of 2 Potion"},"The Enchanter is highly sought after, as he magically enchants both common household items and combat equipment as well."},
+		//{"Storage Keeper",2,6,2,{"Defeat: - 2 Opp Life Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Always seen around the warehouse, the Storage Keeper boasts a large key chain. He knows his warehouse by heart and where which key fits."},
+		//{"Recycler",3,6,5,{"Defeat: Recover 1 of 2 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Recycler is always tinkering with things and able to extract gems from jewelery and special parts from toys, while also being able to work on potions."},
+
+		// cultists
+		{"Fanatic",3,7,3,{"- 2 Opp Life Min 2"},{"- 2 Opp Life Min 2"},"The Fanatic is down to do everything the higher Cultists are telling him. No matter how insane the job, he will do his best to accomplish it."},
+		{"Slaughterer",4,8,3,{"+ 1 Life per Damage"},{"- 2 Opp Life Min 2"},"The Slaughterer is there to let the blood flow. With his murderous axe he chops down the victims of the Cultists, whether in the ritual chamber or on the streets."},
+		{"Guru",5,7,7,{"+ 2 Life"},{"- 2 Opp Life Min 2"},"The Guru is mostly found in the back of the chamber. Old and bald, he oversees the rituals and provides evil counseling for the Cultists."},
+		{"Zealot",3,6,4,{"+ 2 Power"},{"- 2 Opp Life Min 2"},"The Zealot dreams of the future the Cultists offer and bathes in the future glory that they will achieve."},
+		{"Child Sacrifice",2,5,2,{"Defeat: - 3 Opp Life Min 2"},{"- 2 Opp Life Min 2"},"The Child Sacrifice was ripped from its mothers arms and now lies on the cold stone altar, ready to be ended."},
+		{"Sacrificial Lamb",2,5,3,{"Defeat: + 2 Life"},{"- 2 Opp Life Min 2"},"The white Sacrifical Lamb stands amidst the pentagram and will sonn be sacrificed in a blood ritual"},
 	};
 }
