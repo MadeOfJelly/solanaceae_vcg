@@ -402,10 +402,10 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		);
 
 		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().ability.a)) {
-			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
+			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+2) / 2;
 		}
 		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
+			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+2) / 2;
 		}
 
 		apply_value_abilities<Abilities::OppPotion>(
@@ -445,10 +445,10 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		);
 
 		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(loose_ridx).card().ability.a)) {
-			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
+			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+2) / 2;
 		}
 		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
+			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+2) / 2;
 		}
 
 		apply_value_abilities<Abilities::Defeat<Abilities::OppPotion>>(
