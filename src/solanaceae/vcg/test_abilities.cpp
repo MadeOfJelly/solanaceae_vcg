@@ -45,8 +45,8 @@ int main(void) {
 		//Poison X Min Y,"If this Card wins the Battle, the enemy takes X damage after each of the following Battles down to a minimum of Y. Between multiple poisons, only the strongest is applied, unless another poison would deal more damage due to the minimum of Y. Poison always acts after Heal."
 		"Poison 2 Min 2",
 
-		//Recover 1 of 2 Potions,"After the Battle, you recover 50% of the Potions the Card had, rounded up. This includes the Potion it has by default."
-		"Recover 1 of 2 Potions",
+		//Recover 1 of 2 Potion,"After the Battle, you recover 50% of the Potions the Card had, rounded up. This includes the Potion it has by default."
+		"Recover 1 of 2 Potion",
 
 		//Stop Opp Ability,The opponent’s Card’s Ability is ignored.
 		"Stop Opp Ability",
@@ -66,7 +66,7 @@ int main(void) {
 		"Defeat: + 2 Life per Damage",
 		"Defeat: Heal 2 Max 2",
 		"Defeat: Poison 2 Min 2",
-		"Defeat: Recover 1 of 2 Potions",
+		"Defeat: Recover 1 of 2 Potion",
 	};
 
 	//std::vector<std::string> ability_prefix_string {

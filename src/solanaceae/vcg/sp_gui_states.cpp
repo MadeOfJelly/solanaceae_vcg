@@ -7,22 +7,26 @@
 #include <imgui.h>
 
 #include <memory>
+#include <numeric>
 #include <optional>
 #include <variant>
 
 template<typename RNG>
 static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, const std::vector<bool>& cards_used, const PlayerVolatiles& vol) {
-	size_t extra_pots = rng()%(vol.pots + 1);
-	//vol.pots -= extra_pots;
+	const bool last_round = std::accumulate(cards_used.cbegin(), cards_used.cend(), 0) == 3;
+	size_t extra_pots = 0;
+	if (last_round) {
+		extra_pots = vol.pots;
+	} else {
+		extra_pots = rng()%(vol.pots + 1);
+	}
 
 	bool frenzy = (vol.pots - extra_pots) >= 3 ? rng()%10 == 0 : false;
-	//if (frenzy) { vol.pots -= 3; }
 
 	size_t card_idx = rng()%cards.size();
 	while (cards_used.at(card_idx)) {
 		card_idx = (card_idx+1)%cards.size();
 	}
-	//cards_used.at(card_idx) = true;
 
 	return {
 		cards,

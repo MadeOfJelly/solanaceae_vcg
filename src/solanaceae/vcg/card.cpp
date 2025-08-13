@@ -184,7 +184,7 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 			}
 		},
 		{
-			std::regex("Recover 1 of 2 Potions"),
+			std::regex("Recover 1 of 2 Potion"),
 			[&](const std::smatch&, auto& _a) {
 				_a = wfn(Abilities::RecoverPotions{
 				});

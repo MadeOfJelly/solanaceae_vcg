@@ -101,14 +101,14 @@ struct Ability {
 		Abilities::OppDamage,	// w
 		Abilities::OppPower,	// w
 		Abilities::OppAttack,	// w
-		Abilities::OppLife,		// e
-		Abilities::OppPotion,	// e
+		Abilities::OppLife,		// w
+		Abilities::OppPotion,	// w
 
 		Abilities::Damage,		// w
 		Abilities::Power,		// w
 		Abilities::Attack,		// w
-		Abilities::Life,		// e
-		Abilities::Potion,		// e
+		Abilities::Life,		// w
+		Abilities::Potion,		// w
 
 		Abilities::CopyDamage,	// i
 		Abilities::CopyPower,	// i
