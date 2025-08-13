@@ -94,18 +94,10 @@ bool GameState::update(
 	cards_used.at(player0).at(round.turns.at(0).card_idx) = true;
 	cards_used.at(player1).at(round.turns.at(1).card_idx) = true;
 
-	vols.at(player0).pots -= round.turns.at(0).pots + (round.turns.at(0).frenzy ? 3 : 0);
-	vols.at(player1).pots -= round.turns.at(1).pots + (round.turns.at(1).frenzy ? 3 : 0);
-
-	auto [won_ridx, _] = round.decide_winning_card();
-	const size_t player_won = round.players.at(won_ridx);
-	const size_t player_lost = (player_won+1)%2;
-	vols.at(player_lost).hp -= round.card_temps.at(won_ridx).damage;
-
-	vols.at(player0).hp += round.volatile_changes.at(0).hp;
-	vols.at(player0).pots += round.volatile_changes.at(0).pots;
-	vols.at(player1).hp += round.volatile_changes.at(1).hp;
-	vols.at(player1).pots += round.volatile_changes.at(1).pots;
+	vols.at(player0).hp = round.volatile_temps.at(0).hp;
+	vols.at(player0).pots = std::max<int16_t>(round.volatile_temps.at(0).pots, 0);
+	vols.at(player1).hp = round.volatile_temps.at(1).hp;
+	vols.at(player1).pots = std::max<int16_t>(round.volatile_temps.at(1).pots, 0);
 
 	return true;
 }

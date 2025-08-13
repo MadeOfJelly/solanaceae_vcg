@@ -47,7 +47,7 @@ struct Round {
 	std::vector<TurnSelection> turns;
 	std::array<CardTemp, 2> card_temps;
 
-	std::array<PlayerVolatiles, 2> volatile_changes {{
+	std::array<PlayerVolatiles, 2> volatile_temps {{
 		PlayerVolatiles{0, 0}, PlayerVolatiles{0, 0},
 	}};
 

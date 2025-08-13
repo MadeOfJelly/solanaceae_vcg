@@ -8,8 +8,6 @@
 
 #include <memory>
 #include <optional>
-#include <stdexcept>
-#include <type_traits>
 #include <variant>
 
 template<typename RNG>
@@ -34,23 +32,39 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 	};
 }
 
-
-
-//template <typename >
-//bool ability_has_min(void) { return false; }
-
 template <typename>
 constexpr bool ability_has_min(void) { return false; }
-
 template <>
 constexpr bool ability_has_min<Abilities::OppDamage>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::OppPower>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::OppAttack>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::OppLife>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::OppPotion>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::Poison>(void) { return true; }
+
+template <typename T>
+constexpr bool ability_has_min(void)
+	requires requires(T t) { t.inner; }
+{
+	return ability_has_min<decltype(T::inner)>();
+}
 
 template <typename>
 constexpr bool ability_has_max(void) { return false; }
+template <>
+constexpr bool ability_has_max<Abilities::Heal>(void) { return true; }
+
+template <typename T>
+constexpr bool ability_has_max(void)
+	requires requires(T t) { t.inner; }
+{
+	return ability_has_max<decltype(T::inner)>();
+}
 
 
 // TODO: fragile, runtime
@@ -290,6 +304,13 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		}
 	}
 
+
+	// set temp vols, so we can edit them in respects to min/max
+	for (size_t i = 0; i < round->card_temps.size(); i++) {
+		round->volatile_temps.at(i).hp = gs.vols.at(round->players.at(i)).hp;
+		round->volatile_temps.at(i).pots = gs.vols.at(round->players.at(i)).pots - (round->turns.at(i).pots + round->turns.at(i).frenzy*3);
+	}
+
 	for (size_t i = 0; i < round->card_temps.size(); i++) { // copy
 		size_t opp_ridx = (i+1)%2;
 
@@ -358,92 +379,92 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	}
 
 	auto [win_ridx, reason] = round->decide_winning_card();
+	const size_t loose_ridx = (win_ridx+1)%2;
+
+	// the primary dmg -> hp effect
+	round->volatile_temps.at(loose_ridx).hp -= round->card_temps.at(win_ridx).damage;
+
 	{ // win
 		size_t opp_ridx = (win_ridx+1)%2;
 		apply_value_abilities<Abilities::Life>(
-			gs.vols.at(round->players.at(win_ridx)).hp,
-			round->volatile_changes.at(win_ridx).hp,
+			round->volatile_temps.at(win_ridx).hp,
 			round->turns.at(win_ridx).card().ability,
 			round->turns.at(win_ridx).card().faction_bonus
 		);
 		//std::holds_alternative<Abilities::Poison>(a.a) ||
 		//std::holds_alternative<Abilities::Heal>(a.a) ||
 		apply_value_abilities<Abilities::OppLife>(
-			gs.vols.at(round->players.at(opp_ridx)).hp,
-			round->volatile_changes.at(opp_ridx).hp,
+			round->volatile_temps.at(opp_ridx).hp,
 			round->turns.at(win_ridx).card().ability,
 			round->turns.at(win_ridx).card().faction_bonus
 		);
 		apply_value_abilities<Abilities::Potion>(
-			gs.vols.at(round->players.at(win_ridx)).pots,
-			round->volatile_changes.at(win_ridx).pots,
+			round->volatile_temps.at(win_ridx).pots,
 			round->turns.at(win_ridx).card().ability,
 			round->turns.at(win_ridx).card().faction_bonus
 		);
 
 		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().ability.a)) {
-			round->volatile_changes.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
+			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
 		}
 		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_changes.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
+			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+1) / 2;
 		}
 
 		apply_value_abilities<Abilities::OppPotion>(
-			gs.vols.at(round->players.at(opp_ridx)).pots,
-			round->volatile_changes.at(opp_ridx).pots,
+			round->volatile_temps.at(opp_ridx).pots,
 			round->turns.at(win_ridx).card().ability,
 			round->turns.at(win_ridx).card().faction_bonus
 		);
 
 		if (std::holds_alternative<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().ability.a)) {
 			const auto& a_v = std::get<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().ability.a);
-			round->volatile_changes.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
+			round->volatile_temps.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
 		}
 		if (std::holds_alternative<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().faction_bonus.a)) {
 			const auto& a_v = std::get<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().faction_bonus.a);
-			round->volatile_changes.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
+			round->volatile_temps.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
 		}
 	}
 
-	const size_t loose_ridx = (win_ridx+1)%2;
 	{ // loose (defeat)
 		size_t opp_ridx = (loose_ridx+1)%2;
 		apply_value_abilities<Abilities::Defeat<Abilities::Life>>(
-			gs.vols.at(round->players.at(loose_ridx)).hp,
-			round->volatile_changes.at(loose_ridx).hp,
+			round->volatile_temps.at(loose_ridx).hp,
 			round->turns.at(loose_ridx).card().ability,
 			round->turns.at(loose_ridx).card().faction_bonus
 		);
 		//std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
 		//std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
 		apply_value_abilities<Abilities::Defeat<Abilities::OppLife>>(
-			gs.vols.at(round->players.at(opp_ridx)).hp,
-			round->volatile_changes.at(opp_ridx).hp,
+			round->volatile_temps.at(opp_ridx).hp,
 			round->turns.at(loose_ridx).card().ability,
 			round->turns.at(loose_ridx).card().faction_bonus
 		);
 		apply_value_abilities<Abilities::Defeat<Abilities::Potion>>(
-			gs.vols.at(round->players.at(loose_ridx)).pots,
-			round->volatile_changes.at(loose_ridx).pots,
+			round->volatile_temps.at(loose_ridx).pots,
 			round->turns.at(loose_ridx).card().ability,
 			round->turns.at(loose_ridx).card().faction_bonus
 		);
 
 		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(loose_ridx).card().ability.a)) {
-			round->volatile_changes.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
+			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
 		}
 		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_changes.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
+			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+1) / 2;
 		}
 
 		apply_value_abilities<Abilities::Defeat<Abilities::OppPotion>>(
-			gs.vols.at(round->players.at(opp_ridx)).pots,
-			round->volatile_changes.at(opp_ridx).pots,
+			round->volatile_temps.at(opp_ridx).pots,
 			round->turns.at(loose_ridx).card().ability,
 			round->turns.at(loose_ridx).card().faction_bonus
 		);
 		//std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a) // ??
 	}
+
+	// sanitize pots
+	round->volatile_temps.at(0).pots = std::max<int16_t>(round->volatile_temps.at(0).pots, 0);
+	round->volatile_temps.at(1).pots = std::max<int16_t>(round->volatile_temps.at(1).pots, 0);
 
 	return std::make_unique<PhaseBattleEnd>();
 }
@@ -459,6 +480,13 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	// show values
 	ImGui::Text("bot  attack: %hd", round->card_temps.at(bot_idx).attack);
 	ImGui::Text("your attack: %hd", round->card_temps.at(human_idx).attack);
+
+	ImGui::SeparatorText("resulting in");
+	ImGui::Text("bot  hp: %d (%+d)", round->volatile_temps.at(bot_idx).hp, round->volatile_temps.at(bot_idx).hp - gs.vols.at(1).hp);
+	ImGui::Text("your hp: %d (%+d)", round->volatile_temps.at(human_idx).hp, round->volatile_temps.at(human_idx).hp - gs.vols.at(0).hp);
+
+	ImGui::Text("bot  pots: %d", round->volatile_temps.at(bot_idx).pots);
+	ImGui::Text("your pots: %d", round->volatile_temps.at(human_idx).pots);
 
 	// show winner
 	auto [win_ridx, reason] = round->decide_winning_card();
