@@ -98,7 +98,7 @@ template<typename T>
 constexpr const auto& get_ability_min(const T& a)
 	requires requires(T t) { t.min; }
 {
-	return a.value;
+	return a.min;
 }
 template<typename T>
 constexpr const auto& get_ability_min(const T& a)
@@ -111,7 +111,7 @@ template<typename T>
 constexpr const auto& get_ability_max(const T& a)
 	requires requires(T t) { t.max; }
 {
-	return a.value;
+	return a.max;
 }
 template<typename T>
 constexpr const auto& get_ability_max(const T& a)
@@ -148,6 +148,7 @@ static void apply_value_abilities(int16_t& value, const Ability& a, const Abilit
 	}
 }
 
+#if 0
 template<typename T>
 static bool apply_value_ability(const int16_t& value_base, int16_t& value_diff, const Ability& a) {
 	if (std::holds_alternative<T>(a.a)) {
@@ -176,6 +177,7 @@ static void apply_value_abilities(const int16_t& value_base, int16_t& value_diff
 		apply_value_abilities<Args...>(value_base, value_diff, a, b);
 	}
 }
+#endif
 
 static inline void cardHoverDetails(const Card& card) {
 	if (ImGui::BeginItemTooltip()) {
@@ -290,30 +292,12 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	assert(round);
 
 	// calculate all the values for the selected cards (temp cards)
-
 	for (size_t i = 0; i < round->card_temps.size(); i++) { // fill in base
 		round->card_temps.at(i).power = round->turns.at(i).card().power;
 		round->card_temps.at(i).damage = round->turns.at(i).card().damage;
-		//std::cout << "  p" << round.players.at(i)+1 << " base power:" << round.card_temps.at(i).power << " damage:" << round.card_temps.at(i).damage << "\n";
-	}
 
-	// apply frenzy dmg bonus
-	for (size_t i = 0; i < round->card_temps.size(); i++) {
-		if (round->turns.at(i).frenzy) {
-			round->card_temps.at(i).damage += 2;
-		}
-	}
-
-
-	// set temp vols, so we can edit them in respects to min/max
-	for (size_t i = 0; i < round->card_temps.size(); i++) {
-		round->volatile_temps.at(i).hp = gs.vols.at(round->players.at(i)).hp;
-		round->volatile_temps.at(i).pots = gs.vols.at(round->players.at(i)).pots - (round->turns.at(i).pots + round->turns.at(i).frenzy*3);
-	}
-
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // copy
+		// copy abilities (before frenzy)
 		size_t opp_ridx = (i+1)%2;
-
 		if (std::holds_alternative<Abilities::CopyPower>(round->turns.at(i).card().ability.a)) {
 			round->card_temps.at(i).power = round->turns.at(opp_ridx).card().power;
 		}
@@ -327,9 +311,17 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		if (std::holds_alternative<Abilities::CopyDamage>(round->turns.at(i).card().faction_bonus.a)) {
 			round->card_temps.at(i).damage = round->turns.at(opp_ridx).card().damage;
 		}
+
+		// apply frenzy dmg bonus
+		if (round->turns.at(i).frenzy) {
+			round->card_temps.at(i).damage += 2;
+		}
+
+		// init temp vols, so we can edit them in respects to min/max
+		round->volatile_temps.at(i).hp = gs.vols.at(round->players.at(i)).hp;
+		round->volatile_temps.at(i).pots = gs.vols.at(round->players.at(i)).pots - (round->turns.at(i).pots + round->turns.at(i).frenzy*3);
 	}
 
-	// TODO: move targetting to somewhere else
 	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply power and dmg
 		apply_value_abilities<Abilities::Power>(
 			round->card_temps.at(i).power,
@@ -344,13 +336,14 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	}
 
 	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply opp power and dmg
+		size_t opp_ridx = (i+1)%2;
 		apply_value_abilities<Abilities::OppPower>(
-			round->card_temps.at((i+1)%round->card_temps.size()).power,
+			round->card_temps.at(opp_ridx).power,
 			round->turns.at(i).card().ability,
 			round->turns.at(i).card().faction_bonus
 		);
 		apply_value_abilities<Abilities::OppDamage>(
-			round->card_temps.at((i+1)%round->card_temps.size()).damage,
+			round->card_temps.at(opp_ridx).damage,
 			round->turns.at(i).card().ability,
 			round->turns.at(i).card().faction_bonus
 		);

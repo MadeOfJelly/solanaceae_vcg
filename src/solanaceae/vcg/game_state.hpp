@@ -39,6 +39,7 @@ struct CardTemp {
 };
 
 struct PlayerVolatiles {
+	// TODO: zero instead
 	int16_t pots {12};
 	int16_t hp {12};
 };
