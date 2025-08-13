@@ -85,6 +85,13 @@ bool ability_is_defeat(const auto& a) {
 	;
 }
 
+bool ability_is_stop_activation(const auto& a) {
+	return
+		//std::holds_alternative<Abilities::Defeat<Abilities::Life>>(a.a) ||
+		false
+	;
+}
+
 template<typename T>
 constexpr const auto& get_ability_value(const T& a)
 	requires requires(T t) { t.value; }
@@ -151,37 +158,6 @@ static void apply_value_abilities(int16_t& value, const Ability& a, const Abilit
 		apply_value_abilities<Args...>(value, a, b);
 	}
 }
-
-#if 0
-template<typename T>
-static bool apply_value_ability(const int16_t& value_base, int16_t& value_diff, const Ability& a) {
-	if (std::holds_alternative<T>(a.a)) {
-		const auto& a_v = std::get<T>(a.a);
-
-		value_diff += get_ability_value(a_v);
-
-		if constexpr (ability_has_min<T>()) {
-			if (get_ability_value(a_v) < 0) {
-				auto value_after = std::min<int16_t>(value_base, std::max<int16_t>(value_base + value_diff, get_ability_min(a_v)));
-				value_diff = value_after - value_base;
-			} // TODO: max(min()) for > 0?
-		} else if constexpr (ability_has_max<T>()) {
-			static_assert(false);
-		}
-		return true;
-	}
-	return false;
-}
-
-template<typename T, typename... Args>
-static void apply_value_abilities(const int16_t& value_base, int16_t& value_diff, const Ability& a, const Ability& b) {
-	apply_value_ability<T>(value_base, value_diff, a);
-	apply_value_ability<T>(value_base, value_diff, b);
-	if constexpr (sizeof...(Args) > 0) {
-		apply_value_abilities<Args...>(value_base, value_diff, a, b);
-	}
-}
-#endif
 
 static inline void cardHoverDetails(const Card& card) {
 	if (ImGui::BeginItemTooltip()) {
@@ -292,176 +268,294 @@ std::unique_ptr<PhaseI> PhaseRevealSelections::render_impl(GameState& gs, std::o
 	return nullptr;
 }
 
-std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Round>& round, float) {
-	assert(round);
+template<typename T>
+	//requires (!requires(T t) { t.inner; })
+void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
+
+// sad
+//// strip wrapper
+//template<typename T>
+//    requires requires(T t) { t.inner; }
+//void doAbility(Round& round, size_t ridx, const Ability& ability) {
+//    std::cout << "removed wrapper " << typeid(T).name() << "\n";
+//    doAbility<decltype(T::inner)>(round, ridx, ability, is_faction_bonus);
+//}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::CopyPower>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!std::holds_alternative<Abilities::CopyPower>(ability.a)) {
+		return;
+	}
+	size_t opp_ridx = (ridx+1)%2;
+	round.card_temps.at(ridx).power = round.turns.at(opp_ridx).card().power;
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::CopyDamage>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!std::holds_alternative<Abilities::CopyDamage>(ability.a)) {
+		return;
+	}
+	size_t opp_ridx = (ridx+1)%2;
+	round.card_temps.at(ridx).damage = round.turns.at(opp_ridx).card().damage;
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::Power>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	apply_value_ability<Abilities::Power>(
+		round.card_temps.at(ridx).power,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::Damage>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	apply_value_ability<Abilities::Damage>(
+		round.card_temps.at(ridx).damage,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::OppPower>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<Abilities::OppPower>(
+		round.card_temps.at(opp_ridx).power,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::OppDamage>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<Abilities::OppDamage>(
+		round.card_temps.at(opp_ridx).damage,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::Attack>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	apply_value_ability<Abilities::Attack>(
+		round.card_temps.at(ridx).attack,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::OppAttack>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<Abilities::OppAttack>(
+		round.card_temps.at(opp_ridx).attack,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::Life> ||
+	std::same_as<T, Abilities::Defeat<Abilities::Life>>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	apply_value_ability<T>(
+		round.volatile_temps.at(ridx).hp,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::OppLife> ||
+	std::same_as<T, Abilities::Defeat<Abilities::OppLife>>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<T>(
+		round.volatile_temps.at(opp_ridx).hp,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::Potion> ||
+	std::same_as<T, Abilities::Defeat<Abilities::Potion>>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	apply_value_ability<T>(
+		round.volatile_temps.at(ridx).pots,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::RecoverPotions> ||
+	std::same_as<T, Abilities::Defeat<Abilities::RecoverPotions>>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (
+		!std::holds_alternative<Abilities::RecoverPotions>(ability.a) ||
+		!std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(ability.a)
+	) {
+		return;
+	}
+	round.volatile_temps.at(ridx).pots += (round.turns.at(ridx).pots+2) / 2;
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::OppPotion> ||
+	std::same_as<T, Abilities::Defeat<Abilities::OppPotion>>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<T>(
+		round.volatile_temps.at(opp_ridx).pots,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::LifePerDamage>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!std::holds_alternative<Abilities::LifePerDamage>(ability.a)) {
+		return;
+	}
+	const auto& a_v = std::get<Abilities::LifePerDamage>(ability.a);
+	round.volatile_temps.at(ridx).hp += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
+}
+
+template<typename T, typename... Ts>
+void doAbilitiesPlayer(size_t ridx, Round& round) {
+	// TODO: account for "support:"
+
+	const auto& card = round.turns.at(ridx).card();
+
+	// TODO: account for "Courage:"
+	// TODO: account for "Revenge:"
+
+	if (ability_is_stop_activation(card.ability) == round.card_stopped.at(ridx).at(0)) {
+		// ability
+		doAbility<T>(round, ridx, card.ability);
+	}
+
+	if (
+		round.turns.at(ridx).haveFactionBonus() &&
+		ability_is_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(0)
+	) {
+		// faction bonus
+		doAbility<T>(round, ridx, card.faction_bonus);
+	}
+
+	// continue on
+	if constexpr (sizeof...(Ts) > 0) {
+		doAbilityPlayer<Ts...>(ridx, round);
+	}
+}
+
+template<typename T, typename... Ts>
+void doAbilities(Round& round) {
+	for (size_t i = 0; i < round.card_temps.size(); i++) {
+		doAbilitiesPlayer<T>(i, round);
+	}
+
+	// continue on
+	if constexpr (sizeof...(Ts) > 0) {
+		doAbility<Ts...>(round);
+	}
+}
+
+std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Round>& round_opt, float) {
+	assert(round_opt);
+	auto& round = round_opt.value();
 
 	// calculate all the values for the selected cards (temp cards)
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // fill in base
-		round->card_temps.at(i).power = round->turns.at(i).card().power;
-		round->card_temps.at(i).damage = round->turns.at(i).card().damage;
+	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
+		round.card_temps.at(i).power = round.turns.at(i).card().power;
+		round.card_temps.at(i).damage = round.turns.at(i).card().damage;
+	}
 
-		// copy abilities (before frenzy)
-		size_t opp_ridx = (i+1)%2;
-		if (std::holds_alternative<Abilities::CopyPower>(round->turns.at(i).card().ability.a)) {
-			round->card_temps.at(i).power = round->turns.at(opp_ridx).card().power;
-		}
-		if (std::holds_alternative<Abilities::CopyPower>(round->turns.at(i).card().faction_bonus.a)) {
-			round->card_temps.at(i).power = round->turns.at(opp_ridx).card().power;
-		}
+	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
+		// TODO: stop here
+	}
 
-		if (std::holds_alternative<Abilities::CopyDamage>(round->turns.at(i).card().ability.a)) {
-			round->card_temps.at(i).damage = round->turns.at(opp_ridx).card().damage;
-		}
-		if (std::holds_alternative<Abilities::CopyDamage>(round->turns.at(i).card().faction_bonus.a)) {
-			round->card_temps.at(i).damage = round->turns.at(opp_ridx).card().damage;
-		}
+	// copy abilities (before frenzy)
+	doAbilities<Abilities::CopyPower>(round);
+	doAbilities<Abilities::CopyDamage>(round);
 
+	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
 		// apply frenzy dmg bonus
-		if (round->turns.at(i).frenzy) {
-			round->card_temps.at(i).damage += 2;
+		if (round.turns.at(i).frenzy) {
+			round.card_temps.at(i).damage += 2;
 		}
 
 		// init temp vols, so we can edit them in respects to min/max
-		round->volatile_temps.at(i).hp = gs.vols.at(round->players.at(i)).hp;
-		round->volatile_temps.at(i).pots = gs.vols.at(round->players.at(i)).pots - (round->turns.at(i).pots + round->turns.at(i).frenzy*3);
+		round.volatile_temps.at(i).hp = gs.vols.at(round.players.at(i)).hp;
+		round.volatile_temps.at(i).pots = gs.vols.at(round.players.at(i)).pots - (round.turns.at(i).pots + round.turns.at(i).frenzy*3);
 	}
 
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply power and dmg
-		apply_value_abilities<Abilities::Power>(
-			round->card_temps.at(i).power,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-		apply_value_abilities<Abilities::Damage>(
-			round->card_temps.at(i).damage,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-	}
-
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply opp power and dmg
-		size_t opp_ridx = (i+1)%2;
-		apply_value_abilities<Abilities::OppPower>(
-			round->card_temps.at(opp_ridx).power,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-		apply_value_abilities<Abilities::OppDamage>(
-			round->card_temps.at(opp_ridx).damage,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-	}
+	// apply power and dmg
+	doAbilities<Abilities::Power>(round);
+	doAbilities<Abilities::Damage>(round);
+	doAbilities<Abilities::OppPower>(round);
+	doAbilities<Abilities::OppDamage>(round);
 
 	// calc attack
-	for (size_t i = 0; i < round->card_temps.size(); i++) {
-		round->card_temps.at(i).attack = round->card_temps.at(i).power * (round->turns.at(i).pots + 1);
-		//std::cout << "  p" << round.players.at(i)+1 << " base attack:" << round.card_temps.at(i).attack << "\n";
+	for (size_t i = 0; i < round.card_temps.size(); i++) {
+		round.card_temps.at(i).attack = round.card_temps.at(i).power * (round.turns.at(i).pots + 1);
 	}
 
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply attack
-		apply_value_abilities<Abilities::Attack>(
-			round->card_temps.at(i).attack,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-	}
+	doAbilities<Abilities::Attack>(round);
+	doAbilities<Abilities::OppAttack>(round);
 
-	for (size_t i = 0; i < round->card_temps.size(); i++) { // apply opp attack
-		apply_value_abilities<Abilities::OppAttack>(
-			round->card_temps.at((i+1)%round->card_temps.size()).attack,
-			round->turns.at(i).card().ability,
-			round->turns.at(i).card().faction_bonus
-		);
-	}
-
-	auto [win_ridx, reason] = round->decide_winning_card();
+	auto [win_ridx, reason] = round.decide_winning_card();
 	const size_t loose_ridx = (win_ridx+1)%2;
 
 	// the primary dmg -> hp effect
-	round->volatile_temps.at(loose_ridx).hp -= round->card_temps.at(win_ridx).damage;
+	round.volatile_temps.at(loose_ridx).hp -= round.card_temps.at(win_ridx).damage;
 
 	{ // win
-		size_t opp_ridx = (win_ridx+1)%2;
-		apply_value_abilities<Abilities::Life>(
-			round->volatile_temps.at(win_ridx).hp,
-			round->turns.at(win_ridx).card().ability,
-			round->turns.at(win_ridx).card().faction_bonus
-		);
+		doAbilitiesPlayer<Abilities::Life>(win_ridx, round);
+
 		//std::holds_alternative<Abilities::Poison>(a.a) ||
 		//std::holds_alternative<Abilities::Heal>(a.a) ||
-		apply_value_abilities<Abilities::OppLife>(
-			round->volatile_temps.at(opp_ridx).hp,
-			round->turns.at(win_ridx).card().ability,
-			round->turns.at(win_ridx).card().faction_bonus
-		);
-		apply_value_abilities<Abilities::Potion>(
-			round->volatile_temps.at(win_ridx).pots,
-			round->turns.at(win_ridx).card().ability,
-			round->turns.at(win_ridx).card().faction_bonus
-		);
 
-		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().ability.a)) {
-			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+2) / 2;
-		}
-		if (std::holds_alternative<Abilities::RecoverPotions>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_temps.at(win_ridx).pots += (round->turns.at(win_ridx).pots+2) / 2;
-		}
-
-		apply_value_abilities<Abilities::OppPotion>(
-			round->volatile_temps.at(opp_ridx).pots,
-			round->turns.at(win_ridx).card().ability,
-			round->turns.at(win_ridx).card().faction_bonus
-		);
-
-		if (std::holds_alternative<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().ability.a)) {
-			const auto& a_v = std::get<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().ability.a);
-			round->volatile_temps.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
-		}
-		if (std::holds_alternative<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			const auto& a_v = std::get<Abilities::LifePerDamage>(round->turns.at(win_ridx).card().faction_bonus.a);
-			round->volatile_temps.at(win_ridx).hp += get_ability_value(a_v) * round->card_temps.at(win_ridx).damage;
-		}
+		doAbilitiesPlayer<Abilities::OppLife>(win_ridx, round);
+		doAbilitiesPlayer<Abilities::Potion>(win_ridx, round);
+		doAbilitiesPlayer<Abilities::RecoverPotions>(win_ridx, round);
+		doAbilitiesPlayer<Abilities::OppPotion>(win_ridx, round);
+		doAbilitiesPlayer<Abilities::LifePerDamage>(win_ridx, round);
 	}
 
 	{ // loose (defeat)
-		size_t opp_ridx = (loose_ridx+1)%2;
-		apply_value_abilities<Abilities::Defeat<Abilities::Life>>(
-			round->volatile_temps.at(loose_ridx).hp,
-			round->turns.at(loose_ridx).card().ability,
-			round->turns.at(loose_ridx).card().faction_bonus
-		);
+		doAbilitiesPlayer<Abilities::Defeat<Abilities::Life>>(loose_ridx, round);
+
 		//std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
 		//std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
-		apply_value_abilities<Abilities::Defeat<Abilities::OppLife>>(
-			round->volatile_temps.at(opp_ridx).hp,
-			round->turns.at(loose_ridx).card().ability,
-			round->turns.at(loose_ridx).card().faction_bonus
-		);
-		apply_value_abilities<Abilities::Defeat<Abilities::Potion>>(
-			round->volatile_temps.at(loose_ridx).pots,
-			round->turns.at(loose_ridx).card().ability,
-			round->turns.at(loose_ridx).card().faction_bonus
-		);
 
-		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(loose_ridx).card().ability.a)) {
-			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+2) / 2;
-		}
-		if (std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(round->turns.at(win_ridx).card().faction_bonus.a)) {
-			round->volatile_temps.at(loose_ridx).pots += (round->turns.at(loose_ridx).pots+2) / 2;
-		}
+		doAbilitiesPlayer<Abilities::Defeat<Abilities::OppLife>>(loose_ridx, round);
+		doAbilitiesPlayer<Abilities::Defeat<Abilities::Potion>>(loose_ridx, round);
+		doAbilitiesPlayer<Abilities::Defeat<Abilities::RecoverPotions>>(loose_ridx, round);
+		doAbilitiesPlayer<Abilities::Defeat<Abilities::OppPotion>>(loose_ridx, round);
 
-		apply_value_abilities<Abilities::Defeat<Abilities::OppPotion>>(
-			round->volatile_temps.at(opp_ridx).pots,
-			round->turns.at(loose_ridx).card().ability,
-			round->turns.at(loose_ridx).card().faction_bonus
-		);
 		//std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a) // ??
 	}
 
 	// sanitize pots
-	round->volatile_temps.at(0).pots = std::max<int16_t>(round->volatile_temps.at(0).pots, 0);
-	round->volatile_temps.at(1).pots = std::max<int16_t>(round->volatile_temps.at(1).pots, 0);
+	round.volatile_temps.at(0).pots = std::max<int16_t>(round.volatile_temps.at(0).pots, 0);
+	round.volatile_temps.at(1).pots = std::max<int16_t>(round.volatile_temps.at(1).pots, 0);
 
 	return std::make_unique<PhaseBattleEnd>();
 }
