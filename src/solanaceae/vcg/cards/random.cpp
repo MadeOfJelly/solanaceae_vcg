@@ -42,5 +42,8 @@ std::vector<Card> Cards::random(void) {
 		//{"Pastor",3,6,4,{"Stop Opp Bonus"},{"Stop Opp Ability"},"The Pastor prays to the gods and has information from the many people that talk to him."},
 		//{"Stability Cleric",4,7,5,{"Stop Opp Bonus"},{"Stop Opp Ability"},"The Stability Cleric keeps things as they are and is mostly carrying around scriptures and books. His robes are of silver color."},
 		{"Inquisitor",3,7,1,{"Stop: + 6 Damage"},{"Stop Opp Ability"},"The Inquisitor is there to charge those that do wrong. He wears heavy brown robes and metal armor underneath."},
+		{"Acolyte",3,7,3,{"Heal 1 Max 15"},{"Stop Opp Ability"},"The Acolyte is there to help in the masses and help the Clerics with things."},
+		{"Preacher",2,6,2,{"Heal 2 Max 10"},{"Stop Opp Ability"},"The Preacher stands out on the marketplace and ushers citizens to the temples of the Clerics."},
+		{"Death Cleric",5,8,1,{"Poison 3 Min 0"},{"Stop Opp Ability"},"The Death Cleric wears dark green robes and carries an orb with him."},
 	};
 }

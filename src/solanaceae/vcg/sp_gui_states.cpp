@@ -339,6 +339,13 @@ std::unique_ptr<PhaseI> PhaseRevealSelections::render_impl(GameState& gs, std::o
 	size_t human_idx = round->players.at(0) == 0 ? 0 : 1;
 	size_t bot_idx = (human_idx+1)%2;
 
+	if (round->turns.at(bot_idx).haveFactionBonus()) {
+		ImGui::TextUnformatted("bot has faction bonus.");
+	}
+	if (round->turns.at(human_idx).haveFactionBonus()) {
+		ImGui::TextUnformatted("you have faction bonus.");
+	}
+
 	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
 	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
 	if (ImGui::Button("continue to battle")) {
@@ -374,15 +381,57 @@ bool holds_alternative_safe(const std::variant<Args...>& v) {
 	return false;
 }
 
+#if 0
 template<typename A>
-bool holds_alternative_variants(const auto& ability) {
+bool holds_alternative_variants(const auto& variant) {
 	return
-		holds_alternative_safe<A>(ability.a) ||
-		holds_alternative_safe<Abilities::Defeat<A>>(ability.a) ||
-		holds_alternative_safe<Abilities::Stop<A>>(ability.a) ||
-		holds_alternative_safe<Abilities::Courage<A>>(ability.a) ||
-		holds_alternative_safe<Abilities::Revenge<A>>(ability.a)
+		holds_alternative_safe<A>(variant) ||
+		//holds_alternative_safe<Abilities::Defeat<A>>(variant) ||
+		holds_alternative_safe<Abilities::Stop<A>>(variant) ||
+		holds_alternative_safe<Abilities::Courage<A>>(variant) ||
+		holds_alternative_safe<Abilities::Revenge<A>>(variant)
 	;
+}
+#endif
+
+// catch all
+template<typename A>
+bool holds_alternative_variants_extra(const auto& variant) {
+	return
+		holds_alternative_safe<A>(variant) ||
+		holds_alternative_safe<Abilities::Defeat<A>>(variant) ||
+		holds_alternative_safe<Abilities::Stop<A>>(variant) ||
+		holds_alternative_safe<Abilities::Courage<A>>(variant) ||
+		holds_alternative_safe<Abilities::Revenge<A>>(variant)
+	;
+}
+
+template<typename T, typename... Args>
+const T& get_safe(const std::variant<Args...>& v) {
+	if constexpr (contains_type<T, Args...>()) {
+		return std::get<T>(v);
+	} else {
+		assert(false);
+	}
+}
+
+template<typename T, typename... Args>
+const T& get_variants(const std::variant<Args...>& v) {
+	assert(holds_alternative_variants_extra<T>(v));
+
+	if (std::holds_alternative<T>(v)) {
+		return std::get<T>(v);
+	} else if (holds_alternative_safe<Abilities::Defeat<T>>(v)) {
+		return get_safe<Abilities::Defeat<T>>(v).inner;
+	} else if (holds_alternative_safe<Abilities::Stop<T>>(v)) {
+		return get_safe<Abilities::Stop<T>>(v).inner;
+	} else if (holds_alternative_safe<Abilities::Courage<T>>(v)) {
+		return get_safe<Abilities::Courage<T>>(v).inner;
+	} else if (holds_alternative_safe<Abilities::Revenge<T>>(v)) {
+		return get_safe<Abilities::Revenge<T>>(v).inner;
+	} else {
+		assert(false);
+	}
 }
 
 template<typename T>
@@ -396,7 +445,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::StopOppAbility>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_variants<Abilities::StopOppAbility>(ability)) {
+	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -407,7 +456,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::StopOppBonus>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_variants<Abilities::StopOppBonus>(ability)) {
+	if (!holds_alternative_safe<Abilities::StopOppBonus>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -418,7 +467,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::CopyPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_variants<Abilities::CopyPower>(ability)) {
+	if (!holds_alternative_safe<Abilities::CopyPower>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -429,7 +478,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::CopyDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_variants<Abilities::CopyDamage>(ability)) {
+	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -534,7 +583,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::RecoverPotions>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_variants<Abilities::RecoverPotions>(ability)) {
+	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
 	round.volatile_temps.at(ridx).pots += (round.turns.at(ridx).pots+2) / 2;
@@ -556,7 +605,7 @@ requires
 	same_as_variants<T, Abilities::LifePerDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	// TODO: dewrapping getter
-	//if (!holds_alternative_variants<Abilities::LifePerDamage>(ability)) {
+	//if (!holds_alternative_safe<Abilities::LifePerDamage>(ability.a)) {
 	if (!std::holds_alternative<Abilities::LifePerDamage>(ability.a)) {
 		return;
 	}
@@ -564,12 +613,43 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	round.volatile_temps.at(ridx).hp += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
 }
 
+template<typename T>
+requires
+	same_as_variants<T, Abilities::Poison>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!holds_alternative_safe<T>(ability.a)) {
+		return;
+	}
+
+	size_t opp_ridx = (ridx+1)%2;
+
+	auto [p_v, p_m] = get_variants<Abilities::Poison>(ability.a);
+
+	// add to round stack
+	round.new_poisons.at(opp_ridx).emplace_back(p_v, p_m);
+}
+
+template<typename T>
+requires
+	same_as_variants<T, Abilities::Heal>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	std::cout << "heal? " << typeid(T).name() << "\n";
+	if (!holds_alternative_safe<T>(ability.a)) {
+		return;
+	}
+
+	auto [h_v, h_m] = get_variants<Abilities::Heal>(ability.a);
+
+	// add heal to round heal stack
+	round.new_heals.at(ridx).emplace_back(h_v, h_m);
+}
 
 // conditionally wraps
 template<typename T>
 void doAbilitiesPlayerWrapRevenge(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
+
 	if (!holds_revenge(ability)) {
 		// forward T as is
 		doAbility<T>(round, ridx, ability);
@@ -623,8 +703,7 @@ template<typename T, typename... Ts>
 void doAbilitiesPlayer(const GameState& gs, Round& round, size_t ridx) {
 	// TODO: account for "support:"
 
-
-	// TODO: account for "Revenge:"
+	// account for "Revenge:"
 	// account for "Courage:"
 	// account for "Stop:"
 
@@ -712,8 +791,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	{ // win
 		doAbilitiesPlayer<
 			Abilities::Life,
-			//Abilities::Poison,
-			//Abilities::Heal,
+			Abilities::Poison,
+			Abilities::Heal,
 			Abilities::OppLife,
 			Abilities::Potion,
 			Abilities::RecoverPotions,
@@ -725,8 +804,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	{ // loose (defeat)
 		doAbilitiesPlayer<
 			Abilities::Defeat<Abilities::Life>,
-			//Abilities::Defeat<Abilities::Poison>,
-			//Abilities::Defeat<Abilities::Heal>,
+			Abilities::Defeat<Abilities::Poison>,
+			Abilities::Defeat<Abilities::Heal>,
 			Abilities::Defeat<Abilities::OppLife>,
 			Abilities::Defeat<Abilities::Potion>,
 			Abilities::Defeat<Abilities::RecoverPotions>,
@@ -747,6 +826,14 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 
 	size_t human_idx = round->players.at(0) == 0 ? 0 : 1;
 	size_t bot_idx = (human_idx+1)%2;
+
+	if (round->turns.at(bot_idx).haveFactionBonus()) {
+		ImGui::TextUnformatted("bot has faction bonus.");
+	}
+	if (round->turns.at(human_idx).haveFactionBonus()) {
+		ImGui::TextUnformatted("you have faction bonus.");
+	}
+
 	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
 	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
 
@@ -780,11 +867,47 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	ImGui::Text("bot  pots: %d (%+d)", round->volatile_temps.at(bot_idx).pots, round->volatile_temps.at(bot_idx).pots - gs.vols.at(1).pots);
 	ImGui::Text("your pots: %d (%+d)", round->volatile_temps.at(human_idx).pots, round->volatile_temps.at(human_idx).pots - gs.vols.at(0).pots);
 
+	if (!round->new_poisons.at(bot_idx).empty()) {
+		ImGui::Text("bot suffered poison:");
+		ImGui::Indent();
+		for (const auto& poison : round->new_poisons.at(bot_idx)) {
+			ImGui::Text("%d, min %d", poison.value, poison.min);
+		}
+		ImGui::Unindent();
+	}
+	if (!round->new_poisons.at(human_idx).empty()) {
+		ImGui::Text("you suffered poison:");
+		ImGui::Indent();
+		for (const auto& poison : round->new_poisons.at(human_idx)) {
+			ImGui::Text("%d, min %d", poison.value, poison.min);
+		}
+		ImGui::Unindent();
+	}
+
+	if (!round->new_heals.at(bot_idx).empty()) {
+		ImGui::Text("bot received heal:");
+		ImGui::Indent();
+		for (const auto& heal : round->new_heals.at(bot_idx)) {
+			ImGui::Text("%d, max %d", heal.value, heal.max);
+		}
+		ImGui::Unindent();
+	}
+	if (!round->new_poisons.at(human_idx).empty()) {
+		ImGui::Text("you received heal:");
+		ImGui::Indent();
+		for (const auto& heal : round->new_heals.at(human_idx)) {
+			ImGui::Text("%d, max %d", heal.value, heal.max);
+		}
+		ImGui::Unindent();
+	}
+
 	if (ImGui::Button("continue")) {
 		// apply dmg here? or ad end of battle?
 
 		gs.update(*round);
 		round = std::nullopt;
+
+		std::cout << "--- round ---\n";
 
 		if (gs.rounds.size() == 4 || gs.vols.at(0).hp <= 0 || gs.vols.at(1).hp <= 0) {
 			return std::make_unique<PhaseEndScreen>();

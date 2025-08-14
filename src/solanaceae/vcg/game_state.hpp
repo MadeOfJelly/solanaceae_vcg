@@ -54,6 +54,9 @@ struct Round {
 		PlayerVolatiles{0, 0}, PlayerVolatiles{0, 0},
 	}};
 
+	std::array<std::vector<Abilities::Heal>, 2> new_heals;
+	std::array<std::vector<Abilities::Poison>, 2> new_poisons;
+
 	std::array<size_t, 2> players;
 
 	enum class WinReason {
