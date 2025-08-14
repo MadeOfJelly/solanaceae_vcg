@@ -184,7 +184,27 @@ struct Ability {
 		Abilities::Courage<Abilities::Power>, //
 		Abilities::Courage<Abilities::Attack>, //
 		Abilities::Courage<Abilities::StopOppAbility>,
-		Abilities::Courage<Abilities::StopOppBonus> //
+		Abilities::Courage<Abilities::StopOppBonus>, //
+
+
+		Abilities::Revenge<Abilities::OppDamage>, //
+		Abilities::Revenge<Abilities::OppPower>,
+		Abilities::Revenge<Abilities::OppAttack>, //
+		Abilities::Revenge<Abilities::OppLife>, //
+		Abilities::Revenge<Abilities::OppPotion>,
+		Abilities::Revenge<Abilities::Damage>, //
+		Abilities::Revenge<Abilities::Power>, //
+		Abilities::Revenge<Abilities::Attack>,
+		Abilities::Revenge<Abilities::Life>,
+		Abilities::Revenge<Abilities::Potion>, //
+		Abilities::Revenge<Abilities::CopyDamage>,
+		Abilities::Revenge<Abilities::CopyPower>,
+		Abilities::Revenge<Abilities::LifePerDamage>,
+		Abilities::Revenge<Abilities::Heal>,
+		Abilities::Revenge<Abilities::Poison>,
+		Abilities::Revenge<Abilities::RecoverPotions>,
+		Abilities::Revenge<Abilities::StopOppAbility>,
+		Abilities::Revenge<Abilities::StopOppBonus> //
 	> a;
 
 	std::string string;

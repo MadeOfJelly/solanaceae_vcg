@@ -235,6 +235,17 @@ Ability::Ability(const std::string& _string) : string(_string) {
 
 		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
 		if (applyRegexMatchers(substring, smvA, a)) { return; }
+	} else if (string.starts_with("Revenge: ")) {
+		static auto fn = [](auto&& a_){ return Abilities::Revenge{std::move(a_)}; };
+		static auto smvPreA = genMatchersPreAttack(fn);
+		static auto smvA = genMatchersAttack(fn);
+		static auto smvPostA = genMatchersPostAttack(fn);
+
+		const auto substring = string.substr(std::string_view{"Revenge: "}.size());
+
+		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
+		if (applyRegexMatchers(substring, smvA, a)) { return; }
+		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
 	} else {
 		static auto mvPreA = genMatchersPreAttack(empty_fn);
 		static auto mvA = genMatchersAttack(empty_fn);

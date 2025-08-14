@@ -97,6 +97,25 @@ int main(void) {
 		"Courage: Power = Opp Power",
 		//"Courage: Stop Opp Ability",
 		//"Courage: Stop Opp Bonus",
+
+		"Revenge: - 2 Opp Power Min 2",
+		"Revenge: - 2 Opp Damage Min 2",
+		"Revenge: - 2 Opp Attack Min 2",
+		"Revenge: - 2 Opp Life Min 2",
+		"Revenge: - 2 Opp Potion Min 2",
+		"Revenge: + 2 Power",
+		"Revenge: + 2 Damage",
+		"Revenge: + 2 Attack",
+		"Revenge: + 2 Life",
+		"Revenge: + 2 Potion",
+		"Revenge: Damage = Opp Damage",
+		"Revenge: Power = Opp Power",
+		"Revenge: + 2 Life per Damage",
+		"Revenge: Heal 2 Max 2",
+		"Revenge: Poison 2 Min 2",
+		"Revenge: Recover 1 of 2 Potion",
+		"Revenge: Stop Opp Ability",
+		"Revenge: Stop Opp Bonus",
 	};
 
 	//std::vector<std::string> ability_prefix_string {

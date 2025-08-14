@@ -139,7 +139,24 @@ bool holds_courage(const auto& a) {
 
 bool holds_revenge(const auto& a) {
 	return
-		false
+		std::holds_alternative<Abilities::Revenge<Abilities::OppDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::OppPower>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::OppAttack>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::OppLife>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::OppPotion>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Damage>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Power>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Attack>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Life>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::CopyDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::CopyPower>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::LifePerDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Heal>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::RecoverPotions>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::StopOppAbility>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::StopOppBonus>>(a.a)
 	;
 }
 
@@ -345,7 +362,8 @@ concept same_as_variants =
 	std::same_as<T, A> ||
 	std::same_as<T, Abilities::Defeat<A>> ||
 	std::same_as<T, Abilities::Stop<A>> ||
-	std::same_as<T, Abilities::Courage<A>>
+	std::same_as<T, Abilities::Courage<A>> ||
+	std::same_as<T, Abilities::Revenge<A>>
 ;
 
 template<typename T, typename... Args>
@@ -361,7 +379,9 @@ bool holds_alternative_variants(const auto& ability) {
 	return
 		holds_alternative_safe<A>(ability.a) ||
 		holds_alternative_safe<Abilities::Defeat<A>>(ability.a) ||
-		holds_alternative_safe<Abilities::Stop<A>>(ability.a)
+		holds_alternative_safe<Abilities::Stop<A>>(ability.a) ||
+		holds_alternative_safe<Abilities::Courage<A>>(ability.a) ||
+		holds_alternative_safe<Abilities::Revenge<A>>(ability.a)
 	;
 }
 
@@ -547,47 +567,52 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 // conditionally wraps
 template<typename T>
-void doAbilitiesPlayerWrapRevenge(Round& round, size_t ridx, bool faction_bonus) {
+void doAbilitiesPlayerWrapRevenge(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
 	if (!holds_revenge(ability)) {
 		// forward T as is
 		doAbility<T>(round, ridx, ability);
-	} else {
+	} else if (!gs.rounds.empty()) { // have prev round(s)
 		// check if ridx player lost prev round
-		assert(false && "implement me");
+		const auto& prev_round = gs.rounds.back();
+		auto [win_pridx, _] = prev_round.decide_winning_card();
+
+		if (prev_round.players.at(win_pridx) != round.players.at(ridx)) {
+			doAbility<Abilities::Revenge<T>>(round, ridx, ability);
+		} // else nop
 	}
 }
 
 template<typename T>
-void doAbilitiesPlayerWrapStop(Round& round, size_t ridx, bool faction_bonus) {
+void doAbilitiesPlayerWrapStop(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
 
 	if (holds_stop_activation(ability) == round.card_stopped.at(ridx).at(0+faction_bonus)) {
 		if (holds_stop_activation(ability)) {
 			// HACK: runtime type injection
-			doAbilitiesPlayerWrapRevenge<Abilities::Stop<T>>(round, ridx, faction_bonus);
+			doAbilitiesPlayerWrapRevenge<Abilities::Stop<T>>(gs, round, ridx, faction_bonus);
 		} else {
-			doAbilitiesPlayerWrapRevenge<T>(round, ridx, faction_bonus);
+			doAbilitiesPlayerWrapRevenge<T>(gs, round, ridx, faction_bonus);
 		}
 	}
 }
 
 template<typename T>
-void doAbilitiesPlayerWrapCourage(Round& round, size_t ridx, bool faction_bonus) {
+void doAbilitiesPlayerWrapCourage(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
 
 	if (!holds_courage(ability)) {
 		// forward T as is
-		doAbilitiesPlayerWrapStop<T>(round, ridx, faction_bonus);
+		doAbilitiesPlayerWrapStop<T>(gs, round, ridx, faction_bonus);
 	} else {
 		// active
 		if (ridx == 0) {
 			// forward courage wrapped T
 			// HACK: runtime type injection
-			doAbilitiesPlayerWrapStop<Abilities::Courage<T>>(round, ridx, faction_bonus);
+			doAbilitiesPlayerWrapStop<Abilities::Courage<T>>(gs, round, ridx, faction_bonus);
 		} // else nop
 	}
 }
@@ -595,7 +620,7 @@ void doAbilitiesPlayerWrapCourage(Round& round, size_t ridx, bool faction_bonus)
 // T is without Stop, Support, Courage, Revenge...
 // T is with Defeat (and Win) (change?)
 template<typename T, typename... Ts>
-void doAbilitiesPlayer(Round& round, size_t ridx) {
+void doAbilitiesPlayer(const GameState& gs, Round& round, size_t ridx) {
 	// TODO: account for "support:"
 
 
@@ -603,28 +628,28 @@ void doAbilitiesPlayer(Round& round, size_t ridx) {
 	// account for "Courage:"
 	// account for "Stop:"
 
-	doAbilitiesPlayerWrapCourage<T>(round, ridx, false);
+	doAbilitiesPlayerWrapCourage<T>(gs, round, ridx, false);
 
 	// faction bonus
 	if (round.turns.at(ridx).haveFactionBonus()) {
-		doAbilitiesPlayerWrapCourage<T>(round, ridx, true);
+		doAbilitiesPlayerWrapCourage<T>(gs, round, ridx, true);
 	}
 
 	// continue on
 	if constexpr (sizeof...(Ts) > 0) {
-		doAbilitiesPlayer<Ts...>(round, ridx);
+		doAbilitiesPlayer<Ts...>(gs, round, ridx);
 	}
 }
 
 template<typename T, typename... Ts>
-void doAbilities(Round& round) {
+void doAbilities(const GameState& gs, Round& round) {
 	for (size_t i = 0; i < round.card_temps.size(); i++) {
-		doAbilitiesPlayer<T>(round, i);
+		doAbilitiesPlayer<T>(gs, round, i);
 	}
 
 	// continue on
 	if constexpr (sizeof...(Ts) > 0) {
-		doAbilities<Ts...>(round);
+		doAbilities<Ts...>(gs, round);
 	}
 }
 
@@ -641,13 +666,13 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	doAbilities<
 		Abilities::StopOppAbility,
 		Abilities::StopOppBonus
-	>(round);
+	>(gs, round);
 
 	// copy abilities (before frenzy)
 	doAbilities<
 		Abilities::CopyPower,
 		Abilities::CopyDamage
-	>(round);
+	>(gs, round);
 
 	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
 		// apply frenzy dmg bonus
@@ -666,7 +691,7 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		Abilities::Damage,
 		Abilities::OppPower,
 		Abilities::OppDamage
-	>(round);
+	>(gs, round);
 
 	// calc attack
 	for (size_t i = 0; i < round.card_temps.size(); i++) {
@@ -676,7 +701,7 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	doAbilities<
 		Abilities::Attack,
 		Abilities::OppAttack
-	>(round);
+	>(gs, round);
 
 	auto [win_ridx, reason] = round.decide_winning_card();
 	const size_t loose_ridx = (win_ridx+1)%2;
@@ -694,7 +719,7 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::RecoverPotions,
 			Abilities::OppPotion,
 			Abilities::LifePerDamage
-		>(round, win_ridx);
+		>(gs, round, win_ridx);
 	}
 
 	{ // loose (defeat)
@@ -707,8 +732,7 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::Defeat<Abilities::RecoverPotions>,
 			Abilities::Defeat<Abilities::OppPotion>
 			//Abilities::Defeat<Abilities::LifePerDamage> // ??
-		>(round, loose_ridx);
-
+		>(gs, round, loose_ridx);
 	}
 
 	// sanitize pots
