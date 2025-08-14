@@ -11,55 +11,18 @@ std::vector<Card> Cards::random(void) {
 		//{"Burrower",			3,6,4,{"+ 2 Power"},			{"+ 2 Power"},"A mole like creature with blade-like claws and a sturdy armor like an armadillo."},
 		//{"Monster8",			3,8,3,{"+ 4 Attack"},			{"+ 2 Power"},"A snake like creature with small legs that moves very fast."},
 
-		// selectin of assassins that are currently supported
-		//{"Frontman",2,5,3,{"- 2 Opp Damage Min 3"},{"- 2 Opp Power Min 1"},"The Front looks nice and accomodating and usually handles the business of the Assassins with new clients."},
-		//{"Fake Colleague",2,4,3,{"- 2 Opp Power Min 1"},{"- 2 Opp Power Min 1"},"The Fake Colleague infiltrates work gatherings and jobs to get into every house and every corner of the city."},
-		//{"Tracker",2,6,2,{"+ 4 Attack"},{"- 2 Opp Power Min 1"},"The Tracker uses his trusty dogs to find anyone in the city."},
-		//{"Dissolver",3,7,1,{"- 2 Opp Life Min 0"},{"- 2 Opp Power Min 1"},"The Dissolver is somewhat an alchemist, though he only knows his way around acids. Three of his fingers and many of his teeth are already missing, just like all of his victims."},
-		//{"Infiltrator",3,6,3,{"- 2 Opp Power Min 5"},{"- 2 Opp Power Min 1"},"The Infiltrator can get into any building at any time to the day. A grappling hook, rope and some lockpicks are all he needs."},
-		//{"Cutthroat",3,8,2,{"- 4 Opp Attack Min 1"},{"- 2 Opp Power Min 1"},"The Cutthroat comes at you when its most unexpected and rams a knife into your throat, leaving you to bleed out while he is already gone."},
-		////{"Suicide Bomber",3,6,4,{"Defeat: Poison 2 Min 5"},{"- 2 Opp Power Min 1"},"The Suicide Bomber only has one job, which is to blow shit up. Equipped with an explosive vest if things go wrong, he can blow everyone else up with him. However, so far his bombs sufficed."},
-		//{"Blackmailer",4,7,3,{"- 3 Opp Potion Min 2"},{"- 2 Opp Power Min 1"},"The Blackmailer is not so much an Assassins as he knows to psychologically kill his victims by extorting money through body parts of missing family members or regular visits at their homes."},
-
-		// mage selection
-		//{"Potion Keeper",2,6,1,{"+ 3 Potion"},{"+ 2 Damage"},"The Potion Keeper keeps the shelves stocked with Potions. He knows where to find which one."},
-		//{"Magical Enchanter",3,8,2,{"- 2 Opp Damage Min 1"},{"+ 2 Damage"},"The Magical Enchanter is seen with weird glassware used to enchant weapons, armors and regular items to give them magical effects."},
-		//{"Transmutation Mage",3,7,3,{"- 2 Opp Power Min 5"},{"+ 2 Damage"},"The Transmutation Mage can change matter from one to another. Stone into wood, wood into water, nothing is beyond limits."},
-		//{"Enchantment Mage",3,6,3,{"- 3 Opp Potion Min 3"},{"+ 2 Damage"},"The Enchantment Mage specializes in magic that enhances creatures. Whether that is increasing their physical power or mental capacities is up to him."},
-		//{"Illusion Mage",3,4,4,{"- 4 Opp Power Min 3"},{"+ 2 Damage"},"The Illusion Mage is able to produce illusions of anything. Even dragons aren't safe of being brought to life in images by him."},
-		//{"Conjuration Mage",3,7,3,{"+ 2 Power"},{"+ 2 Damage"},"The Conjuration Mage can summon magical creatures like fire elementals from thin air."},
-		//{"Necromancer",3,7,2,{"Defeat: + 3 Life"},{"+ 2 Damage"},"The Necromancer is hated, but can turn the tide of a battle by making the dead rise and fight again."},
-		//{"Spellblade",4,7,4,{"- 3 Opp Power Min 5"},{"+ 2 Damage"},"The Spellblade combines magic and swordfighting to achieve a dangerous combo of magical and physical warfare."},
-		//{"Evocation Mage",4,6,6,{"+ 2 Damage"},{"+ 2 Damage"},"The Evocation Mage is responsible for fireballs and big explosions. His spells devastate entire neighbourhoods."},
-		//{"Abjuration Mage",5,7,5,{"- 5 Opp Damage Min 2"},{"+ 2 Damage"},"The Abjuration mage is able to block any attack with magical force fields."},
-		//{"Destruction Mage",5,8,4,{"- 5 Opp Potion Min 5"},{"+ 2 Damage"},"The Destruction Mage evaporates matter, no matter if it is organic or not. When he points his finger at someone, they turn to dust."},
-
-		// crafters
-		//{"Toymaker",2,5,3,{"- 3 Opp Damage Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Loved by the kids, the Toymaker is a specialist for small craftsmenship. His smile is calm and inviting, just like his white shirt with straps. However, don't forget that carving equipment for wooden toys can still be used on flesh."},
-		//{"Cobbler",3,5,5,{"- 3 Opp Power Min 5"},{"Defeat: Recover 1 of 2 Potion"},"As an important personality in the city, the Cobbler is always asked for. Everyone wants to walk the walk and talk the talk, but only with his shoes that is possible. Though as good they can be, they can be bad and the cobbling tools might also get used in a different way."},
-		//{"Leatherworker",4,7,5,{"- 5 Opp Damage Min 4"},{"Defeat: Recover 1 of 2 Potion"},"The Leatherworker can be found tanning leather or crafting clothing from leather in his shop."},
-		//{"Blacksmith",5,8,6,{"+ 12 Attack"},{"Defeat: Recover 1 of 2 Potion"},"The Blacksmith is a blacksmith and known for making things out of metal. Weapons are a speciality of his."},
-		//{"Baker",3,7,3,{"+ 3 Life"},{"Defeat: Recover 1 of 2 Potion"},"The Baker is known around the city, as many people interact with him daily. Always a bit dusty from the flower, but boasting large forearms, he knows how to knead."},
-		//{"Head Alchemist",5,7,7,{"+ 3 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Head Alchemist is a master of potions and brews. His shop is littered with potion bottles of all colors."},
-		//{"Enchanter",5,6,8,{"+ 3 Power"},{"Defeat: Recover 1 of 2 Potion"},"The Enchanter is highly sought after, as he magically enchants both common household items and combat equipment as well."},
-		//{"Storage Keeper",2,6,2,{"Defeat: - 2 Opp Life Min 2"},{"Defeat: Recover 1 of 2 Potion"},"Always seen around the warehouse, the Storage Keeper boasts a large key chain. He knows his warehouse by heart and where which key fits."},
-		//{"Recycler",3,6,5,{"Defeat: Recover 1 of 2 Potion"},{"Defeat: Recover 1 of 2 Potion"},"The Recycler is always tinkering with things and able to extract gems from jewelery and special parts from toys, while also being able to work on potions."},
-
-		// cultists
-		{"Fanatic",3,7,3,{"- 2 Opp Life Min 2"},{"- 2 Opp Life Min 2"},"The Fanatic is down to do everything the higher Cultists are telling him. No matter how insane the job, he will do his best to accomplish it."},
-		{"Slaughterer",4,8,3,{"+ 1 Life per Damage"},{"- 2 Opp Life Min 2"},"The Slaughterer is there to let the blood flow. With his murderous axe he chops down the victims of the Cultists, whether in the ritual chamber or on the streets."},
-		{"Guru",5,7,7,{"+ 2 Life"},{"- 2 Opp Life Min 2"},"The Guru is mostly found in the back of the chamber. Old and bald, he oversees the rituals and provides evil counseling for the Cultists."},
-		{"Zealot",3,6,4,{"+ 2 Power"},{"- 2 Opp Life Min 2"},"The Zealot dreams of the future the Cultists offer and bathes in the future glory that they will achieve."},
-		{"Child Sacrifice",2,5,2,{"Defeat: - 3 Opp Life Min 2"},{"- 2 Opp Life Min 2"},"The Child Sacrifice was ripped from its mothers arms and now lies on the cold stone altar, ready to be ended."},
-		{"Sacrificial Lamb",2,5,3,{"Defeat: + 2 Life"},{"- 2 Opp Life Min 2"},"The white Sacrifical Lamb stands amidst the pentagram and will sonn be sacrificed in a blood ritual"},
-
-
-		{"Sponsor",3,6,4,{"Stop: + 2 Life"},{"- 12 Opp Attack Min 12"},"Sponsors are often from out of town, but still supply large amounts of money to the Nobles. Not that they need the money, but they may be swayed to vote in terms of the unknown Sponsor."},
-		{"Stable Keeper",3,7,2,{"Stop Opp Bonus"},{"- 12 Opp Attack Min 12"},"The Stable Keeper knows his way around horses and is mostly found around the stables. He is strongly built, but that's about it."},
-		{"Council Member",4,7,4,{"Stop Opp Ability"},{"- 12 Opp Attack Min 12"},"The Council Member is a Noble that has went deep into politics. He knows the laws and is not afraid to bend them to the will of his Noble family."},
-		{"Insider",4,6,6,{"Stop: + 2 Power"},{"- 12 Opp Attack Min 12"},"The Insider is partially a Noble, but only partially. He has knowledge about many noble families, but they rarely have accurate information about him, which always puts a smile on his face."},
-		{"Pact Keeper",5,7,4,{"- 4 Opp Life Min 1"},{"- 12 Opp Attack Min 12"},"The Pact Keeper is there to reinforce any written pacts between Nobles and is elected by the Nobles themselves to keep order. If someone doesn't value a contract, they are legally forced to feel his wrath."},
-		{"Bodyguard",5,8,3,{"+ 1 Life per Damage"},{"- 12 Opp Attack Min 12"},"The Bodyguard is a former soldier and highly trained. He will give his life for the Nobles in combat and is therefore well payed. Heavy armor and weaponry are to be seen everywhere he goes."},
-		{"Godfather",5,7,6,{"- 3 Opp Damage Min 3"},{"- 12 Opp Attack Min 12"},"The Godfather is old and frail, but commands a lot. He pulls the strings in the back of the Noble families."},
+		// aberrations selection
+		{"Bone Monger",3,5,5,{"- 2 Opp Damage Min 1"},{"Stop Opp Bonus"},"A humanoid fleshy creature with the bones of its victims attached to its body. Teeth spike from all parts of its body."},
+		{"Cloaker",3,5,5,{"- 2 Opp Power Min 4"},{"Stop Opp Bonus"},"An invisible flying creature that is rarely seen, though it sparkles in light. It looks similar to a devilfish."},
+		{"Ripper",2,6,1,{"- 3 Opp Damage Min 2"},{"Stop Opp Bonus"},"A humanoid creature that strips its body of its flesh to attack anything suitable for consumption. Its own flesh is stripped of similar to what it does to its victims"},
+		{"Eye Wolf",3,5,3,{"- 4 Opp Power Min 4"},{"Stop Opp Bonus"},"A wolf-like creature with green eyes covering its entire body."},
+		{"Devourer",3,6,3,{"+ 1 Life per Damage"},{"Stop Opp Bonus"},"A mass of fleshy mouths with different kind of teeth all over its body."},
+		{"Splitter",3,7,3,{"+ 2 Power"},{"Stop Opp Bonus"},"A large mouth sits on a blueish hairy humanoid body with 2 arms that splits into 4 arms."},
+		{"Gobbler",2,6,1,{"+ 3 Life"},{"Stop Opp Bonus"},"A small baby-like creature with an insanely large mouth."},
+		{"Slitherer",3,7,3,{"+ 8 Attack"},{"Stop Opp Bonus"},"A snake-like creature that splits up into a mass of snakes."},
+		{"Doppelganger",4,7,7,{"Damage = Opp Damage"},{"Stop Opp Bonus"},"A greyish blue humanoid creature that can change its body at will into other creatures, creating a perfect copy in the process."},
+		{"Tendril Bearer",5,7,6,{"Defeat: - 3 Opp Life Min 2"},{"Stop Opp Bonus"},"A hulking, hairy mass of a beast with fleshy tendrils and tentacles coming out of many parts of its body."},
+		{"Brain Dragon",5,7,7,{"Stop Opp Ability"},{"Stop Opp Bonus"},"A dragon with a gigantic brain mounted on its back that slithers to the wings and its head."},
+		{"Evil Eye",4,6,6,{"Stop Opp Ability"},{"Stop Opp Bonus"},"A flying eye with immense pressure it opposes on creatures around it."},
 	};
 }
