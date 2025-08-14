@@ -17,5 +17,5 @@ Vengeance Cleric,5,7,5,Revenge: + 5 Damage,The Vengeance Cleric has a small piec
 Pastor,3,6,4,Stop Opp Bonus,The Pastor prays to the gods and has information from the many people that talk to him.,Stop Opp Ability
 Stability Cleric,4,7,5,Stop Opp Bonus,The Stability Cleric keeps things as they are and is mostly carrying around scriptures and books. His robes are of silver color.,Stop Opp Ability
 Inquisitor,3,7,1,Stop: + 6 Damage,The Inquisitor is there to charge those that do wrong. He wears heavy brown robes and metal armor underneath.,Stop Opp Ability
-Mass Preparer,2,6,1,Support: + 1 Life,"The Mass Preparer is most often found in the backrooms of temples, helping to set up the masses.",Stop Opp Ability
-Union Cleric,3,6,3,Support: + 1 Power,"The Union Cleric is there to help all Clerics together. He wears no robes at all, but a uniform. Although he still carries a priest's staff with him.",Stop Opp Ability
+Mass Preparer,2,6,1,Team: + 1 Life,"The Mass Preparer is most often found in the backrooms of temples, helping to set up the masses.",Stop Opp Ability
+Union Cleric,3,6,3,Team: + 1 Power,"The Union Cleric is there to help all Clerics together. He wears no robes at all, but a uniform. Although he still carries a priest's staff with him.",Stop Opp Ability

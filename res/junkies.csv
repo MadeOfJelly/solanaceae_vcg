@@ -1,20 +1,20 @@
 Name,Level,Power,Damage,Ability,Description,Bonus
-Glue Sniffer,2,6,2,+ 2 Potion,The Glue sniffer spends his day sniffing glue. That's all he does.,- 2 Opp Damage Min 1
-Dope Fiend,2,5,5,Backlash: - 2 Life Min 2,"The Dope Fiend injects weird substances into his blood stream in order to feel better, though mostly he feels worse.",- 2 Opp Damage Min 1
-Gambler,2,5,3,Courage: - 3 Opp Power Min 2,The Gambler is usually found playing card or dice games for all the money he has. He is usually broke by the end of the day.,- 2 Opp Damage Min 1
-Frog Licker,2,6,2,Stop Opp Ability,The Frog Licker goes out of his way to search the swamps for fresh frogs to lick.,- 2 Opp Damage Min 1
+Moonshiner,5,6,7,- 12 Opp Attack Min 12,"The Moonshiner has the drinks that everyone wants, but nobody wants to deal with their aftermath. He is long blind, but the moonshine still makes him strong.",- 2 Opp Damage Min 1
 Drunkard,3,7,3,- 2 Opp Damage Min 1,The Drunkard is drunk 24/7 and always has a tankard in his hands.,- 2 Opp Damage Min 1
-Injecter,3,8,2,+ 8 Attack,The Injecter carefully curates what he injects into his body and has had good results when doing so.,- 2 Opp Damage Min 1
-Chainsmoker,3,7,3,Steal: - 1 Opp Life Min 1,"The Chainsmoker is always smoking something, even if it doesn't make sense. His lungs must be pitch black.",- 2 Opp Damage Min 1
-Spiker,3,6,4,Stop Opp Bonus,The Spiker spikes his own drinks to get high and get away from his usual life.,- 2 Opp Damage Min 1
-Dealer,3,6,3,Support: + 1 Potion,The Dealer provides many of the drugs the Junkies are taking. His pockets are full of goods.,- 2 Opp Damage Min 1
-Overdoser,3,6,4,Support: + 3 Attack,"The Overdoser is living on the edge, taking too much of many drugs at the same time, but his heart must be in the hands of god as it is still pumping.",- 2 Opp Damage Min 1
 Shroomer,4,7,5,- 2 Opp Power Min 6,"The Shroomer only takes and eats the finest mushrooms. Red caps, blue caps, green caps, every mushroom gets ingested if it is nice enough.",- 2 Opp Damage Min 1
 Bouncer,4,8,4,- 3 Opp Damage Min 3,"The Bouncer stands in front of the buildings where the Junkies do their stuff. Although he doesn't take any drugs, he gets high on the money that they pay him.",- 2 Opp Damage Min 1
-Piller,4,6,5,+ 3 Potion,"The Piller has the best shit in his pocket. Small, compressed and of different colors, his pills provide spectacular experiences.",- 2 Opp Damage Min 1
-Herbalist,4,6,6,Stop Opp Ability,"The Herbalist provides many of the Junkies with their raw materials. Whether the herbs are smoked, cooked and injected, or simply eaten, he knows how to grow and tend to them.",- 2 Opp Damage Min 1
-Trip Guide,4,7,5,Stop Opp Bonus,The Trip Guide is there for everyone when they are having a bad day. He is nice and accomodating.,- 2 Opp Damage Min 1
-Moonshiner,5,6,7,- 12 Opp Attack Min 12,"The Moonshiner has the drinks that everyone wants, but nobody wants to deal with their aftermath. He is long blind, but the moonshine still makes him strong.",- 2 Opp Damage Min 1
 Opiod User,5,7,6,- 4 Opp Damage Min 2,"The Opiod User feels no pain anymore. He has taken so much, pain does not exist for him.",- 2 Opp Damage Min 1
 Powder Master,5,8,5,+ 12 Attack,The Powder Master looks like he has chalk all over his face.,- 2 Opp Damage Min 1
+Glue Sniffer,2,6,2,+ 2 Potion,The Glue sniffer spends his day sniffing glue. That's all he does.,- 2 Opp Damage Min 1
+Piller,4,6,5,+ 3 Potion,"The Piller has the best shit in his pocket. Small, compressed and of different colors, his pills provide spectacular experiences.",- 2 Opp Damage Min 1
+Injecter,3,8,2,+ 8 Attack,The Injecter carefully curates what he injects into his body and has had good results when doing so.,- 2 Opp Damage Min 1
+Dope Fiend,2,5,5,Backlash: - 2 Life Min 2,"The Dope Fiend injects weird substances into his blood stream in order to feel better, though mostly he feels worse.",- 2 Opp Damage Min 1
+Gambler,2,5,3,Courage: - 3 Opp Power Min 2,The Gambler is usually found playing card or dice games for all the money he has. He is usually broke by the end of the day.,- 2 Opp Damage Min 1
 Ultraspritzer,5,7,7,Heal 2 Max 10,"The Ultraspritzer only drinks the finest, dark red, bubbly drinks that refresh the mind and the soul.",- 2 Opp Damage Min 1
+Chainsmoker,3,7,3,Steal - 1 Opp Life Min 1,"The Chainsmoker is always smoking something, even if it doesn't make sense. His lungs must be pitch black.",- 2 Opp Damage Min 1
+Frog Licker,2,6,2,Stop Opp Ability,The Frog Licker goes out of his way to search the swamps for fresh frogs to lick.,- 2 Opp Damage Min 1
+Herbalist,4,6,6,Stop Opp Ability,"The Herbalist provides many of the Junkies with their raw materials. Whether the herbs are smoked, cooked and injected, or simply eaten, he knows how to grow and tend to them.",- 2 Opp Damage Min 1
+Spiker,3,6,4,Stop Opp Bonus,The Spiker spikes his own drinks to get high and get away from his usual life.,- 2 Opp Damage Min 1
+Trip Guide,4,7,5,Stop Opp Bonus,The Trip Guide is there for everyone when they are having a bad day. He is nice and accomodating.,- 2 Opp Damage Min 1
+Dealer,3,6,3,Team: + 1 Potion,The Dealer provides many of the drugs the Junkies are taking. His pockets are full of goods.,- 2 Opp Damage Min 1
+Overdoser,3,6,4,Team: + 3 Attack,"The Overdoser is living on the edge, taking too much of many drugs at the same time, but his heart must be in the hands of god as it is still pumping.",- 2 Opp Damage Min 1

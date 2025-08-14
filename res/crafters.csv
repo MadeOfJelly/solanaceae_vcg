@@ -16,5 +16,5 @@ Potter,3,7,3,Revenge: + 4 Damage,"Living a simple life, the Potter is just as gr
 Scrivener,3,6,4,Stop Opp Abilitiy,"Things need to be written and things need to be copied, which is the Scrivener's job. This puts him into contact with a lot of paper, but also a lot of information.",Defeat: Recover 1 of 2 Potion
 Stonemason,4,8,4,Stop Opp Abilitiy,"The Stonemason is strong and can be found all around town, bur always next to large stones.",Defeat: Recover 1 of 2 Potion
 Goldsmith,3,5,5,Stop Opp Bonus,"The Goldsmith knows his way around gold and silver and has most likely seen more of it than most nobles. What many don't realize is that a gold bar is quite heavy, especially if it is thrown after you.",Defeat: Recover 1 of 2 Potion
-Builder,4,6,6,Support: + 1 Power,The Builder is hardworking and participated in building most of the buildings in the city.,Defeat: Recover 1 of 2 Potion
-Tailor,3,4,7,Support: + 3 Attack,"Everyone wants nice clothing, which is just what the Tailor can bring you. He might not be wearing noble clothing, but his clothing is expertly made and perfectly tailored for his body.",Defeat: Recover 1 of 2 Potion
+Builder,4,6,6,Team: + 1 Power,The Builder is hardworking and participated in building most of the buildings in the city.,Defeat: Recover 1 of 2 Potion
+Tailor,3,4,7,Team: + 3 Attack,"Everyone wants nice clothing, which is just what the Tailor can bring you. He might not be wearing noble clothing, but his clothing is expertly made and perfectly tailored for his body.",Defeat: Recover 1 of 2 Potion
