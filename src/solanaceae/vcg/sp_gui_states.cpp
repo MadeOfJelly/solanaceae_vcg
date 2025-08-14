@@ -386,7 +386,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::Power>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	apply_value_ability<Abilities::Power>(
+	apply_value_ability<T>(
 		round.card_temps.at(ridx).power,
 		ability
 	);
@@ -396,7 +396,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::Damage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	apply_value_ability<Abilities::Damage>(
+	apply_value_ability<T>(
 		round.card_temps.at(ridx).damage,
 		ability
 	);
@@ -407,7 +407,7 @@ requires
 	same_as_variants<T, Abilities::OppPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
-	apply_value_ability<Abilities::OppPower>(
+	apply_value_ability<T>(
 		round.card_temps.at(opp_ridx).power,
 		ability
 	);
@@ -418,7 +418,7 @@ requires
 	same_as_variants<T, Abilities::OppDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
-	apply_value_ability<Abilities::OppDamage>(
+	apply_value_ability<T>(
 		round.card_temps.at(opp_ridx).damage,
 		ability
 	);
@@ -428,7 +428,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::Attack>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	apply_value_ability<Abilities::Attack>(
+	apply_value_ability<T>(
 		round.card_temps.at(ridx).attack,
 		ability
 	);
@@ -439,7 +439,7 @@ requires
 	same_as_variants<T, Abilities::OppAttack>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
-	apply_value_ability<Abilities::OppAttack>(
+	apply_value_ability<T>(
 		round.card_temps.at(opp_ridx).attack,
 		ability
 	);
