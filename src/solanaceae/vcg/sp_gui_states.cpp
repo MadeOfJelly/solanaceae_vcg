@@ -283,6 +283,28 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
 
 template<typename T>
 requires
+	std::same_as<T, Abilities::StopOppAbility>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!std::holds_alternative<Abilities::StopOppAbility>(ability.a)) {
+		return;
+	}
+	size_t opp_ridx = (ridx+1)%2;
+	round.card_stopped.at(opp_ridx).at(0) = true;
+}
+
+template<typename T>
+requires
+	std::same_as<T, Abilities::StopOppBonus>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!std::holds_alternative<Abilities::StopOppBonus>(ability.a)) {
+		return;
+	}
+	size_t opp_ridx = (ridx+1)%2;
+	round.card_stopped.at(opp_ridx).at(1) = true;
+}
+
+template<typename T>
+requires
 	std::same_as<T, Abilities::CopyPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	if (!std::holds_alternative<Abilities::CopyPower>(ability.a)) {
@@ -406,7 +428,7 @@ requires
 	std::same_as<T, Abilities::Defeat<Abilities::RecoverPotions>>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	if (
-		!std::holds_alternative<Abilities::RecoverPotions>(ability.a) ||
+		!std::holds_alternative<Abilities::RecoverPotions>(ability.a) &&
 		!std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(ability.a)
 	) {
 		return;
@@ -453,7 +475,7 @@ void doAbilitiesPlayer(size_t ridx, Round& round) {
 
 	if (
 		round.turns.at(ridx).haveFactionBonus() &&
-		ability_is_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(0)
+		ability_is_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(1)
 	) {
 		// faction bonus
 		doAbility<T>(round, ridx, card.faction_bonus);
@@ -487,9 +509,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		round.card_temps.at(i).damage = round.turns.at(i).card().damage;
 	}
 
-	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
-		// TODO: stop here
-	}
+	doAbilities<Abilities::StopOppAbility>(round);
+	doAbilities<Abilities::StopOppBonus>(round);
 
 	// copy abilities (before frenzy)
 	doAbilities<Abilities::CopyPower>(round);

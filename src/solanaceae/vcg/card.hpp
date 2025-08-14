@@ -110,14 +110,14 @@ struct Ability {
 		Abilities::Life,		// w
 		Abilities::Potion,		// w
 
-		Abilities::CopyDamage,	// i
-		Abilities::CopyPower,	// i
+		Abilities::CopyDamage,	// w
+		Abilities::CopyPower,	// w
 
-		Abilities::LifePerDamage,	// i
+		Abilities::LifePerDamage,	// w
 
 		Abilities::Heal,
 		Abilities::Poison,
-		Abilities::RecoverPotions,	// i
+		Abilities::RecoverPotions,	// w
 
 		Abilities::StopOppAbility,
 		Abilities::StopOppBonus,
@@ -129,7 +129,7 @@ struct Ability {
 		Abilities::Defeat<Abilities::LifePerDamage>, // ???
 		Abilities::Defeat<Abilities::Heal>,
 		Abilities::Defeat<Abilities::Poison>,
-		Abilities::Defeat<Abilities::RecoverPotions>	// i
+		Abilities::Defeat<Abilities::RecoverPotions>	// w
 	> a;
 
 	std::string string;

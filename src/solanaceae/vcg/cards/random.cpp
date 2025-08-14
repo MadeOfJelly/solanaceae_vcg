@@ -52,5 +52,11 @@ std::vector<Card> Cards::random(void) {
 		{"Zealot",3,6,4,{"+ 2 Power"},{"- 2 Opp Life Min 2"},"The Zealot dreams of the future the Cultists offer and bathes in the future glory that they will achieve."},
 		{"Child Sacrifice",2,5,2,{"Defeat: - 3 Opp Life Min 2"},{"- 2 Opp Life Min 2"},"The Child Sacrifice was ripped from its mothers arms and now lies on the cold stone altar, ready to be ended."},
 		{"Sacrificial Lamb",2,5,3,{"Defeat: + 2 Life"},{"- 2 Opp Life Min 2"},"The white Sacrifical Lamb stands amidst the pentagram and will sonn be sacrificed in a blood ritual"},
+
+		{"Stable Keeper",3,7,2,{"Stop Opp Bonus"},{"- 12 Opp Attack Min 12"},"The Stable Keeper knows his way around horses and is mostly found around the stables. He is strongly built, but that's about it."},
+		{"Council Member",4,7,4,{"Stop Opp Ability"},{"- 12 Opp Attack Min 12"},"The Council Member is a Noble that has went deep into politics. He knows the laws and is not afraid to bend them to the will of his Noble family."},
+		{"Pact Keeper",5,7,4,{"- 4 Opp Life Min 1"},{"- 12 Opp Attack Min 12"},"The Pact Keeper is there to reinforce any written pacts between Nobles and is elected by the Nobles themselves to keep order. If someone doesn't value a contract, they are legally forced to feel his wrath."},
+		{"Bodyguard",5,8,3,{"+ 1 Life per Damage"},{"- 12 Opp Attack Min 12"},"The Bodyguard is a former soldier and highly trained. He will give his life for the Nobles in combat and is therefore well payed. Heavy armor and weaponry are to be seen everywhere he goes."},
+		{"Godfather",5,7,6,{"- 3 Opp Damage Min 3"},{"- 12 Opp Attack Min 12"},"The Godfather is old and frail, but commands a lot. He pulls the strings in the back of the Noble families."},
 	};
 }
