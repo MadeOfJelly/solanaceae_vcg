@@ -215,17 +215,17 @@ Ability::Ability(const std::string& _string) : string(_string) {
 		const auto substring = string.substr(std::string_view{"Defeat: "}.size());
 
 		if (applyRegexMatchers(substring, dmvPostA, a)) { return; }
-	//} else if (string.starts_with("Stop: ")) {
-	//    static auto fn = [](auto&& a_){ return Abilities::Stop{std::move(a_)}; };
-	//    static auto smvPreA = genMatchersPostAttack(fn);
-	//    static auto smvA = genMatchersPostAttack(fn);
-	//    static auto smvPostA = genMatchersPostAttack(fn);
+	} else if (string.starts_with("Stop: ")) {
+		static auto fn = [](auto&& a_){ return Abilities::Stop{std::move(a_)}; };
+		static auto smvPreA = genMatchersPreAttack(fn);
+		static auto smvA = genMatchersAttack(fn);
+		static auto smvPostA = genMatchersPostAttack(fn);
 
-	//    const auto substring = string.substr(std::string_view{"Stop: "}.size());
+		const auto substring = string.substr(std::string_view{"Stop: "}.size());
 
-	//    if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-	//    if (applyRegexMatchers(substring, smvA, a)) { return; }
-	//    if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
+		if (applyRegexMatchers(substring, smvA, a)) { return; }
+		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
 	} else {
 		static auto mvPreA = genMatchersPreAttack(empty_fn);
 		static auto mvA = genMatchersAttack(empty_fn);

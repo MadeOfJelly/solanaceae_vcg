@@ -10,6 +10,9 @@
 #include <numeric>
 #include <optional>
 #include <variant>
+#include <concepts>
+
+#include <iostream>
 
 template<typename RNG>
 static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, const std::vector<bool>& cards_used, const PlayerVolatiles& vol) {
@@ -72,7 +75,7 @@ constexpr bool ability_has_max(void)
 
 
 // TODO: fragile, runtime
-bool ability_is_defeat(const auto& a) {
+bool holds_defeat(const auto& a) {
 	return
 		std::holds_alternative<Abilities::Defeat<Abilities::Life>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
@@ -85,10 +88,26 @@ bool ability_is_defeat(const auto& a) {
 	;
 }
 
-bool ability_is_stop_activation(const auto& a) {
+bool holds_stop_activation(const auto& a) {
 	return
-		//std::holds_alternative<Abilities::Defeat<Abilities::Life>>(a.a) ||
-		false
+		std::holds_alternative<Abilities::Stop<Abilities::OppDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::OppPower>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::OppAttack>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::OppLife>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::OppPotion>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Damage>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Power>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Attack>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Life>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::CopyDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::CopyPower>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::LifePerDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Heal>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::RecoverPotions>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::StopOppAbility>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::StopOppBonus>>(a.a)
 	;
 }
 
@@ -268,10 +287,6 @@ std::unique_ptr<PhaseI> PhaseRevealSelections::render_impl(GameState& gs, std::o
 	return nullptr;
 }
 
-template<typename T>
-	//requires (!requires(T t) { t.inner; })
-void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
-
 // sad
 //// strip wrapper
 //template<typename T>
@@ -281,11 +296,53 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
 //    doAbility<decltype(T::inner)>(round, ridx, ability, is_faction_bonus);
 //}
 
+template<typename T, typename A>
+concept same_as_variants =
+	std::same_as<T, A> ||
+	std::same_as<T, Abilities::Defeat<A>> ||
+	std::same_as<T, Abilities::Stop<A>>
+;
+
+template<typename T, typename... Args>
+requires (std::same_as<T, Args> || ...)
+constexpr bool contains_type(void) {
+	return true;
+}
+template<typename T, typename... Args>
+requires (!(std::same_as<T, Args> || ...))
+constexpr bool contains_type(void) {
+	return false;
+}
+
+template<typename T, typename... Args>
+bool holds_alternative_safe(const std::variant<Args...>& v) {
+	if constexpr (contains_type<T, Args...>()) {
+		return std::holds_alternative<T>(v);
+	}
+	return false;
+}
+
+template<typename A>
+bool holds_alternative_variants(const auto& ability) {
+	return
+		holds_alternative_safe<A>(ability.a) ||
+		holds_alternative_safe<Abilities::Defeat<A>>(ability.a) ||
+		holds_alternative_safe<Abilities::Stop<A>>(ability.a)
+	;
+}
+
+template<typename T>
+//void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	// do nothing
+	std::cout << "nop for " << ability.a.index() << " '" << typeid(T).name() << "'\n";
+}
+
 template<typename T>
 requires
-	std::same_as<T, Abilities::StopOppAbility>
+	same_as_variants<T, Abilities::StopOppAbility>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!std::holds_alternative<Abilities::StopOppAbility>(ability.a)) {
+	if (!holds_alternative_variants<Abilities::StopOppAbility>(ability)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -294,9 +351,9 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::StopOppBonus>
+	same_as_variants<T, Abilities::StopOppBonus>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!std::holds_alternative<Abilities::StopOppBonus>(ability.a)) {
+	if (!holds_alternative_variants<Abilities::StopOppBonus>(ability)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -305,9 +362,9 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::CopyPower>
+	same_as_variants<T, Abilities::CopyPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!std::holds_alternative<Abilities::CopyPower>(ability.a)) {
+	if (!holds_alternative_variants<Abilities::CopyPower>(ability)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -316,9 +373,9 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::CopyDamage>
+	same_as_variants<T, Abilities::CopyDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!std::holds_alternative<Abilities::CopyDamage>(ability.a)) {
+	if (!holds_alternative_variants<Abilities::CopyDamage>(ability)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -327,7 +384,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::Power>
+	same_as_variants<T, Abilities::Power>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<Abilities::Power>(
 		round.card_temps.at(ridx).power,
@@ -337,7 +394,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::Damage>
+	same_as_variants<T, Abilities::Damage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<Abilities::Damage>(
 		round.card_temps.at(ridx).damage,
@@ -347,7 +404,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::OppPower>
+	same_as_variants<T, Abilities::OppPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<Abilities::OppPower>(
@@ -358,7 +415,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::OppDamage>
+	same_as_variants<T, Abilities::OppDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<Abilities::OppDamage>(
@@ -369,7 +426,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::Attack>
+	same_as_variants<T, Abilities::Attack>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<Abilities::Attack>(
 		round.card_temps.at(ridx).attack,
@@ -379,7 +436,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::OppAttack>
+	same_as_variants<T, Abilities::OppAttack>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<Abilities::OppAttack>(
@@ -390,8 +447,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::Life> ||
-	std::same_as<T, Abilities::Defeat<Abilities::Life>>
+	same_as_variants<T, Abilities::Life>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<T>(
 		round.volatile_temps.at(ridx).hp,
@@ -401,8 +457,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::OppLife> ||
-	std::same_as<T, Abilities::Defeat<Abilities::OppLife>>
+	same_as_variants<T, Abilities::OppLife>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<T>(
@@ -413,8 +468,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::Potion> ||
-	std::same_as<T, Abilities::Defeat<Abilities::Potion>>
+	same_as_variants<T, Abilities::Potion>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<T>(
 		round.volatile_temps.at(ridx).pots,
@@ -424,13 +478,9 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::RecoverPotions> ||
-	std::same_as<T, Abilities::Defeat<Abilities::RecoverPotions>>
+	same_as_variants<T, Abilities::RecoverPotions>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (
-		!std::holds_alternative<Abilities::RecoverPotions>(ability.a) &&
-		!std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(ability.a)
-	) {
+	if (!holds_alternative_variants<Abilities::RecoverPotions>(ability)) {
 		return;
 	}
 	round.volatile_temps.at(ridx).pots += (round.turns.at(ridx).pots+2) / 2;
@@ -438,8 +488,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::OppPotion> ||
-	std::same_as<T, Abilities::Defeat<Abilities::OppPotion>>
+	same_as_variants<T, Abilities::OppPotion>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<T>(
@@ -450,8 +499,10 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	std::same_as<T, Abilities::LifePerDamage>
+	same_as_variants<T, Abilities::LifePerDamage>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	// TODO: dewrapping getter
+	//if (!holds_alternative_variants<Abilities::LifePerDamage>(ability)) {
 	if (!std::holds_alternative<Abilities::LifePerDamage>(ability.a)) {
 		return;
 	}
@@ -459,6 +510,8 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	round.volatile_temps.at(ridx).hp += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
 }
 
+// T is without Stop, Support, Courage, Revenge...
+// T is with Defeat (and Win)
 template<typename T, typename... Ts>
 void doAbilitiesPlayer(size_t ridx, Round& round) {
 	// TODO: account for "support:"
@@ -467,18 +520,28 @@ void doAbilitiesPlayer(size_t ridx, Round& round) {
 
 	// TODO: account for "Courage:"
 	// TODO: account for "Revenge:"
+	// account for "Stop:"
 
-	if (ability_is_stop_activation(card.ability) == round.card_stopped.at(ridx).at(0)) {
-		// ability
-		doAbility<T>(round, ridx, card.ability);
+	if (holds_stop_activation(card.ability) == round.card_stopped.at(ridx).at(0)) {
+		if (holds_stop_activation(card.ability)) {
+			// HACK: runtime type injection
+			doAbility<Abilities::Stop<T>>(round, ridx, card.ability);
+		} else {
+			doAbility<T>(round, ridx, card.ability);
+		}
 	}
 
+	// faction bonus
 	if (
 		round.turns.at(ridx).haveFactionBonus() &&
-		ability_is_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(1)
+		holds_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(1)
 	) {
-		// faction bonus
-		doAbility<T>(round, ridx, card.faction_bonus);
+		if (holds_stop_activation(card.faction_bonus)) {
+			// HACK: runtime type injection
+			doAbility<Abilities::Stop<T>>(round, ridx, card.faction_bonus);
+		} else {
+			doAbility<T>(round, ridx, card.faction_bonus);
+		}
 	}
 
 	// continue on

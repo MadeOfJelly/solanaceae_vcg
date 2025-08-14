@@ -89,6 +89,7 @@ namespace Abilities {
 	struct Stop {
 		Inner inner;
 	};
+	template<typename Inner> Stop( Inner ) -> Stop<Inner>;
 }
 
 int16_t value_from_match(const std::string& match, const std::string& sign = "+");
@@ -122,6 +123,7 @@ struct Ability {
 		Abilities::StopOppAbility,
 		Abilities::StopOppBonus,
 
+
 		Abilities::Defeat<Abilities::OppLife>,			// w
 		Abilities::Defeat<Abilities::OppPotion>,
 		Abilities::Defeat<Abilities::Life>,				// w
@@ -129,7 +131,34 @@ struct Ability {
 		Abilities::Defeat<Abilities::LifePerDamage>, // ???
 		Abilities::Defeat<Abilities::Heal>,
 		Abilities::Defeat<Abilities::Poison>,
-		Abilities::Defeat<Abilities::RecoverPotions>	// w
+		Abilities::Defeat<Abilities::RecoverPotions>,	// w
+
+
+		Abilities::Stop<Abilities::OppDamage>,
+		Abilities::Stop<Abilities::OppPower>, //
+		Abilities::Stop<Abilities::OppAttack>,
+		Abilities::Stop<Abilities::OppLife>,
+		Abilities::Stop<Abilities::OppPotion>,
+
+		Abilities::Stop<Abilities::Damage>, //
+		Abilities::Stop<Abilities::Power>, //
+		Abilities::Stop<Abilities::Attack>,
+
+		Abilities::Stop<Abilities::Life>, //
+		Abilities::Stop<Abilities::Potion>,
+
+		Abilities::Stop<Abilities::CopyDamage>,
+		Abilities::Stop<Abilities::CopyPower>,
+
+		Abilities::Stop<Abilities::LifePerDamage>,
+
+		Abilities::Stop<Abilities::Heal>,
+		Abilities::Stop<Abilities::Poison>,
+		Abilities::Stop<Abilities::RecoverPotions>,
+
+		// meh
+		Abilities::Stop<Abilities::StopOppAbility>,
+		Abilities::Stop<Abilities::StopOppBonus>
 	> a;
 
 	std::string string;

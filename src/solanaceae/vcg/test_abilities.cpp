@@ -67,6 +67,25 @@ int main(void) {
 		"Defeat: Heal 2 Max 2",
 		"Defeat: Poison 2 Min 2",
 		"Defeat: Recover 1 of 2 Potion",
+
+		"Stop: - 2 Opp Power Min 2",
+		"Stop: - 2 Opp Damage Min 2",
+		"Stop: - 2 Opp Attack Min 2",
+		"Stop: - 2 Opp Life Min 2",
+		"Stop: - 2 Opp Potion Min 2",
+		"Stop: + 2 Power",
+		"Stop: + 2 Damage",
+		"Stop: + 2 Attack",
+		"Stop: + 2 Life",
+		"Stop: + 2 Potion",
+		"Stop: Damage = Opp Damage",
+		"Stop: Power = Opp Power",
+		"Stop: + 2 Life per Damage",
+		"Stop: Heal 2 Max 2",
+		"Stop: Poison 2 Min 2",
+		"Stop: Recover 1 of 2 Potion",
+		//"Stop: Stop Opp Ability",
+		//"Stop: Stop Opp Bonus",
 	};
 
 	//std::vector<std::string> ability_prefix_string {
@@ -99,6 +118,9 @@ int main(void) {
 		} catch (const std::runtime_error& ex) {
 			std::cerr << "failed parsing '" << astr << "', with exception: " << ex.what() << "\n";
 			failed = true;
+		} catch (...) {
+			std::cerr << "bad exception\n";
+			return 2;
 		}
 	}
 
