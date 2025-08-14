@@ -111,6 +111,12 @@ bool holds_stop_activation(const auto& a) {
 	;
 }
 
+bool holds_courage(const auto& a) {
+	return
+		false
+	;
+}
+
 template<typename T>
 constexpr const auto& get_ability_value(const T& a)
 	requires requires(T t) { t.value; }
@@ -278,8 +284,8 @@ std::unique_ptr<PhaseI> PhaseRevealSelections::render_impl(GameState& gs, std::o
 	size_t human_idx = round->players.at(0) == 0 ? 0 : 1;
 	size_t bot_idx = (human_idx+1)%2;
 
-	ImGui::Text("bot chose %zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
-	ImGui::Text("you chose %zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
 	if (ImGui::Button("continue to battle")) {
 		return std::make_unique<PhaseBattle>();
 	}
@@ -510,38 +516,58 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	round.volatile_temps.at(ridx).hp += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
 }
 
+
+// conditionally wraps
+template<typename T>
+void doAbilitiesPlayerWrapStop(size_t ridx, Round& round, bool faction_bonus) {
+	const auto& card = round.turns.at(ridx).card();
+	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
+
+	if (holds_stop_activation(ability) == round.card_stopped.at(ridx).at(0+faction_bonus)) {
+		if (holds_stop_activation(ability)) {
+			// HACK: runtime type injection
+			doAbility<Abilities::Stop<T>>(round, ridx, ability);
+		} else {
+			doAbility<T>(round, ridx, ability);
+		}
+	}
+}
+
+template<typename T>
+void doAbilitiesPlayerWrapCourage(size_t ridx, Round& round, bool faction_bonus) {
+	const auto& card = round.turns.at(ridx).card();
+	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
+
+	if (!holds_courage(ability)) {
+		// forward T as is
+		doAbilitiesPlayerWrapStop<T>(ridx, round, faction_bonus);
+	} else {
+		assert(false && "not parsed yet");
+		// active
+		if (ridx == 0) {
+			// forward courage wrapped T
+			// HACK: runtime type injection
+			doAbilitiesPlayerWrapStop<Abilities::Courage<T>>(ridx, round, faction_bonus);
+		} // else nop
+	}
+}
+
 // T is without Stop, Support, Courage, Revenge...
-// T is with Defeat (and Win)
+// T is with Defeat (and Win) (change?)
 template<typename T, typename... Ts>
 void doAbilitiesPlayer(size_t ridx, Round& round) {
 	// TODO: account for "support:"
 
-	const auto& card = round.turns.at(ridx).card();
 
-	// TODO: account for "Courage:"
 	// TODO: account for "Revenge:"
+	// account for "Courage:"
 	// account for "Stop:"
 
-	if (holds_stop_activation(card.ability) == round.card_stopped.at(ridx).at(0)) {
-		if (holds_stop_activation(card.ability)) {
-			// HACK: runtime type injection
-			doAbility<Abilities::Stop<T>>(round, ridx, card.ability);
-		} else {
-			doAbility<T>(round, ridx, card.ability);
-		}
-	}
+	doAbilitiesPlayerWrapCourage<T>(ridx, round, false);
 
 	// faction bonus
-	if (
-		round.turns.at(ridx).haveFactionBonus() &&
-		holds_stop_activation(card.faction_bonus) == round.card_stopped.at(ridx).at(1)
-	) {
-		if (holds_stop_activation(card.faction_bonus)) {
-			// HACK: runtime type injection
-			doAbility<Abilities::Stop<T>>(round, ridx, card.faction_bonus);
-		} else {
-			doAbility<T>(round, ridx, card.faction_bonus);
-		}
+	if (round.turns.at(ridx).haveFactionBonus()) {
+		doAbilitiesPlayerWrapCourage<T>(ridx, round, true);
 	}
 
 	// continue on
@@ -649,8 +675,8 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 
 	size_t human_idx = round->players.at(0) == 0 ? 0 : 1;
 	size_t bot_idx = (human_idx+1)%2;
-	ImGui::Text("bot chose %zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
-	ImGui::Text("you chose %zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
 
 	// show values
 	ImGui::Text("bot  attack: %hd", round->card_temps.at(bot_idx).attack);

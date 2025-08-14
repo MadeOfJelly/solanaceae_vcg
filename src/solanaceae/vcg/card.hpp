@@ -90,6 +90,12 @@ namespace Abilities {
 		Inner inner;
 	};
 	template<typename Inner> Stop( Inner ) -> Stop<Inner>;
+
+	template<typename Inner>
+	struct Courage {
+		Inner inner;
+	};
+	template<typename Inner> Courage( Inner ) -> Courage<Inner>;
 }
 
 int16_t value_from_match(const std::string& match, const std::string& sign = "+");
