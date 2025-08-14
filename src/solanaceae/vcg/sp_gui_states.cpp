@@ -137,6 +137,12 @@ bool holds_courage(const auto& a) {
 	;
 }
 
+bool holds_revenge(const auto& a) {
+	return
+		false
+	;
+}
+
 template<typename T>
 constexpr const auto& get_ability_value(const T& a)
 	requires requires(T t) { t.value; }
@@ -541,34 +547,47 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 // conditionally wraps
 template<typename T>
-void doAbilitiesPlayerWrapStop(size_t ridx, Round& round, bool faction_bonus) {
+void doAbilitiesPlayerWrapRevenge(Round& round, size_t ridx, bool faction_bonus) {
+	const auto& card = round.turns.at(ridx).card();
+	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
+	if (!holds_revenge(ability)) {
+		// forward T as is
+		doAbility<T>(round, ridx, ability);
+	} else {
+		// check if ridx player lost prev round
+		assert(false && "implement me");
+	}
+}
+
+template<typename T>
+void doAbilitiesPlayerWrapStop(Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
 
 	if (holds_stop_activation(ability) == round.card_stopped.at(ridx).at(0+faction_bonus)) {
 		if (holds_stop_activation(ability)) {
 			// HACK: runtime type injection
-			doAbility<Abilities::Stop<T>>(round, ridx, ability);
+			doAbilitiesPlayerWrapRevenge<Abilities::Stop<T>>(round, ridx, faction_bonus);
 		} else {
-			doAbility<T>(round, ridx, ability);
+			doAbilitiesPlayerWrapRevenge<T>(round, ridx, faction_bonus);
 		}
 	}
 }
 
 template<typename T>
-void doAbilitiesPlayerWrapCourage(size_t ridx, Round& round, bool faction_bonus) {
+void doAbilitiesPlayerWrapCourage(Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
 
 	if (!holds_courage(ability)) {
 		// forward T as is
-		doAbilitiesPlayerWrapStop<T>(ridx, round, faction_bonus);
+		doAbilitiesPlayerWrapStop<T>(round, ridx, faction_bonus);
 	} else {
 		// active
 		if (ridx == 0) {
 			// forward courage wrapped T
 			// HACK: runtime type injection
-			doAbilitiesPlayerWrapStop<Abilities::Courage<T>>(ridx, round, faction_bonus);
+			doAbilitiesPlayerWrapStop<Abilities::Courage<T>>(round, ridx, faction_bonus);
 		} // else nop
 	}
 }
@@ -576,7 +595,7 @@ void doAbilitiesPlayerWrapCourage(size_t ridx, Round& round, bool faction_bonus)
 // T is without Stop, Support, Courage, Revenge...
 // T is with Defeat (and Win) (change?)
 template<typename T, typename... Ts>
-void doAbilitiesPlayer(size_t ridx, Round& round) {
+void doAbilitiesPlayer(Round& round, size_t ridx) {
 	// TODO: account for "support:"
 
 
@@ -584,28 +603,28 @@ void doAbilitiesPlayer(size_t ridx, Round& round) {
 	// account for "Courage:"
 	// account for "Stop:"
 
-	doAbilitiesPlayerWrapCourage<T>(ridx, round, false);
+	doAbilitiesPlayerWrapCourage<T>(round, ridx, false);
 
 	// faction bonus
 	if (round.turns.at(ridx).haveFactionBonus()) {
-		doAbilitiesPlayerWrapCourage<T>(ridx, round, true);
+		doAbilitiesPlayerWrapCourage<T>(round, ridx, true);
 	}
 
 	// continue on
 	if constexpr (sizeof...(Ts) > 0) {
-		doAbilityPlayer<Ts...>(ridx, round);
+		doAbilitiesPlayer<Ts...>(round, ridx);
 	}
 }
 
 template<typename T, typename... Ts>
 void doAbilities(Round& round) {
 	for (size_t i = 0; i < round.card_temps.size(); i++) {
-		doAbilitiesPlayer<T>(i, round);
+		doAbilitiesPlayer<T>(round, i);
 	}
 
 	// continue on
 	if constexpr (sizeof...(Ts) > 0) {
-		doAbility<Ts...>(round);
+		doAbilities<Ts...>(round);
 	}
 }
 
@@ -619,12 +638,16 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		round.card_temps.at(i).damage = round.turns.at(i).card().damage;
 	}
 
-	doAbilities<Abilities::StopOppAbility>(round);
-	doAbilities<Abilities::StopOppBonus>(round);
+	doAbilities<
+		Abilities::StopOppAbility,
+		Abilities::StopOppBonus
+	>(round);
 
 	// copy abilities (before frenzy)
-	doAbilities<Abilities::CopyPower>(round);
-	doAbilities<Abilities::CopyDamage>(round);
+	doAbilities<
+		Abilities::CopyPower,
+		Abilities::CopyDamage
+	>(round);
 
 	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
 		// apply frenzy dmg bonus
@@ -638,18 +661,22 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	}
 
 	// apply power and dmg
-	doAbilities<Abilities::Power>(round);
-	doAbilities<Abilities::Damage>(round);
-	doAbilities<Abilities::OppPower>(round);
-	doAbilities<Abilities::OppDamage>(round);
+	doAbilities<
+		Abilities::Power,
+		Abilities::Damage,
+		Abilities::OppPower,
+		Abilities::OppDamage
+	>(round);
 
 	// calc attack
 	for (size_t i = 0; i < round.card_temps.size(); i++) {
 		round.card_temps.at(i).attack = round.card_temps.at(i).power * (round.turns.at(i).pots + 1);
 	}
 
-	doAbilities<Abilities::Attack>(round);
-	doAbilities<Abilities::OppAttack>(round);
+	doAbilities<
+		Abilities::Attack,
+		Abilities::OppAttack
+	>(round);
 
 	auto [win_ridx, reason] = round.decide_winning_card();
 	const size_t loose_ridx = (win_ridx+1)%2;
@@ -658,30 +685,30 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	round.volatile_temps.at(loose_ridx).hp -= round.card_temps.at(win_ridx).damage;
 
 	{ // win
-		doAbilitiesPlayer<Abilities::Life>(win_ridx, round);
-
-		//std::holds_alternative<Abilities::Poison>(a.a) ||
-		//std::holds_alternative<Abilities::Heal>(a.a) ||
-
-		doAbilitiesPlayer<Abilities::OppLife>(win_ridx, round);
-		doAbilitiesPlayer<Abilities::Potion>(win_ridx, round);
-		doAbilitiesPlayer<Abilities::RecoverPotions>(win_ridx, round);
-		doAbilitiesPlayer<Abilities::OppPotion>(win_ridx, round);
-		doAbilitiesPlayer<Abilities::LifePerDamage>(win_ridx, round);
+		doAbilitiesPlayer<
+			Abilities::Life,
+			//Abilities::Poison,
+			//Abilities::Heal,
+			Abilities::OppLife,
+			Abilities::Potion,
+			Abilities::RecoverPotions,
+			Abilities::OppPotion,
+			Abilities::LifePerDamage
+		>(round, win_ridx);
 	}
 
 	{ // loose (defeat)
-		doAbilitiesPlayer<Abilities::Defeat<Abilities::Life>>(loose_ridx, round);
+		doAbilitiesPlayer<
+			Abilities::Defeat<Abilities::Life>,
+			//Abilities::Defeat<Abilities::Poison>,
+			//Abilities::Defeat<Abilities::Heal>,
+			Abilities::Defeat<Abilities::OppLife>,
+			Abilities::Defeat<Abilities::Potion>,
+			Abilities::Defeat<Abilities::RecoverPotions>,
+			Abilities::Defeat<Abilities::OppPotion>
+			//Abilities::Defeat<Abilities::LifePerDamage> // ??
+		>(round, loose_ridx);
 
-		//std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
-		//std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
-
-		doAbilitiesPlayer<Abilities::Defeat<Abilities::OppLife>>(loose_ridx, round);
-		doAbilitiesPlayer<Abilities::Defeat<Abilities::Potion>>(loose_ridx, round);
-		doAbilitiesPlayer<Abilities::Defeat<Abilities::RecoverPotions>>(loose_ridx, round);
-		doAbilitiesPlayer<Abilities::Defeat<Abilities::OppPotion>>(loose_ridx, round);
-
-		//std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a) // ??
 	}
 
 	// sanitize pots
