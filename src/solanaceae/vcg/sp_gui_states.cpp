@@ -412,6 +412,8 @@ const T& get_safe(const std::variant<Args...>& v) {
 		return std::get<T>(v);
 	} else {
 		assert(false);
+		static T t{};
+		return t;
 	}
 }
 
@@ -431,6 +433,8 @@ const T& get_variants(const std::variant<Args...>& v) {
 		return get_safe<Abilities::Revenge<T>>(v).inner;
 	} else {
 		assert(false);
+		static T t{};
+		return t;
 	}
 }
 
@@ -626,14 +630,13 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	auto [p_v, p_m] = get_variants<Abilities::Poison>(ability.a);
 
 	// add to round stack
-	round.new_poisons.at(opp_ridx).emplace_back(p_v, p_m);
+	round.poisons.at(opp_ridx).emplace_back(p_v, p_m);
 }
 
 template<typename T>
 requires
 	same_as_variants<T, Abilities::Heal>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	std::cout << "heal? " << typeid(T).name() << "\n";
 	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
@@ -641,7 +644,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	auto [h_v, h_m] = get_variants<Abilities::Heal>(ability.a);
 
 	// add heal to round heal stack
-	round.new_heals.at(ridx).emplace_back(h_v, h_m);
+	round.heals.at(ridx).emplace_back(h_v, h_m);
 }
 
 // conditionally wraps
@@ -814,6 +817,69 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 		>(gs, round, loose_ridx);
 	}
 
+	{ // tick heal
+		int16_t strongst_heal_p0 {0};
+		int16_t strongst_heal_p1 {0};
+
+		// curr round
+		size_t ridx_p0 = round.players.at(0) == 0 ? 0 : 1;
+		size_t ridx_p1 = (ridx_p0+1)%2;
+
+		for (const auto& prev_round : gs.rounds) {
+			// prev round
+			size_t pridx_p0 = prev_round.players.at(0) == 0 ? 0 : 1;
+			size_t pridx_p1 = (pridx_p0+1)%2;
+			for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p0)) {
+				auto nt = std::min<int16_t>(round.volatile_temps.at(ridx_p0).hp + h_v, h_m);
+				auto diff = nt - round.volatile_temps.at(ridx_p0).hp;
+				if (diff > strongst_heal_p0) {
+					strongst_heal_p0 = diff;
+				}
+			}
+			for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p1)) {
+				auto nt = std::min<int16_t>(round.volatile_temps.at(ridx_p1).hp + h_v, h_m);
+				auto diff = nt - round.volatile_temps.at(ridx_p1).hp;
+				if (diff > strongst_heal_p1) {
+					strongst_heal_p1 = diff;
+				}
+			}
+		}
+
+		round.volatile_temps.at(ridx_p0).hp += strongst_heal_p0;
+		round.volatile_temps.at(ridx_p1).hp += strongst_heal_p1;
+	}
+	{ // tick poison
+		int16_t strongst_poison_p0 {0};
+		int16_t strongst_poison_p1 {0};
+
+		// curr round
+		size_t ridx_p0 = round.players.at(0) == 0 ? 0 : 1;
+		size_t ridx_p1 = (ridx_p0+1)%2;
+
+		for (const auto& prev_round : gs.rounds) {
+			// prev round
+			size_t pridx_p0 = prev_round.players.at(0) == 0 ? 0 : 1;
+			size_t pridx_p1 = (pridx_p0+1)%2;
+			for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p0)) {
+				auto nt = std::max<int16_t>(round.volatile_temps.at(ridx_p0).hp - p_v, p_m);
+				auto diff = nt - round.volatile_temps.at(ridx_p0).hp;
+				if (diff < strongst_poison_p0) {
+					strongst_poison_p0 = diff;
+				}
+			}
+			for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p1)) {
+				auto nt = std::max<int16_t>(round.volatile_temps.at(ridx_p1).hp - p_v, p_m);
+				auto diff = nt - round.volatile_temps.at(ridx_p1).hp;
+				if (diff < strongst_poison_p1) {
+					strongst_poison_p1 = diff;
+				}
+			}
+		}
+
+		round.volatile_temps.at(ridx_p0).hp += strongst_poison_p0;
+		round.volatile_temps.at(ridx_p1).hp += strongst_poison_p1;
+	}
+
 	// sanitize pots
 	round.volatile_temps.at(0).pots = std::max<int16_t>(round.volatile_temps.at(0).pots, 0);
 	round.volatile_temps.at(1).pots = std::max<int16_t>(round.volatile_temps.at(1).pots, 0);
@@ -867,35 +933,35 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	ImGui::Text("bot  pots: %d (%+d)", round->volatile_temps.at(bot_idx).pots, round->volatile_temps.at(bot_idx).pots - gs.vols.at(1).pots);
 	ImGui::Text("your pots: %d (%+d)", round->volatile_temps.at(human_idx).pots, round->volatile_temps.at(human_idx).pots - gs.vols.at(0).pots);
 
-	if (!round->new_poisons.at(bot_idx).empty()) {
+	if (!round->poisons.at(bot_idx).empty()) {
 		ImGui::Text("bot suffered poison:");
 		ImGui::Indent();
-		for (const auto& poison : round->new_poisons.at(bot_idx)) {
+		for (const auto& poison : round->poisons.at(bot_idx)) {
 			ImGui::Text("%d, min %d", poison.value, poison.min);
 		}
 		ImGui::Unindent();
 	}
-	if (!round->new_poisons.at(human_idx).empty()) {
+	if (!round->poisons.at(human_idx).empty()) {
 		ImGui::Text("you suffered poison:");
 		ImGui::Indent();
-		for (const auto& poison : round->new_poisons.at(human_idx)) {
+		for (const auto& poison : round->poisons.at(human_idx)) {
 			ImGui::Text("%d, min %d", poison.value, poison.min);
 		}
 		ImGui::Unindent();
 	}
 
-	if (!round->new_heals.at(bot_idx).empty()) {
+	if (!round->heals.at(bot_idx).empty()) {
 		ImGui::Text("bot received heal:");
 		ImGui::Indent();
-		for (const auto& heal : round->new_heals.at(bot_idx)) {
+		for (const auto& heal : round->heals.at(bot_idx)) {
 			ImGui::Text("%d, max %d", heal.value, heal.max);
 		}
 		ImGui::Unindent();
 	}
-	if (!round->new_poisons.at(human_idx).empty()) {
+	if (!round->poisons.at(human_idx).empty()) {
 		ImGui::Text("you received heal:");
 		ImGui::Indent();
-		for (const auto& heal : round->new_heals.at(human_idx)) {
+		for (const auto& heal : round->heals.at(human_idx)) {
 			ImGui::Text("%d, max %d", heal.value, heal.max);
 		}
 		ImGui::Unindent();
