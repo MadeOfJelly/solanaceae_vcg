@@ -164,7 +164,21 @@ struct Ability {
 
 		// meh
 		Abilities::Stop<Abilities::StopOppAbility>,
-		Abilities::Stop<Abilities::StopOppBonus>
+		Abilities::Stop<Abilities::StopOppBonus>,
+
+
+		Abilities::Courage<Abilities::OppDamage>,
+		Abilities::Courage<Abilities::OppPower>, //
+		Abilities::Courage<Abilities::OppAttack>, //
+
+		Abilities::Courage<Abilities::CopyDamage>,
+		Abilities::Courage<Abilities::CopyPower>,
+
+		Abilities::Courage<Abilities::Damage>, //
+		Abilities::Courage<Abilities::Power>, //
+		Abilities::Courage<Abilities::Attack>, //
+		Abilities::Courage<Abilities::StopOppAbility>,
+		Abilities::Courage<Abilities::StopOppBonus> //
 	> a;
 
 	std::string string;

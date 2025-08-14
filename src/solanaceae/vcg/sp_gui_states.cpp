@@ -39,6 +39,17 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 	};
 }
 
+template<typename T, typename... Args>
+requires (std::same_as<T, Args> || ...)
+constexpr bool contains_type(void) {
+	return true;
+}
+template<typename T, typename... Args>
+requires (!(std::same_as<T, Args> || ...))
+constexpr bool contains_type(void) {
+	return false;
+}
+
 template <typename>
 constexpr bool ability_has_min(void) { return false; }
 template <>
@@ -113,7 +124,16 @@ bool holds_stop_activation(const auto& a) {
 
 bool holds_courage(const auto& a) {
 	return
-		false
+		std::holds_alternative<Abilities::Courage<Abilities::OppDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::OppPower>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::OppAttack>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::CopyDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::CopyPower>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::Damage>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::Power>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::Attack>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::StopOppAbility>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::StopOppBonus>>(a.a)
 	;
 }
 
@@ -156,22 +176,34 @@ constexpr const auto& get_ability_max(const T& a)
 	return get_ability_max(a.inner);
 }
 
+template<typename T, typename... Args>
+constexpr bool variant_contains_type(const std::variant<Args...>) {
+	return contains_type<T, Args...>();
+}
+
+template<typename T>
+constexpr bool ability_type_possible(void) {
+	return variant_contains_type<T>(decltype(Ability{}.a){});
+}
+
 template<typename T>
 static bool apply_value_ability(int16_t& value, const Ability& a) {
-	if (std::holds_alternative<T>(a.a)) {
-		const auto& a_v = std::get<T>(a.a);
-		const auto value_before = value;
+	if constexpr (ability_type_possible<T>()) {
+		if (std::holds_alternative<T>(a.a)) {
+			const auto& a_v = std::get<T>(a.a);
+			const auto value_before = value;
 
-		value += get_ability_value(a_v);
+			value += get_ability_value(a_v);
 
-		if constexpr (ability_has_min<T>()) {
-			if (get_ability_value(a_v) < 0) {
-				value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_v)));
-			} // TODO: max(min()) for > 0?
-		} else if constexpr (ability_has_max<T>()) {
-			static_assert(false);
+			if constexpr (ability_has_min<T>()) {
+				if (get_ability_value(a_v) < 0) {
+					value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_v)));
+				} // TODO: max(min()) for > 0?
+			} else if constexpr (ability_has_max<T>()) {
+				static_assert(false);
+			}
+			return true;
 		}
-		return true;
 	}
 	return false;
 }
@@ -306,19 +338,9 @@ template<typename T, typename A>
 concept same_as_variants =
 	std::same_as<T, A> ||
 	std::same_as<T, Abilities::Defeat<A>> ||
-	std::same_as<T, Abilities::Stop<A>>
+	std::same_as<T, Abilities::Stop<A>> ||
+	std::same_as<T, Abilities::Courage<A>>
 ;
-
-template<typename T, typename... Args>
-requires (std::same_as<T, Args> || ...)
-constexpr bool contains_type(void) {
-	return true;
-}
-template<typename T, typename... Args>
-requires (!(std::same_as<T, Args> || ...))
-constexpr bool contains_type(void) {
-	return false;
-}
 
 template<typename T, typename... Args>
 bool holds_alternative_safe(const std::variant<Args...>& v) {
@@ -339,7 +361,7 @@ bool holds_alternative_variants(const auto& ability) {
 
 template<typename T>
 //void doAbility(Round& round, size_t ridx, const Ability& ability) = delete;
-void doAbility(Round& round, size_t ridx, const Ability& ability) {
+void doAbility(Round& /*round*/, size_t /*ridx*/, const Ability& ability) {
 	// do nothing
 	std::cout << "nop for " << ability.a.index() << " '" << typeid(T).name() << "'\n";
 }
@@ -542,7 +564,6 @@ void doAbilitiesPlayerWrapCourage(size_t ridx, Round& round, bool faction_bonus)
 		// forward T as is
 		doAbilitiesPlayerWrapStop<T>(ridx, round, faction_bonus);
 	} else {
-		assert(false && "not parsed yet");
 		// active
 		if (ridx == 0) {
 			// forward courage wrapped T

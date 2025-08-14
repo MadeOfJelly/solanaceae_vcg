@@ -20,6 +20,7 @@ std::vector<Card> Cards::random(void) {
 		{"Splitter",3,7,3,{"+ 2 Power"},{"Stop Opp Bonus"},"A large mouth sits on a blueish hairy humanoid body with 2 arms that splits into 4 arms."},
 		{"Gobbler",2,6,1,{"+ 3 Life"},{"Stop Opp Bonus"},"A small baby-like creature with an insanely large mouth."},
 		{"Slitherer",3,7,3,{"+ 8 Attack"},{"Stop Opp Bonus"},"A snake-like creature that splits up into a mass of snakes."},
+		{"Shellshocker",4,5,7,{"Courage: - 3 Opp Power Min 4"},{"Stop Opp Bonus"},"A huge, grey crab-like creature with lightning arcing between parts of its bodies."},
 		{"Doppelganger",4,7,7,{"Damage = Opp Damage"},{"Stop Opp Bonus"},"A greyish blue humanoid creature that can change its body at will into other creatures, creating a perfect copy in the process."},
 		{"Tendril Bearer",5,7,6,{"Defeat: - 3 Opp Life Min 2"},{"Stop Opp Bonus"},"A hulking, hairy mass of a beast with fleshy tendrils and tentacles coming out of many parts of its body."},
 		{"Brain Dragon",5,7,7,{"Stop Opp Ability"},{"Stop Opp Bonus"},"A dragon with a gigantic brain mounted on its back that slithers to the wings and its head."},

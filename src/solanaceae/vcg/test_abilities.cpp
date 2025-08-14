@@ -86,6 +86,17 @@ int main(void) {
 		"Stop: Recover 1 of 2 Potion",
 		//"Stop: Stop Opp Ability",
 		//"Stop: Stop Opp Bonus",
+
+		"Courage: - 2 Opp Power Min 2",
+		"Courage: - 2 Opp Damage Min 2",
+		"Courage: - 2 Opp Attack Min 2",
+		"Courage: + 2 Power",
+		"Courage: + 2 Damage",
+		"Courage: + 2 Attack",
+		"Courage: Damage = Opp Damage",
+		"Courage: Power = Opp Power",
+		//"Courage: Stop Opp Ability",
+		//"Courage: Stop Opp Bonus",
 	};
 
 	//std::vector<std::string> ability_prefix_string {
