@@ -184,6 +184,24 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 			}
 		},
 		{
+			std::regex("Steal ([0-9]+) Life Min ([0-9]+)"),
+			[&](const std::smatch& m, auto& _a) {
+				_a = wfn(Abilities::StealLife{
+					value_from_match(m[1].str()),
+					value_from_match(m[2].str()),
+				});
+			}
+		},
+		{
+			std::regex("Steal ([0-9]+) Potion Min ([0-9]+)"),
+			[&](const std::smatch& m, auto& _a) {
+				_a = wfn(Abilities::StealPotion{
+					value_from_match(m[1].str()),
+					value_from_match(m[2].str()),
+				});
+			}
+		},
+		{
 			std::regex("Heal ([0-9]+) Max ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
 				_a = wfn(Abilities::Heal{

@@ -50,16 +50,6 @@ namespace Abilities {
 		int16_t value {0};
 	};
 
-	struct CopyDamage {
-	};
-
-	struct CopyPower {
-	};
-
-	struct LifePerDamage {
-		int16_t value {0};
-	};
-
 	struct LifeMin {
 		int16_t value {0};
 		int16_t min {0};
@@ -68,6 +58,26 @@ namespace Abilities {
 	struct PotionMin {
 		int16_t value {0};
 		int16_t min {0};
+	};
+
+	struct StealLife {
+		int16_t value {0};
+		int16_t min {0};
+	};
+
+	struct StealPotion {
+		int16_t value {0};
+		int16_t min {0};
+	};
+
+	struct CopyDamage {
+	};
+
+	struct CopyPower {
+	};
+
+	struct LifePerDamage {
+		int16_t value {0};
 	};
 
 	struct Heal {
@@ -145,6 +155,8 @@ struct Ability {
 		Abilities::Potion,		// w
 		Abilities::LifeMin,
 		Abilities::PotionMin,
+		Abilities::StealLife,
+		Abilities::StealPotion,
 
 		Abilities::CopyDamage,	// w
 		Abilities::CopyPower,	// w
@@ -166,6 +178,8 @@ struct Ability {
 		Abilities::Defeat<Abilities::Potion>,			// w
 		Abilities::Defeat<Abilities::LifeMin>,
 		Abilities::Defeat<Abilities::PotionMin>,
+		Abilities::Defeat<Abilities::StealLife>,
+		Abilities::Defeat<Abilities::StealPotion>,
 		Abilities::Defeat<Abilities::LifePerDamage>, // ???
 		Abilities::Defeat<Abilities::Heal>,
 		Abilities::Defeat<Abilities::Poison>,
@@ -187,6 +201,8 @@ struct Ability {
 		Abilities::Stop<Abilities::Potion>,
 		Abilities::Stop<Abilities::LifeMin>,
 		Abilities::Stop<Abilities::PotionMin>,
+		Abilities::Stop<Abilities::StealLife>,
+		Abilities::Stop<Abilities::StealPotion>,
 
 		Abilities::Stop<Abilities::CopyDamage>,
 		Abilities::Stop<Abilities::CopyPower>,
@@ -229,6 +245,8 @@ struct Ability {
 		Abilities::Revenge<Abilities::Potion>, //
 		Abilities::Revenge<Abilities::LifeMin>,
 		Abilities::Revenge<Abilities::PotionMin>,
+		Abilities::Revenge<Abilities::StealLife>,
+		Abilities::Revenge<Abilities::StealPotion>,
 		Abilities::Revenge<Abilities::CopyDamage>,
 		Abilities::Revenge<Abilities::CopyPower>,
 		Abilities::Revenge<Abilities::LifePerDamage>,
@@ -252,6 +270,8 @@ struct Ability {
 		Abilities::Team<Abilities::Potion>, //
 		Abilities::Team<Abilities::LifeMin>,
 		Abilities::Team<Abilities::PotionMin>,
+		Abilities::Team<Abilities::StealLife>,
+		Abilities::Team<Abilities::StealPotion>,
 		Abilities::Team<Abilities::CopyDamage>,
 		Abilities::Team<Abilities::CopyPower>,
 		Abilities::Team<Abilities::LifePerDamage>,

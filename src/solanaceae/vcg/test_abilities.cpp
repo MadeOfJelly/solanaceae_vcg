@@ -34,6 +34,10 @@ int main(void) {
 		"- 2 Life Min 2",
 		"- 2 Potion Min 2",
 
+		//Steal X Y Min Z,Removes X of Y down to a minimum of Z from the enemy and gives you the amount that was removed.
+		"Steal 2 Life Min 2",
+		"Steal 2 Potion Min 2",
+
 		//Damage = Opp Damage,The Damage of this Card is equal to the base Damage of the opposing Card.
 		"Damage = Opp Damage",
 		//Power = Opp Power,The Power of this Card is equal to the base Power of the opposing Card.
@@ -57,11 +61,6 @@ int main(void) {
 		//Stop Opp Bonus,The opponent’s Card’s Faction Bonus is ignored.
 		"Stop Opp Bonus",
 
-		// TODO: steal conditional
-		//Steal X Opp Y Min Z,Removes X of Y down to a minimum of Z from the enemy and gives you the amount that was removed.
-		//"Steal 2 Opp Power Min 2",
-		//"Steal 2 Opp Power Min 2",
-
 		"Defeat: - 2 Opp Life Min 2",
 		"Defeat: - 2 Opp Potion Min 2",
 		"Defeat: - 2 Life",
@@ -82,6 +81,8 @@ int main(void) {
 		"Stop: + 2 Attack",
 		"Stop: + 2 Life",
 		"Stop: + 2 Potion",
+		"Stop: Steal 2 Life Min 2",
+		"Stop: Steal 2 Potion Min 2",
 		"Stop: Damage = Opp Damage",
 		"Stop: Power = Opp Power",
 		"Stop: + 2 Life per Damage",
