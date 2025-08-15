@@ -246,6 +246,17 @@ Ability::Ability(const std::string& _string) : string(_string) {
 		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
 		if (applyRegexMatchers(substring, smvA, a)) { return; }
 		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+	} else if (string.starts_with("Backlash: ")) {
+		// does nothing special
+		static auto smvPreA = genMatchersPreAttack(empty_fn);
+		static auto smvA = genMatchersAttack(empty_fn);
+		static auto smvPostA = genMatchersPostAttack(empty_fn);
+
+		const auto substring = string.substr(std::string_view{"Backlash: "}.size());
+
+		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
+		if (applyRegexMatchers(substring, smvA, a)) { return; }
+		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
 	} else {
 		static auto mvPreA = genMatchersPreAttack(empty_fn);
 		static auto mvA = genMatchersAttack(empty_fn);

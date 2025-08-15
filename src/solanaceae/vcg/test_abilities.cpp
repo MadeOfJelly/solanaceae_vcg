@@ -116,6 +116,12 @@ int main(void) {
 		"Revenge: Recover 1 of 2 Potion",
 		"Revenge: Stop Opp Ability",
 		"Revenge: Stop Opp Bonus",
+
+		"Backlash: - 2 Life",
+		//"Backlash: - 2 Life Min 2",
+		//"Backlash: - 2 Potion Min 2",
+		//"Backlash: - 2 Potion Min 2",
+		//"Backlash: Self Poison 2 Min 2",
 	};
 
 	//std::vector<std::string> ability_prefix_string {
