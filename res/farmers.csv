@@ -9,7 +9,7 @@ Bison Breeder,3,4,6,Courage: + 3 Power,The Bison Breeder is strong and tends to 
 Barn Builder,4,6,4,Defeat: + 4 Life,The Barn Builder can put a barn on your pot of land in less than a day. It is sturdy and can withstand the weather.,+ 2 Life
 Village Cook,4,6,5,Poison 2 Min 1,The Village Cook is the best cook around and makes superb stews.,+ 2 Life
 Expropriated Parent,4,4,8,Revenge: + 3 Power,"The Expropriated Parent had all of his land taken away by the king, gathered their things together and is now out for revenge.",+ 2 Life
-Land Owner,5,7,7,Steal - 1 Opp Potion Min 1,The Land Owner is there for the Farmers to get money out of the people trying to buy up land or even trying to steal it from the Farmers.,+ 2 Life
+Land Owner,5,7,7,Steal 1 Potion Min 1,The Land Owner is there for the Farmers to get money out of the people trying to buy up land or even trying to steal it from the Farmers.,+ 2 Life
 Druid,5,6,8,Stop Opp Ability,The Druid is often consulted when things regarding nature happen. He lives in his small tent that borders the forest.,+ 2 Life
 Shepherd,2,7,1,Stop Opp Ability,The Shepherd tends to his sheep on the pasture. He has a sheeping dog and a wooden stick.,+ 2 Life
 Pitchforker,3,6,4,Stop Opp Bonus,"The Pitchforker is angry and uses his pitchfork not only to move hay, but also impale people coming onto his farm.",+ 2 Life

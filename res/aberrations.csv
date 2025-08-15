@@ -14,8 +14,8 @@ Tendril Bearer,5,7,6,Defeat: - 3 Opp Life Min 2,"A hulking, hairy mass of a beas
 Amalgamation,5,7,7,Heal 1 Max 15,A light-yellow mass that can shoot energy beams by absorbing energy from the surrounding area.,Stop Opp Bonus
 Green Gazer,2,6,2,Poison 1 Min 1,"A small creature with hard, stone-like skin that has two green eyes that are above each other. It has vile vomit that it can spit on other creatures.",Stop Opp Bonus
 Hulking Frogman,4,8,2,Poison 2 Min 0,A huge humanoid creature with a teeth-spiked frog mouth that is dripping with poison.,Stop Opp Bonus
-Mindflayer,4,7,3,Steal - 2 Opp Life Min 1,A mindflayer with an octopus like head that sucks the brain out of people's skulls.,Stop Opp Bonus
-Void Horror,5,8,2,Steal - 3 Opp Life Min 1,A dark cloud of mist from which long insectoid claw-like blades emerge.,Stop Opp Bonus
+Mindflayer,4,7,3,Steal 2 Life Min 1,A mindflayer with an octopus like head that sucks the brain out of people's skulls.,Stop Opp Bonus
+Void Horror,5,8,2,Steal 3 Life Min 1,A dark cloud of mist from which long insectoid claw-like blades emerge.,Stop Opp Bonus
 Brain Dragon,5,7,7,Stop Opp Ability,A dragon with a gigantic brain mounted on its back that slithers to the wings and its head.,Stop Opp Bonus
 Evil Eye,4,6,6,Stop Opp Ability,A flying eye with immense pressure it opposes on creatures around it.,Stop Opp Bonus
 Enabler,4,7,5,Team: - 3 Opp Attack Min 12,A human with many connections that lets the aberrations run wild and offers them anything they want in order to take over the city.,Stop Opp Bonus

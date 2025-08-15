@@ -11,7 +11,7 @@ Injecter,3,8,2,+ 8 Attack,The Injecter carefully curates what he injects into hi
 Dope Fiend,2,5,5,Backlash: - 2 Life Min 2,"The Dope Fiend injects weird substances into his blood stream in order to feel better, though mostly he feels worse.",- 2 Opp Damage Min 1
 Gambler,2,5,3,Courage: - 3 Opp Power Min 2,The Gambler is usually found playing card or dice games for all the money he has. He is usually broke by the end of the day.,- 2 Opp Damage Min 1
 Ultraspritzer,5,7,7,Heal 2 Max 10,"The Ultraspritzer only drinks the finest, dark red, bubbly drinks that refresh the mind and the soul.",- 2 Opp Damage Min 1
-Chainsmoker,3,7,3,Steal - 1 Opp Life Min 1,"The Chainsmoker is always smoking something, even if it doesn't make sense. His lungs must be pitch black.",- 2 Opp Damage Min 1
+Chainsmoker,3,7,3,Steal 1 Life Min 1,"The Chainsmoker is always smoking something, even if it doesn't make sense. His lungs must be pitch black.",- 2 Opp Damage Min 1
 Frog Licker,2,6,2,Stop Opp Ability,The Frog Licker goes out of his way to search the swamps for fresh frogs to lick.,- 2 Opp Damage Min 1
 Herbalist,4,6,6,Stop Opp Ability,"The Herbalist provides many of the Junkies with their raw materials. Whether the herbs are smoked, cooked and injected, or simply eaten, he knows how to grow and tend to them.",- 2 Opp Damage Min 1
 Spiker,3,6,4,Stop Opp Bonus,The Spiker spikes his own drinks to get high and get away from his usual life.,- 2 Opp Damage Min 1

@@ -15,7 +15,7 @@ Sea Serpent,5,7,7,Poison 1 Min 1,A gargantuan serpent that not only poisons but 
 Rabies Bison,2,5,2,Power = Opp Power,A bison with rabies. It is volatile and angry.,+ 2 Power
 Mutated Gorilla,4,7,6,Revenge: + 1 Power,"Usually found in jungle-like biomes, this gorilla like monster possesses 4 massive arms to are able to break any creature.",+ 2 Power
 Flooded Spirit,3,6,5,Revenge: Stop Opp Bonus,A creature made of mud that can cover large distances quickly and resembles a flowing humanoid.,+ 2 Power
-Werewolf,3,5,5,Steal - 1 Opp Life Min 1,A fucking werewolf.,+ 2 Power
+Werewolf,3,5,5,Steal 1 Life Min 1,A fucking werewolf.,+ 2 Power
 Poison Lizard,3,6,4,Stop Opp Ability,"A poisonous lizard, which is emitting a disgusting stench.",+ 2 Power
 Hydra,4,8,4,Stop: - 3 Opp Life Min 2,A five-headed hydra.,+ 2 Power
 Sandworm,4,6,7,Stop: + 1 Power,A gargantuan sandworm that expulses sand at high speeds from its body and grinds down its victims with endless teeth.,+ 2 Power

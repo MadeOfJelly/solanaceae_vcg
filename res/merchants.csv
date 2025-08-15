@@ -14,7 +14,7 @@ Luxury Goods Merchant,4,5,7,Courage: + 12 Attack,"The Luxury Goods Merchant is e
 Fake Merchant,2,6,2,Defeat: - 2 Opp Potion Min 4,"The Fake Merchant is selling fake goods and will never appear at the same place twice. Additionally, he is always disguised when praising his excellent wares.",+ 8 Attack
 Remedy Merchant,3,6,3,Heal 2 Max 13,The Remedy Merchant has all kinds of balms and creams in stock that easy pain.,+ 8 Attack
 Envious Merchant,4,6,6,Revenge: - 3 Opp Damage Min 1,"The Envious Merchant is doing good in life, quite good actually. However, he strives for more and is envious of everyone who is having more sales, if only once.",+ 8 Attack
-Supply Chain Puppeteer,5,7,6,Steal - 2 Opp Potion Min 5,"The Supply Chain Puppeteer is the master of caravans, warehouses and pricing. He knows which goods go where and which route they take.",+ 8 Attack
+Supply Chain Puppeteer,5,7,6,Steal 2 Potion Min 5,"The Supply Chain Puppeteer is the master of caravans, warehouses and pricing. He knows which goods go where and which route they take.",+ 8 Attack
 Auctioneer,3,5,5,Stop Opp Ability,"The Auctioneer can be seen on the market place, screaming at the top of his lungs. He is trying to raise the best price for a product, though he might simply not hear you when he doesn't like you.",+ 8 Attack
 Supplier,3,6,4,Stop Opp Bonus,The Supplier is there for every Merchant and knows who needs what and when. He makes sure everyone gets their crates and packages.,+ 8 Attack
 Guild Leader,5,5,8,Team: - 4 Opp Attack Min 12,"The Guild Leader is the leader of the Merchants, at least on paper. He has many connections and will use them to keep his position of power.",+ 8 Attack
