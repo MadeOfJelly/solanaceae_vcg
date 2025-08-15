@@ -7,6 +7,7 @@
 
 #include "./cards/easy_cards.hpp"
 #include "./cards/random.hpp"
+#include "./cards/predefined_decks.hpp"
 
 #include <imgui.h>
 
@@ -58,9 +59,24 @@ VCGSPGUI::~VCGSPGUI(void) {
 
 float VCGSPGUI::render(float delta) {
 	if (ImGui::Begin("VCG sp")) {
+		const char* decks {"monsters1\0monsters+clerics1\0aberrations+parasites1\0dev (ingore)\0\0"};
+		static int deck_selection {0};
 		if (ImGui::Button("new game")) {
+			std::vector<Card> cards;
+			switch (deck_selection) {
+				case 0:
+					cards = Cards::monster_deck1();
+					break;
+				case 1:
+					cards = Cards::monster_cleric_deck1();
+					break;
+				case 2:
+					cards = Cards::aberration_parasites_deck1();
+				default:
+					cards = Cards::random();
+			}
 			//const auto cards = Cards::easy_cards();
-			const auto cards = Cards::random();
+			//const auto cards = Cards::random();
 
 			std::default_random_engine rng{std::random_device{}()};
 
@@ -73,6 +89,11 @@ float VCGSPGUI::render(float delta) {
 			_game->game_state.determineStartingPlayer(rng);
 
 			_game->phase = std::make_unique<PhaseCardSelection>();
+		}
+
+		ImGui::SameLine();
+		{
+			ImGui::Combo("select your deck", &deck_selection, decks);
 		}
 
 		if (_game) {
