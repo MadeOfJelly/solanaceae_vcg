@@ -487,7 +487,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::StopOppBonus>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_safe<Abilities::StopOppBonus>(ability.a)) {
+	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -498,7 +498,7 @@ template<typename T>
 requires
 	same_as_variants<T, Abilities::CopyPower>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	if (!holds_alternative_safe<Abilities::CopyPower>(ability.a)) {
+	if (!holds_alternative_safe<T>(ability.a)) {
 		return;
 	}
 	size_t opp_ridx = (ridx+1)%2;
@@ -958,6 +958,7 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	} else {
 		ImGui::TextUnformatted("bot wins round.");
 	}
+	ImGui::SameLine();
 	switch (reason) {
 		case Round::WinReason::ATTACK:
 			ImGui::TextUnformatted("by attack");
