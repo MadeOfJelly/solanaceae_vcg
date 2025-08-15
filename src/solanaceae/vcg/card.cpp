@@ -166,6 +166,24 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 			}
 		},
 		{
+			std::regex("([+-]) ([0-9]+) Life Min ([0-9]+)"),
+			[&](const std::smatch& m, auto& _a) {
+				_a = wfn(Abilities::LifeMin{
+					value_from_match(m[2].str(), m[1].str()),
+					value_from_match(m[3].str()),
+				});
+			}
+		},
+		{
+			std::regex("([+-]) ([0-9]+) Potion Min ([0-9]+)"),
+			[&](const std::smatch& m, auto& _a) {
+				_a = wfn(Abilities::PotionMin{
+					value_from_match(m[2].str(), m[1].str()),
+					value_from_match(m[3].str()),
+				});
+			}
+		},
+		{
 			std::regex("Heal ([0-9]+) Max ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
 				_a = wfn(Abilities::Heal{
@@ -178,6 +196,15 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 			std::regex("Poison ([0-9]+) Min ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
 				_a = wfn(Abilities::Poison{
+					value_from_match(m[1].str()),
+					value_from_match(m[2].str()),
+				});
+			}
+		},
+		{
+			std::regex("Self Poison ([0-9]+) Min ([0-9]+)"),
+			[&](const std::smatch& m, auto& _a) {
+				_a = wfn(Abilities::SelfPoison{
 					value_from_match(m[1].str()),
 					value_from_match(m[2].str()),
 				});

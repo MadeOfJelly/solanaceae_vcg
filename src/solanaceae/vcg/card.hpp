@@ -60,12 +60,27 @@ namespace Abilities {
 		int16_t value {0};
 	};
 
+	struct LifeMin {
+		int16_t value {0};
+		int16_t min {0};
+	};
+
+	struct PotionMin {
+		int16_t value {0};
+		int16_t min {0};
+	};
+
 	struct Heal {
 		int16_t value {0};
 		int16_t max {0};
 	};
 
 	struct Poison {
+		int16_t value {0};
+		int16_t min {0};
+	};
+
+	struct SelfPoison {
 		int16_t value {0};
 		int16_t min {0};
 	};
@@ -128,6 +143,8 @@ struct Ability {
 		Abilities::Attack,		// w
 		Abilities::Life,		// w
 		Abilities::Potion,		// w
+		Abilities::LifeMin,
+		Abilities::PotionMin,
 
 		Abilities::CopyDamage,	// w
 		Abilities::CopyPower,	// w
@@ -136,6 +153,7 @@ struct Ability {
 
 		Abilities::Heal,
 		Abilities::Poison,
+		Abilities::SelfPoison,
 		Abilities::RecoverPotions,	// w
 
 		Abilities::StopOppAbility,
@@ -146,9 +164,12 @@ struct Ability {
 		Abilities::Defeat<Abilities::OppPotion>,
 		Abilities::Defeat<Abilities::Life>,				// w
 		Abilities::Defeat<Abilities::Potion>,			// w
+		Abilities::Defeat<Abilities::LifeMin>,
+		Abilities::Defeat<Abilities::PotionMin>,
 		Abilities::Defeat<Abilities::LifePerDamage>, // ???
 		Abilities::Defeat<Abilities::Heal>,
 		Abilities::Defeat<Abilities::Poison>,
+		Abilities::Defeat<Abilities::SelfPoison>,
 		Abilities::Defeat<Abilities::RecoverPotions>,	// w
 
 
@@ -164,6 +185,8 @@ struct Ability {
 
 		Abilities::Stop<Abilities::Life>, //
 		Abilities::Stop<Abilities::Potion>,
+		Abilities::Stop<Abilities::LifeMin>,
+		Abilities::Stop<Abilities::PotionMin>,
 
 		Abilities::Stop<Abilities::CopyDamage>,
 		Abilities::Stop<Abilities::CopyPower>,
@@ -172,6 +195,7 @@ struct Ability {
 
 		Abilities::Stop<Abilities::Heal>,
 		Abilities::Stop<Abilities::Poison>,
+		Abilities::Stop<Abilities::SelfPoison>,
 		Abilities::Stop<Abilities::RecoverPotions>,
 
 		// meh
@@ -203,11 +227,14 @@ struct Ability {
 		Abilities::Revenge<Abilities::Attack>,
 		Abilities::Revenge<Abilities::Life>,
 		Abilities::Revenge<Abilities::Potion>, //
+		Abilities::Revenge<Abilities::LifeMin>,
+		Abilities::Revenge<Abilities::PotionMin>,
 		Abilities::Revenge<Abilities::CopyDamage>,
 		Abilities::Revenge<Abilities::CopyPower>,
 		Abilities::Revenge<Abilities::LifePerDamage>,
 		Abilities::Revenge<Abilities::Heal>,
 		Abilities::Revenge<Abilities::Poison>,
+		Abilities::Revenge<Abilities::SelfPoison>,
 		Abilities::Revenge<Abilities::RecoverPotions>,
 		Abilities::Revenge<Abilities::StopOppAbility>,
 		Abilities::Revenge<Abilities::StopOppBonus>, //
@@ -223,11 +250,14 @@ struct Ability {
 		Abilities::Team<Abilities::Attack>, //
 		Abilities::Team<Abilities::Life>, //
 		Abilities::Team<Abilities::Potion>, //
+		Abilities::Team<Abilities::LifeMin>,
+		Abilities::Team<Abilities::PotionMin>,
 		Abilities::Team<Abilities::CopyDamage>,
 		Abilities::Team<Abilities::CopyPower>,
 		Abilities::Team<Abilities::LifePerDamage>,
 		Abilities::Team<Abilities::Heal>,
 		Abilities::Team<Abilities::Poison>,
+		Abilities::Team<Abilities::SelfPoison>,
 		Abilities::Team<Abilities::RecoverPotions>,
 		Abilities::Team<Abilities::StopOppAbility>,
 		Abilities::Team<Abilities::StopOppBonus>

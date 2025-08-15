@@ -31,6 +31,9 @@ int main(void) {
 		"+ 2 Potion",
 		"- 2 Potion",
 
+		"- 2 Life Min 2",
+		"- 2 Potion Min 2",
+
 		//Damage = Opp Damage,The Damage of this Card is equal to the base Damage of the opposing Card.
 		"Damage = Opp Damage",
 		//Power = Opp Power,The Power of this Card is equal to the base Power of the opposing Card.
@@ -44,6 +47,7 @@ int main(void) {
 
 		//Poison X Min Y,"If this Card wins the Battle, the enemy takes X damage after each of the following Battles down to a minimum of Y. Between multiple poisons, only the strongest is applied, unless another poison would deal more damage due to the minimum of Y. Poison always acts after Heal."
 		"Poison 2 Min 2",
+		"Self Poison 2 Min 2",
 
 		//Recover 1 of 2 Potion,"After the Battle, you recover 50% of the Potions the Card had, rounded up. This includes the Potion it has by default."
 		"Recover 1 of 2 Potion",
@@ -118,10 +122,9 @@ int main(void) {
 		"Revenge: Stop Opp Bonus",
 
 		"Backlash: - 2 Life",
-		//"Backlash: - 2 Life Min 2",
-		//"Backlash: - 2 Potion Min 2",
-		//"Backlash: - 2 Potion Min 2",
-		//"Backlash: Self Poison 2 Min 2",
+		"Backlash: - 2 Life Min 2",
+		"Backlash: - 2 Potion Min 2",
+		"Backlash: Self Poison 2 Min 2",
 
 		"Team: - 2 Opp Power Min 2",
 		"Team: - 2 Opp Damage Min 2",
