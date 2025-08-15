@@ -59,11 +59,17 @@ constexpr bool ability_has_min<Abilities::OppPower>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::OppAttack>(void) { return true; }
 template <>
+constexpr bool ability_has_min<Abilities::LifeMin>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::PotionMin>(void) { return true; }
+template <>
 constexpr bool ability_has_min<Abilities::OppLife>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::OppPotion>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::Poison>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::SelfPoison>(void) { return true; }
 
 template <typename T>
 constexpr bool ability_has_min(void)
@@ -86,16 +92,18 @@ constexpr bool ability_has_max(void)
 
 
 // TODO: fragile, runtime
+// out of date?
 bool holds_defeat(const auto& a) {
 	return
 		std::holds_alternative<Abilities::Defeat<Abilities::Life>>(a.a) ||
-		std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
-		std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
-		std::holds_alternative<Abilities::Defeat<Abilities::OppLife>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::Potion>>(a.a) ||
-		std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::OppLife>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::OppPotion>>(a.a) ||
-		std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a)
+		std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::SelfPoison>>(a.a)
 	;
 }
 
@@ -111,11 +119,14 @@ bool holds_stop_activation(const auto& a) {
 		std::holds_alternative<Abilities::Stop<Abilities::Attack>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::Life>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::LifeMin>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::PotionMin>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::LifePerDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::Heal>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::StopOppBonus>>(a.a)
@@ -149,11 +160,14 @@ bool holds_revenge(const auto& a) {
 		std::holds_alternative<Abilities::Revenge<Abilities::Attack>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::Life>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::LifeMin>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::PotionMin>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::LifePerDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::Heal>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::StopOppBonus>>(a.a)
@@ -172,11 +186,14 @@ bool holds_team(const auto& a) {
 		std::holds_alternative<Abilities::Team<Abilities::Attack>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::Life>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::LifeMin>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::PotionMin>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::LifePerDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::Heal>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::StopOppBonus>>(a.a)
@@ -581,7 +598,8 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	same_as_variants<T, Abilities::Life>
+	same_as_variants<T, Abilities::Life> ||
+	same_as_variants<T, Abilities::LifeMin>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<T>(
 		round.volatile_temps.at(ridx).hp,
@@ -602,10 +620,22 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
-	same_as_variants<T, Abilities::Potion>
+	same_as_variants<T, Abilities::Potion> ||
+	same_as_variants<T, Abilities::PotionMin>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<T>(
 		round.volatile_temps.at(ridx).pots,
+		ability
+	);
+}
+
+template<typename T>
+requires
+	same_as_variants<T, Abilities::OppPotion>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	apply_value_ability<T>(
+		round.volatile_temps.at(opp_ridx).pots,
 		ability
 	);
 }
@@ -618,17 +648,6 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 		return;
 	}
 	round.volatile_temps.at(ridx).pots += (round.turns.at(ridx).pots+2) / 2;
-}
-
-template<typename T>
-requires
-	same_as_variants<T, Abilities::OppPotion>
-void doAbility(Round& round, size_t ridx, const Ability& ability) {
-	size_t opp_ridx = (ridx+1)%2;
-	apply_value_ability<T>(
-		round.volatile_temps.at(opp_ridx).pots,
-		ability
-	);
 }
 
 template<typename T>
@@ -658,6 +677,20 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 	// add to round stack
 	round.poisons.at(opp_ridx).emplace_back(p_v, p_m);
+}
+
+template<typename T>
+requires
+	same_as_variants<T, Abilities::SelfPoison>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	if (!holds_alternative_safe<T>(ability.a)) {
+		return;
+	}
+
+	auto [p_v, p_m] = get_variants<Abilities::SelfPoison>(ability.a);
+
+	// add to round stack to self
+	round.poisons.at(ridx).emplace_back(p_v, p_m);
 }
 
 template<typename T>
@@ -837,26 +870,32 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 	{ // win
 		doAbilitiesPlayer<
 			Abilities::Life,
-			Abilities::Poison,
-			Abilities::Heal,
-			Abilities::OppLife,
 			Abilities::Potion,
-			Abilities::RecoverPotions,
+			Abilities::LifeMin,
+			Abilities::PotionMin,
+			Abilities::OppLife,
 			Abilities::OppPotion,
-			Abilities::LifePerDamage
+			Abilities::RecoverPotions,
+			Abilities::LifePerDamage,
+			Abilities::Poison,
+			Abilities::SelfPoison,
+			Abilities::Heal
 		>(gs, round, win_ridx);
 	}
 
 	{ // loose (defeat)
 		doAbilitiesPlayer<
 			Abilities::Defeat<Abilities::Life>,
-			Abilities::Defeat<Abilities::Poison>,
-			Abilities::Defeat<Abilities::Heal>,
-			Abilities::Defeat<Abilities::OppLife>,
 			Abilities::Defeat<Abilities::Potion>,
+			Abilities::Defeat<Abilities::LifeMin>,
+			Abilities::Defeat<Abilities::PotionMin>,
+			Abilities::Defeat<Abilities::OppLife>,
+			Abilities::Defeat<Abilities::OppPotion>,
 			Abilities::Defeat<Abilities::RecoverPotions>,
-			Abilities::Defeat<Abilities::OppPotion>
 			//Abilities::Defeat<Abilities::LifePerDamage> // ??
+			Abilities::Defeat<Abilities::Poison>,
+			Abilities::Defeat<Abilities::SelfPoison>,
+			Abilities::Defeat<Abilities::Heal>
 		>(gs, round, loose_ridx);
 	}
 
@@ -1002,7 +1041,7 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 		}
 		ImGui::Unindent();
 	}
-	if (!round->poisons.at(human_idx).empty()) {
+	if (!round->heals.at(human_idx).empty()) {
 		ImGui::Text("you received heal:");
 		ImGui::Indent();
 		for (const auto& heal : round->heals.at(human_idx)) {
