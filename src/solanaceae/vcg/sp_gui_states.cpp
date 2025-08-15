@@ -67,6 +67,10 @@ constexpr bool ability_has_min<Abilities::OppLife>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::OppPotion>(void) { return true; }
 template <>
+constexpr bool ability_has_min<Abilities::StealLife>(void) { return true; }
+template <>
+constexpr bool ability_has_min<Abilities::StealPotion>(void) { return true; }
+template <>
 constexpr bool ability_has_min<Abilities::Poison>(void) { return true; }
 template <>
 constexpr bool ability_has_min<Abilities::SelfPoison>(void) { return true; }
@@ -99,6 +103,8 @@ bool holds_defeat(const auto& a) {
 		std::holds_alternative<Abilities::Defeat<Abilities::Potion>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::OppLife>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::OppPotion>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::StealLife>>(a.a) ||
+		std::holds_alternative<Abilities::Defeat<Abilities::StealPotion>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::LifePerDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Defeat<Abilities::Heal>>(a.a) ||
@@ -121,6 +127,8 @@ bool holds_stop_activation(const auto& a) {
 		std::holds_alternative<Abilities::Stop<Abilities::Potion>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::LifeMin>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::PotionMin>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::StealLife>>(a.a) ||
+		std::holds_alternative<Abilities::Stop<Abilities::StealPotion>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::LifePerDamage>>(a.a) ||
@@ -162,6 +170,8 @@ bool holds_revenge(const auto& a) {
 		std::holds_alternative<Abilities::Revenge<Abilities::Potion>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::LifeMin>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::PotionMin>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::StealLife>>(a.a) ||
+		std::holds_alternative<Abilities::Revenge<Abilities::StealPotion>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::LifePerDamage>>(a.a) ||
@@ -188,6 +198,8 @@ bool holds_team(const auto& a) {
 		std::holds_alternative<Abilities::Team<Abilities::Potion>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::LifeMin>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::PotionMin>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::StealLife>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::StealPotion>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::LifePerDamage>>(a.a) ||
@@ -250,17 +262,19 @@ constexpr bool ability_type_possible(void) {
 }
 
 template<typename T>
-static bool apply_value_ability(int16_t& value, const Ability& a) {
+static bool apply_value_ability(int16_t& value, const Ability& a, bool invert_value = false) {
 	if constexpr (ability_type_possible<T>()) {
 		if (std::holds_alternative<T>(a.a)) {
-			const auto& a_v = std::get<T>(a.a);
+			const auto& a_var = std::get<T>(a.a);
 			const auto value_before = value;
 
-			value += get_ability_value(a_v);
+			const int16_t a_value = get_ability_value(a_var) * (invert_value ? -1 : 1);
+
+			value += a_value;
 
 			if constexpr (ability_has_min<T>()) {
-				if (get_ability_value(a_v) < 0) {
-					value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_v)));
+				if (a_value < 0) {
+					value = std::min<int16_t>(value_before, std::max<int16_t>(value, a_value));
 				} // else cant dip
 			} else if constexpr (ability_has_max<T>()) {
 				static_assert(false);
@@ -620,6 +634,21 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 
 template<typename T>
 requires
+	same_as_variants<T, Abilities::StealLife>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	const auto value_before = round.volatile_temps.at(opp_ridx).hp;
+	apply_value_ability<T>(
+		round.volatile_temps.at(opp_ridx).hp,
+		ability,
+		true
+	);
+	const auto diff = value_before - round.volatile_temps.at(opp_ridx).hp;
+	round.volatile_temps.at(ridx).hp += diff; // steal
+}
+
+template<typename T>
+requires
 	same_as_variants<T, Abilities::Potion> ||
 	same_as_variants<T, Abilities::PotionMin>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
@@ -638,6 +667,21 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 		round.volatile_temps.at(opp_ridx).pots,
 		ability
 	);
+}
+
+template<typename T>
+requires
+	same_as_variants<T, Abilities::StealPotion>
+void doAbility(Round& round, size_t ridx, const Ability& ability) {
+	size_t opp_ridx = (ridx+1)%2;
+	const auto value_before = round.volatile_temps.at(opp_ridx).pots;
+	apply_value_ability<T>(
+		round.volatile_temps.at(opp_ridx).pots,
+		ability,
+		true
+	);
+	const auto diff = value_before - round.volatile_temps.at(opp_ridx).pots;
+	round.volatile_temps.at(ridx).pots += diff; // steal
 }
 
 template<typename T>
@@ -875,6 +919,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::PotionMin,
 			Abilities::OppLife,
 			Abilities::OppPotion,
+			Abilities::StealLife,
+			Abilities::StealPotion,
 			Abilities::RecoverPotions,
 			Abilities::LifePerDamage,
 			Abilities::Poison,
@@ -891,6 +937,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::Defeat<Abilities::PotionMin>,
 			Abilities::Defeat<Abilities::OppLife>,
 			Abilities::Defeat<Abilities::OppPotion>,
+			Abilities::Defeat<Abilities::StealLife>,
+			Abilities::Defeat<Abilities::StealPotion>,
 			Abilities::Defeat<Abilities::RecoverPotions>,
 			//Abilities::Defeat<Abilities::LifePerDamage> // ??
 			Abilities::Defeat<Abilities::Poison>,
