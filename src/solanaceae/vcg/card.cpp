@@ -246,6 +246,17 @@ Ability::Ability(const std::string& _string) : string(_string) {
 		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
 		if (applyRegexMatchers(substring, smvA, a)) { return; }
 		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+	} else if (string.starts_with("Team: ")) {
+		static auto fn = [](auto&& a_){ return Abilities::Team{std::move(a_)}; };
+		static auto smvPreA = genMatchersPreAttack(fn);
+		static auto smvA = genMatchersAttack(fn);
+		static auto smvPostA = genMatchersPostAttack(fn);
+
+		const auto substring = string.substr(std::string_view{"Team: "}.size());
+
+		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
+		if (applyRegexMatchers(substring, smvA, a)) { return; }
+		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
 	} else if (string.starts_with("Backlash: ")) {
 		// does nothing special
 		static auto smvPreA = genMatchersPreAttack(empty_fn);

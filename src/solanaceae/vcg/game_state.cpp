@@ -17,6 +17,21 @@ bool TurnSelection::haveFactionBonus(void) const {
 	return false;
 }
 
+size_t TurnSelection::sameFaction(void) const {
+	const auto& current_card = card();
+	size_t count {0};
+	for (size_t i = 0; i < deck.size(); i++) {
+		if (i == card_idx) {
+			continue; // skip self
+		}
+
+		if (current_card.faction_bonus == deck.at(i).faction_bonus) {
+			count++;
+		}
+	}
+	return count;
+}
+
 std::string TurnSelection::toString(void) const {
 	std::string str;
 	str += "{" + card().toStringNLPD() + "},pots:" + std::to_string(pots);

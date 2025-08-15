@@ -160,6 +160,29 @@ bool holds_revenge(const auto& a) {
 	;
 }
 
+bool holds_team(const auto& a) {
+	return
+		std::holds_alternative<Abilities::Team<Abilities::OppDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::OppPower>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::OppAttack>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::OppLife>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::OppPotion>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Damage>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Power>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Attack>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Life>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Potion>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::CopyDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::CopyPower>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::LifePerDamage>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Heal>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::RecoverPotions>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::StopOppAbility>>(a.a) ||
+		std::holds_alternative<Abilities::Team<Abilities::StopOppBonus>>(a.a)
+	;
+}
+
 template<typename T>
 constexpr const auto& get_ability_value(const T& a)
 	requires requires(T t) { t.value; }
@@ -221,7 +244,7 @@ static bool apply_value_ability(int16_t& value, const Ability& a) {
 			if constexpr (ability_has_min<T>()) {
 				if (get_ability_value(a_v) < 0) {
 					value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_v)));
-				} // TODO: max(min()) for > 0?
+				} // else cant dip
 			} else if constexpr (ability_has_max<T>()) {
 				static_assert(false);
 			}
@@ -370,7 +393,8 @@ concept same_as_variants =
 	std::same_as<T, Abilities::Defeat<A>> ||
 	std::same_as<T, Abilities::Stop<A>> ||
 	std::same_as<T, Abilities::Courage<A>> ||
-	std::same_as<T, Abilities::Revenge<A>>
+	std::same_as<T, Abilities::Revenge<A>> ||
+	std::same_as<T, Abilities::Team<A>>
 ;
 
 template<typename T, typename... Args>
@@ -402,7 +426,8 @@ bool holds_alternative_variants_extra(const auto& variant) {
 		holds_alternative_safe<Abilities::Defeat<A>>(variant) ||
 		holds_alternative_safe<Abilities::Stop<A>>(variant) ||
 		holds_alternative_safe<Abilities::Courage<A>>(variant) ||
-		holds_alternative_safe<Abilities::Revenge<A>>(variant)
+		holds_alternative_safe<Abilities::Revenge<A>>(variant) ||
+		holds_alternative_safe<Abilities::Team<A>>(variant)
 	;
 }
 
@@ -431,6 +456,8 @@ const T& get_variants(const std::variant<Args...>& v) {
 		return get_safe<Abilities::Courage<T>>(v).inner;
 	} else if (holds_alternative_safe<Abilities::Revenge<T>>(v)) {
 		return get_safe<Abilities::Revenge<T>>(v).inner;
+	} else if (holds_alternative_safe<Abilities::Team<T>>(v)) {
+		return get_safe<Abilities::Team<T>>(v).inner;
 	} else {
 		assert(false);
 		static T t{};
@@ -668,6 +695,22 @@ void doAbilitiesPlayerWrapRevenge(const GameState& gs, Round& round, size_t ridx
 }
 
 template<typename T>
+void doAbilitiesPlayerWrapTeam(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
+	const auto& card = round.turns.at(ridx).card();
+	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
+
+	if (holds_team(ability)) {
+		size_t number_of_activations = round.turns.at(ridx).sameFaction() + 1; // TODO: +1 to include self?
+		for (size_t i = 0; i < number_of_activations; i++) {
+			// HACK: runtime type injection
+			doAbilitiesPlayerWrapRevenge<Abilities::Team<T>>(gs, round, ridx, faction_bonus);
+		}
+	} else {
+		doAbilitiesPlayerWrapRevenge<T>(gs, round, ridx, faction_bonus);
+	}
+}
+
+template<typename T>
 void doAbilitiesPlayerWrapStop(const GameState& gs, Round& round, size_t ridx, bool faction_bonus) {
 	const auto& card = round.turns.at(ridx).card();
 	const auto& ability = faction_bonus ? card.faction_bonus : card.ability;
@@ -675,9 +718,9 @@ void doAbilitiesPlayerWrapStop(const GameState& gs, Round& round, size_t ridx, b
 	if (holds_stop_activation(ability) == round.card_stopped.at(ridx).at(0+faction_bonus)) {
 		if (holds_stop_activation(ability)) {
 			// HACK: runtime type injection
-			doAbilitiesPlayerWrapRevenge<Abilities::Stop<T>>(gs, round, ridx, faction_bonus);
+			doAbilitiesPlayerWrapTeam<Abilities::Stop<T>>(gs, round, ridx, faction_bonus);
 		} else {
-			doAbilitiesPlayerWrapRevenge<T>(gs, round, ridx, faction_bonus);
+			doAbilitiesPlayerWrapTeam<T>(gs, round, ridx, faction_bonus);
 		}
 	}
 }

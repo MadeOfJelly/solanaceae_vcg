@@ -25,6 +25,8 @@ struct TurnSelection {
 	const Card& card(void) const { return deck.at(card_idx); }
 
 	bool haveFactionBonus(void) const;
+	// number of other cards in deck(hand) of the same faction
+	size_t sameFaction(void) const;
 
 	std::string toString(void) const;
 	void printSelection(void) const;

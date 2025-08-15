@@ -102,6 +102,12 @@ namespace Abilities {
 		Inner inner;
 	};
 	template<typename Inner> Revenge( Inner ) -> Revenge<Inner>;
+
+	template<typename Inner>
+	struct Team {
+		Inner inner;
+	};
+	template<typename Inner> Team( Inner ) -> Team<Inner>;
 }
 
 int16_t value_from_match(const std::string& match, const std::string& sign = "+");
@@ -204,7 +210,27 @@ struct Ability {
 		Abilities::Revenge<Abilities::Poison>,
 		Abilities::Revenge<Abilities::RecoverPotions>,
 		Abilities::Revenge<Abilities::StopOppAbility>,
-		Abilities::Revenge<Abilities::StopOppBonus> //
+		Abilities::Revenge<Abilities::StopOppBonus>, //
+
+
+		Abilities::Team<Abilities::OppDamage>,
+		Abilities::Team<Abilities::OppPower>,
+		Abilities::Team<Abilities::OppAttack>, //
+		Abilities::Team<Abilities::OppLife>, //
+		Abilities::Team<Abilities::OppPotion>,
+		Abilities::Team<Abilities::Damage>, //
+		Abilities::Team<Abilities::Power>, //
+		Abilities::Team<Abilities::Attack>, //
+		Abilities::Team<Abilities::Life>, //
+		Abilities::Team<Abilities::Potion>, //
+		Abilities::Team<Abilities::CopyDamage>,
+		Abilities::Team<Abilities::CopyPower>,
+		Abilities::Team<Abilities::LifePerDamage>,
+		Abilities::Team<Abilities::Heal>,
+		Abilities::Team<Abilities::Poison>,
+		Abilities::Team<Abilities::RecoverPotions>,
+		Abilities::Team<Abilities::StopOppAbility>,
+		Abilities::Team<Abilities::StopOppBonus>
 	> a;
 
 	std::string string;

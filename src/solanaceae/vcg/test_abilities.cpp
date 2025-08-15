@@ -122,6 +122,25 @@ int main(void) {
 		//"Backlash: - 2 Potion Min 2",
 		//"Backlash: - 2 Potion Min 2",
 		//"Backlash: Self Poison 2 Min 2",
+
+		"Team: - 2 Opp Power Min 2",
+		"Team: - 2 Opp Damage Min 2",
+		"Team: - 2 Opp Attack Min 2",
+		"Team: - 2 Opp Life Min 2",
+		"Team: - 2 Opp Potion Min 2",
+		"Team: + 2 Power",
+		"Team: + 2 Damage",
+		"Team: + 2 Attack",
+		"Team: + 2 Life",
+		"Team: + 2 Potion",
+		"Team: Damage = Opp Damage",
+		"Team: Power = Opp Power",
+		"Team: + 2 Life per Damage",
+		"Team: Heal 2 Max 2",
+		"Team: Poison 2 Min 2",
+		"Team: Recover 1 of 2 Potion",
+		//"Team: Stop Opp Ability",
+		//"Team: Stop Opp Bonus",
 	};
 
 	//std::vector<std::string> ability_prefix_string {
