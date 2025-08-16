@@ -110,7 +110,7 @@ target_link_libraries(test1 PUBLIC solanaceae_vcg)
 
 ########################################
 
-if(BUILD_TESTING)
+if(SOLANACEAE_VCG_BUILD_TESTING)
 	add_executable(vcg_test_abilities
 		./solanaceae/vcg/test_abilities.cpp
 	)
