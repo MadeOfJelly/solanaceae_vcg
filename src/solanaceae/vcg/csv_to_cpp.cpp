@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 
 	std::ifstream csv{argv[1], std::ios::binary};
 	if (!csv.is_open()) {
-		std::cerr << "error: cant open in file\n";
+		std::cerr << "error: cant open csv file '" << argv[1] << "'\n";
 		return 2;
 	}
 
@@ -39,7 +39,10 @@ int main(int argc, char** argv) {
 	std::ofstream hpp{std::filesystem::path{argv[2]} / (std::string{set_name_sv} + ".hpp"), std::ios::binary};
 	std::ofstream cpp{std::filesystem::path{argv[2]} / (std::string{set_name_sv} + ".cpp"), std::ios::binary};
 	if (!hpp.is_open() || !cpp.is_open()) {
-		std::cerr << "error: cant open out files\n";
+		std::cerr << "error: cant open out files"
+			" '" << std::filesystem::path{argv[2]} / (std::string{set_name_sv} + ".hpp") << "'"
+			" '" << std::filesystem::path{argv[2]} / (std::string{set_name_sv} + ".cpp") << "'"
+			"\n";
 		return 3;
 	}
 
@@ -154,6 +157,11 @@ std::vector<Card> )xxx" << set_name_sv << R"xxx((void);
 
 	cpp << "	};\n";
 	cpp << "}\n";
+
+	hpp.close();
+	cpp.close();
+
+	std::cout << "csv converted\n";
 
 	return 0;
 }

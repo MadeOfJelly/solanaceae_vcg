@@ -1,0 +1,25 @@
+#include "./thieves.hpp"
+
+std::vector<Card> Cards::thieves(void) {
+	return {
+		{"Pickpocket",2,5,2,{"- 12 Opp Attack Min 12"},{"Steal 1 Potion Min 1"},"Small and nimble, the pickpocket moves between crowds, picking the pockets of everyone in their vicinity."},
+		{"Lookout",2,5,3,{"- 2 Opp Damage Min 1"},{"Steal 1 Potion Min 1"},"An inconspicious person checking the streets of the city, sitting on a wooden crate. It is hard to make them out in the crowd or determine their facial features."},
+		{"Thug",4,7,5,{"- 3 Opp Damage Min 3"},{"Steal 1 Potion Min 1"},"Mostly found around the hideouts of the Thieves, the Thug is a sturdy boulder of a man, ready to throw you into the next alley."},
+		{"Burglar",3,6,4,{"+ 2 Potion"},{"Steal 1 Potion Min 1"},"A hooded burglar with a grappling hook and simple brown clothing. No balcony or window is safe when he is out on the streets. A slight grin runs across the burglar's face."},
+		{"Robber",3,7,3,{"+ 2 Power"},{"Steal 1 Potion Min 1"},"A robber is going into the homes of people to steal more expensive valuables, though they are not against any violence if that may be necessary to optain wealth. Light leather armor and a blunt sword are their basic equipment."},
+		{"Mugger",3,6,4,{"Courage: + 3 Power"},{"Steal 1 Potion Min 1"},"Sometimes to rough, the mugger also uses force to get to the goods that people carry with them. Hereby the mugging may also take place in the sight of guards, though a quick swing of the club leaves its victims unconscious."},
+		{"Child Thief",2,5,3,{"Defeat: - 2 Opp Potion Min 3"},{"Steal 1 Potion Min 1"},"A small child that fronts as homeless with its ragged grey clothing and misaligned hair. When you give it some coins you should always check your purse afterwards, as more are going to be missing."},
+		{"Homebrewer",3,7,2,{"Heal 2 Max 13"},{"Steal 1 Potion Min 1"},"This guy is bald and trying his best to brew usable potions in the small wooden shack he calls his home. He is already missing a finger, but his eyes light up when the liquid in the cauldron does."},
+		{"Childless Parent",4,6,5,{"Revenge: - 5 Opp Damage Min 2"},{"Steal 1 Potion Min 1"},"An angry parent that lost its children to malnutrition and poverty. It is out for revenge and angry at teh world, though that will not bring back its children from the dead. The rage can be seen in the parent's eyes, while their hands try to snatch everything they can get their hands on."},
+		{"Scammer",2,6,2,{"Steal 1 Potion Min 1"},{"Steal 1 Potion Min 1"},"Talkative and with a slight grin, the scammer takes your stuff when you least expect it. Whether it be a great performance, or bumping into a person, he gets his hands on the stuff he needs."},
+		{"Smuggler",4,6,4,{"Steal 2 Life Min 1"},{"Steal 1 Potion Min 1"},"The Smuggler knows his way around the region and the city. He always knows which route to take with his caravan, which alley to wait in, and when to pass the city gates."},
+		{"Societary Leech",3,6,2,{"Steal 2 Life Min 1"},{"Steal 1 Potion Min 1"},"The societary leech doesn't lift a finger to get all the benefits of the state."},
+		{"Trade Route Camper",4,6,4,{"Steal 2 Potion Min 1"},{"Steal 1 Potion Min 1"},"Hated by many, the Trade Route Camper has insider knowledge into the Merchants. Hidden between the bushes on the way to the city, he lies in wait to get his hands on the freshest wares being brought into the city."},
+		{"Chokehold",5,8,4,{"Steal 3 Potion Min 3"},{"Steal 1 Potion Min 1"},"A massive hooded beast of a man that will tickle every coin out of your possession by choking you with its massive arms. No face may be seen, as the hood leaves a dark shadow on the man's face."},
+		{"Con Artist",3,8,2,{"Stop Opp Ability"},{"Steal 1 Potion Min 1"},"Always knowing what to say to sell you on a bullshit product, the Con Artist sells different stuff each day of the week. Sometimes it is magical swords and other times it is cheap tickets to the theatre."},
+		{"Fortune Teller",3,6,4,{"Stop Opp Bonus"},{"Steal 1 Potion Min 1"},"The local blind fortune teller in their small shack in the city. A crystal ball sits amidst a table that is alight with a few candles. Silver strands of hair run across the face of the woman."},
+		{"Noble's Horror",5,7,7,{"Stop Opp Bonus"},{"Steal 1 Potion Min 1"},"Appearing at their parties, appearing inconspicious, the Noble's Horror is never seen, but often heard of. A charismatic man you wouldn't dare to give bad motives, but those he has."},
+		{"Stash Keeper",4,6,5,{"Team: + 1 Potion"},{"Steal 1 Potion Min 1"},"While being in charge of the stash, the Stash Keeper gained the knowledge of always being aware when it is the best time to move the stash. Rogue members might try to take stuff from the stash, or other factions might try to get their hands on the Thieves loot, but the Stash Keeper will already have switched to house the goods are stored in."},
+		{"Mastermind",5,7,7,{"Team: + 3 Attack"},{"Steal 1 Potion Min 1"},"Not much is known of the mastermind. It is depicted as a hooded figure, though everything is touched in shadows."},
+	};
+}

@@ -9,7 +9,11 @@ target_compile_features(vcg_csv_to_cpp PUBLIC cxx_std_20)
 
 ########################################
 
-add_library(solanaceae_vcg
+add_library(solanaceae_vcg)
+
+# TODO: make cpp private
+# TODO: split lib
+target_sources(solanaceae_vcg PUBLIC
 	./solanaceae/vcg/card.hpp
 	./solanaceae/vcg/card.cpp
 
@@ -31,6 +35,60 @@ add_library(solanaceae_vcg
 	./solanaceae/vcg/vcg_sp_gui.hpp
 	./solanaceae/vcg/vcg_sp_gui.cpp
 )
+
+#function(cards2cpp faction)
+#    add_custom_target(cards2cpp_${faction} ALL
+#        vcg_csv_to_cpp ${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv .
+#        BYPRODUCTS ${faction}.hpp ${faction}.cpp
+#        SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv
+#    )
+
+#    target_sources(solanaceae_vcg
+#        PUBLIC
+#            ${CMAKE_CURRENT_BINARY_DIR}/${faction}.hpp
+#        PRIVATE
+#            ${CMAKE_CURRENT_BINARY_DIR}/${faction}.cpp
+#    )
+#endfunction()
+
+function(cards2cpp faction)
+	# simple hack, since we write the files to the soruce tree
+	if(NOT CMAKE_CROSSCOMPILING)
+		add_custom_target(cards2cpp_${faction} ALL
+			vcg_csv_to_cpp ${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv ${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards
+			BYPRODUCTS
+				${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.hpp
+				${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.cpp
+			SOURCES
+				${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv
+		)
+	endif()
+
+	target_sources(solanaceae_vcg
+		PUBLIC
+			${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.hpp
+		PRIVATE
+			${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.cpp
+	)
+endfunction()
+
+cards2cpp(aberrations)
+cards2cpp(assassins)
+cards2cpp(bandits)
+cards2cpp(clerics)
+cards2cpp(crafters)
+cards2cpp(cultists)
+#cards2cpp(easy_cards)
+cards2cpp(farmers)
+cards2cpp(invaders)
+cards2cpp(junkies)
+cards2cpp(mages)
+cards2cpp(merchants)
+cards2cpp(monsters)
+cards2cpp(nobles)
+cards2cpp(parasites)
+#cards2cpp(supporters)
+cards2cpp(thieves)
 
 target_include_directories(solanaceae_vcg PUBLIC .)
 target_compile_features(solanaceae_vcg PUBLIC cxx_std_20)
