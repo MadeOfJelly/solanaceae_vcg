@@ -102,11 +102,11 @@ target_link_libraries(solanaceae_vcg PUBLIC
 
 ########################################
 
-add_executable(test1
+add_executable(vcg_test1
 	./solanaceae/vcg/test1.cpp
 )
 
-target_link_libraries(test1 PUBLIC solanaceae_vcg)
+target_link_libraries(vcg_test1 PUBLIC solanaceae_vcg)
 
 ########################################
 
