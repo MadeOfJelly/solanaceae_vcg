@@ -274,7 +274,7 @@ static bool apply_value_ability(int16_t& value, const Ability& a, bool invert_va
 
 			if constexpr (ability_has_min<T>()) {
 				if (a_value < 0) {
-					value = std::min<int16_t>(value_before, std::max<int16_t>(value, a_value));
+					value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_var)));
 				} // else cant dip
 			} else if constexpr (ability_has_max<T>()) {
 				static_assert(false);

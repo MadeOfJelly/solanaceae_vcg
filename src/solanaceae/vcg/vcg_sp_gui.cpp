@@ -5,9 +5,24 @@
 
 #include "./sp_gui_states.hpp"
 
+#include "./cards/predefined_decks.hpp"
 #include "./cards/easy_cards.hpp"
 #include "./cards/random.hpp"
-#include "./cards/predefined_decks.hpp"
+#include "./cards/aberrations.hpp"
+#include "./cards/assassins.hpp"
+#include "./cards/bandits.hpp"
+#include "./cards/clerics.hpp"
+#include "./cards/crafters.hpp"
+#include "./cards/cultists.hpp"
+#include "./cards/farmers.hpp"
+#include "./cards/invaders.hpp"
+#include "./cards/junkies.hpp"
+#include "./cards/mages.hpp"
+#include "./cards/merchants.hpp"
+#include "./cards/monsters.hpp"
+#include "./cards/nobles.hpp"
+#include "./cards/parasites.hpp"
+#include "./cards/thieves.hpp"
 
 #include <imgui.h>
 
@@ -59,24 +74,37 @@ VCGSPGUI::~VCGSPGUI(void) {
 
 float VCGSPGUI::render(float delta) {
 	if (ImGui::Begin("VCG sp")) {
-		const char* decks {"monsters1\0monsters+clerics1\0aberrations+parasites1\0dev (ingore)\0\0"};
+		struct Deck {
+			const char* name;
+			decltype(Cards::monster_deck1)& get_deck;
+		};
+		static const std::vector<Deck> decks{
+			Deck{"monster1", Cards::monster_deck1},
+			Deck{"monsters+clerics1", Cards::monster_cleric_deck1},
+			Deck{"aberrations+parasites1", Cards::aberration_parasites_deck1},
+
+			Deck{"full aberrations faction", Cards::aberrations},
+			Deck{"full assassins faction", Cards::assassins},
+			Deck{"full bandits faction", Cards::bandits},
+			Deck{"full clerics faction", Cards::clerics},
+			Deck{"full crafters faction", Cards::crafters},
+			Deck{"full cultists faction", Cards::cultists},
+			Deck{"full easy_cards faction", Cards::easy_cards},
+			Deck{"full farmers faction", Cards::farmers},
+			Deck{"full invaders faction", Cards::invaders},
+			Deck{"full junkies faction", Cards::junkies},
+			Deck{"full mages faction", Cards::mages},
+			Deck{"full merchants faction", Cards::merchants},
+			Deck{"full monsters faction", Cards::monsters},
+			Deck{"full nobles faction", Cards::nobles},
+			Deck{"full parasites faction", Cards::parasites},
+			Deck{"full thieves faction", Cards::thieves},
+
+			Deck{"dev (ignore)", Cards::random},
+		};
 		static int deck_selection {0};
 		if (ImGui::Button("new game")) {
-			std::vector<Card> cards;
-			switch (deck_selection) {
-				case 0:
-					cards = Cards::monster_deck1();
-					break;
-				case 1:
-					cards = Cards::monster_cleric_deck1();
-					break;
-				case 2:
-					cards = Cards::aberration_parasites_deck1();
-				default:
-					cards = Cards::random();
-			}
-			//const auto cards = Cards::easy_cards();
-			//const auto cards = Cards::random();
+			const std::vector<Card> cards = decks.at(deck_selection).get_deck();
 
 			std::default_random_engine rng{std::random_device{}()};
 
@@ -93,7 +121,14 @@ float VCGSPGUI::render(float delta) {
 
 		ImGui::SameLine();
 		{
-			ImGui::Combo("select your deck", &deck_selection, decks);
+			//ImGui::Combo("select your deck", &deck_selection, decks);
+			ImGui::Combo(
+				"select deck",
+				&deck_selection,
+				+[](void* ctx, int i){ return reinterpret_cast<const decltype(decks)*>(ctx)->at(i).name; },
+				(void*)&decks,
+				decks.size()
+			);
 		}
 
 		if (_game) {
