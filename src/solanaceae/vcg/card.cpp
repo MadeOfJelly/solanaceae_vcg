@@ -76,7 +76,7 @@ static std::vector<MatcherEntry> genMatchersPreAttack(const WrapperFN& wfn) {
 		{
 			std::regex("Power = Opp Power"),
 			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::CopyDamage{
+				_a = wfn(Abilities::CopyPower{
 				});
 			}
 		},

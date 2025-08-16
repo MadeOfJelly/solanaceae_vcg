@@ -913,6 +913,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 
 	{ // win
 		doAbilitiesPlayer<
+			Abilities::LifePerDamage,
+			Abilities::RecoverPotions,
 			Abilities::Life,
 			Abilities::Potion,
 			Abilities::LifeMin,
@@ -921,8 +923,6 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::OppPotion,
 			Abilities::StealLife,
 			Abilities::StealPotion,
-			Abilities::RecoverPotions,
-			Abilities::LifePerDamage,
 			Abilities::Poison,
 			Abilities::SelfPoison,
 			Abilities::Heal
@@ -931,6 +931,8 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 
 	{ // loose (defeat)
 		doAbilitiesPlayer<
+			//Abilities::Defeat<Abilities::LifePerDamage> // ??
+			Abilities::Defeat<Abilities::RecoverPotions>,
 			Abilities::Defeat<Abilities::Life>,
 			Abilities::Defeat<Abilities::Potion>,
 			Abilities::Defeat<Abilities::LifeMin>,
@@ -939,8 +941,6 @@ std::unique_ptr<PhaseI> PhaseBattle::render_impl(GameState& gs, std::optional<Ro
 			Abilities::Defeat<Abilities::OppPotion>,
 			Abilities::Defeat<Abilities::StealLife>,
 			Abilities::Defeat<Abilities::StealPotion>,
-			Abilities::Defeat<Abilities::RecoverPotions>,
-			//Abilities::Defeat<Abilities::LifePerDamage> // ??
 			Abilities::Defeat<Abilities::Poison>,
 			Abilities::Defeat<Abilities::SelfPoison>,
 			Abilities::Defeat<Abilities::Heal>
