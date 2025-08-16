@@ -11,29 +11,30 @@ target_compile_features(vcg_csv_to_cpp PUBLIC cxx_std_20)
 
 add_library(solanaceae_vcg)
 
-# TODO: make cpp private
 # TODO: split lib
-target_sources(solanaceae_vcg PUBLIC
-	./solanaceae/vcg/card.hpp
-	./solanaceae/vcg/card.cpp
+target_sources(solanaceae_vcg
+	PUBLIC
+		./solanaceae/vcg/card.hpp
+		./solanaceae/vcg/cards/easy_cards.hpp
+		./solanaceae/vcg/cards/random.hpp
+		./solanaceae/vcg/cards/predefined_decks.hpp
+		./solanaceae/vcg/game_state.hpp
 
-	./solanaceae/vcg/cards/easy_cards.hpp
-	./solanaceae/vcg/cards/easy_cards.cpp
-	./solanaceae/vcg/cards/random.hpp
-	./solanaceae/vcg/cards/random.cpp
-	./solanaceae/vcg/cards/predefined_decks.hpp
-	./solanaceae/vcg/cards/predefined_decks.cpp
+		./solanaceae/vcg/vcg.hpp
 
-	./solanaceae/vcg/game_state.hpp
-	./solanaceae/vcg/game_state.cpp
+		./solanaceae/vcg/sp_gui_states.hpp
+		./solanaceae/vcg/vcg_sp_gui.hpp
+	PRIVATE
+		./solanaceae/vcg/card.cpp
+		./solanaceae/vcg/cards/easy_cards.cpp
+		./solanaceae/vcg/cards/random.cpp
+		./solanaceae/vcg/cards/predefined_decks.cpp
+		./solanaceae/vcg/game_state.cpp
 
-	./solanaceae/vcg/vcg.hpp
-	./solanaceae/vcg/vcg.cpp
+		./solanaceae/vcg/vcg.cpp
 
-	./solanaceae/vcg/sp_gui_states.hpp
-	./solanaceae/vcg/sp_gui_states.cpp
-	./solanaceae/vcg/vcg_sp_gui.hpp
-	./solanaceae/vcg/vcg_sp_gui.cpp
+		./solanaceae/vcg/sp_gui_states.cpp
+		./solanaceae/vcg/vcg_sp_gui.cpp
 )
 
 #function(cards2cpp faction)
@@ -54,7 +55,7 @@ target_sources(solanaceae_vcg PUBLIC
 function(cards2cpp faction)
 	# simple hack, since we write the files to the soruce tree
 	if(NOT CMAKE_CROSSCOMPILING)
-		add_custom_target(cards2cpp_${faction} ALL
+		add_custom_target(cards2cpp_${faction}
 			vcg_csv_to_cpp ${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv ${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards
 			BYPRODUCTS
 				${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.hpp
@@ -116,5 +117,14 @@ if(BUILD_TESTING)
 
 	target_link_libraries(vcg_test_abilities PUBLIC solanaceae_vcg)
 	add_test(NAME vcg_test_abilities COMMAND vcg_test_abilities)
+
+########################################
+
+	add_executable(vcg_test_parse_all_cards
+		./solanaceae/vcg/test_parse_all_cards.cpp
+	)
+
+	target_link_libraries(vcg_test_parse_all_cards PUBLIC solanaceae_vcg)
+	add_test(NAME vcg_test_parse_all_cards COMMAND vcg_test_parse_all_cards)
 endif()
 
