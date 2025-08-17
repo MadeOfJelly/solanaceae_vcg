@@ -277,7 +277,8 @@ static bool apply_value_ability(int16_t& value, const Ability& a, bool invert_va
 					value = std::min<int16_t>(value_before, std::max<int16_t>(value, get_ability_min(a_var)));
 				} // else cant dip
 			} else if constexpr (ability_has_max<T>()) {
-				static_assert(false);
+				//static_assert(false); // fails sometimes on clang (macos and android). Yes, sometimes.
+				assert(false && "how did you get there");
 			}
 			return true;
 		}
