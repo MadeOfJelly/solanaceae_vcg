@@ -15,10 +15,14 @@ add_library(solanaceae_vcg)
 target_sources(solanaceae_vcg
 	PUBLIC
 		./solanaceae/vcg/card.hpp
+		./solanaceae/vcg/game_state.hpp
+		./solanaceae/vcg/ability_utils.hpp
+		./solanaceae/vcg/do_ability.hpp
+		./solanaceae/vcg/battle.hpp
+
 		./solanaceae/vcg/cards/easy_cards.hpp
 		./solanaceae/vcg/cards/random.hpp
 		./solanaceae/vcg/cards/predefined_decks.hpp
-		./solanaceae/vcg/game_state.hpp
 
 		./solanaceae/vcg/vcg.hpp
 
@@ -26,10 +30,13 @@ target_sources(solanaceae_vcg
 		./solanaceae/vcg/vcg_sp_gui.hpp
 	PRIVATE
 		./solanaceae/vcg/card.cpp
+		./solanaceae/vcg/game_state.cpp
+		./solanaceae/vcg/ability_utils.cpp
+		./solanaceae/vcg/battle.cpp
+
 		./solanaceae/vcg/cards/easy_cards.cpp
 		./solanaceae/vcg/cards/random.cpp
 		./solanaceae/vcg/cards/predefined_decks.cpp
-		./solanaceae/vcg/game_state.cpp
 
 		./solanaceae/vcg/vcg.cpp
 
