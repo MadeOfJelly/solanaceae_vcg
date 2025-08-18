@@ -208,10 +208,6 @@ struct Ability {
 		Abilities::Stop<Abilities::CopyPower>,
 
 		Abilities::Stop<Abilities::LifePerDamage>,
-
-		Abilities::Stop<Abilities::Heal>,
-		Abilities::Stop<Abilities::Poison>,
-		Abilities::Stop<Abilities::SelfPoison>,
 		Abilities::Stop<Abilities::RecoverPotions>,
 
 		// meh
@@ -231,6 +227,11 @@ struct Ability {
 		Abilities::Courage<Abilities::Attack>, //
 		Abilities::Courage<Abilities::StopOppAbility>,
 		Abilities::Courage<Abilities::StopOppBonus>, //
+		Abilities::Courage<Abilities::StealLife>,
+		Abilities::Courage<Abilities::StealPotion>,
+		Abilities::Courage<Abilities::Heal>, //
+		Abilities::Courage<Abilities::Poison>,
+		Abilities::Courage<Abilities::SelfPoison>,
 
 
 		Abilities::Revenge<Abilities::OppDamage>, //
@@ -250,9 +251,6 @@ struct Ability {
 		Abilities::Revenge<Abilities::CopyDamage>,
 		Abilities::Revenge<Abilities::CopyPower>,
 		Abilities::Revenge<Abilities::LifePerDamage>,
-		Abilities::Revenge<Abilities::Heal>,
-		Abilities::Revenge<Abilities::Poison>,
-		Abilities::Revenge<Abilities::SelfPoison>,
 		Abilities::Revenge<Abilities::RecoverPotions>,
 		Abilities::Revenge<Abilities::StopOppAbility>,
 		Abilities::Revenge<Abilities::StopOppBonus>, //
@@ -275,9 +273,6 @@ struct Ability {
 		Abilities::Team<Abilities::CopyDamage>,
 		Abilities::Team<Abilities::CopyPower>,
 		Abilities::Team<Abilities::LifePerDamage>,
-		Abilities::Team<Abilities::Heal>,
-		Abilities::Team<Abilities::Poison>,
-		Abilities::Team<Abilities::SelfPoison>,
 		Abilities::Team<Abilities::RecoverPotions>,
 		Abilities::Team<Abilities::StopOppAbility>,
 		Abilities::Team<Abilities::StopOppBonus>

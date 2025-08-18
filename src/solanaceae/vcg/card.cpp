@@ -30,8 +30,50 @@ struct MatcherEntry {
 };
 
 template<typename WrapperFN>
-static std::vector<MatcherEntry> genMatchersPreAttack(const WrapperFN& wfn) {
-	return std::vector<MatcherEntry> {
+static const std::vector<MatcherEntry>& genMatchersStopOpp(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
+		{
+			std::regex("Stop Opp Ability"),
+			[&](const std::smatch&, auto& _a) {
+				_a = wfn(Abilities::StopOppAbility{
+				});
+			}
+		},
+		{
+			std::regex("Stop Opp Bonus"),
+			[&](const std::smatch&, auto& _a) {
+				_a = wfn(Abilities::StopOppBonus{
+				});
+			}
+		},
+	};
+	return vec;
+}
+
+template<typename WrapperFN>
+static const std::vector<MatcherEntry>& genMatchersCopy(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
+		{
+			std::regex("Damage = Opp Damage"),
+			[&](const std::smatch&, auto& _a) {
+				_a = wfn(Abilities::CopyDamage{
+				});
+			}
+		},
+		{
+			std::regex("Power = Opp Power"),
+			[&](const std::smatch&, auto& _a) {
+				_a = wfn(Abilities::CopyPower{
+				});
+			}
+		},
+	};
+	return vec;
+}
+
+template<typename WrapperFN>
+static const std::vector<MatcherEntry>& genMatchersPreAttack(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
 		{
 			std::regex("([+-]) ([0-9]+) Opp Damage Min ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
@@ -66,40 +108,13 @@ static std::vector<MatcherEntry> genMatchersPreAttack(const WrapperFN& wfn) {
 				});
 			}
 		},
-		{
-			std::regex("Damage = Opp Damage"),
-			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::CopyDamage{
-				});
-			}
-		},
-		{
-			std::regex("Power = Opp Power"),
-			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::CopyPower{
-				});
-			}
-		},
-		{
-			std::regex("Stop Opp Ability"),
-			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::StopOppAbility{
-				});
-			}
-		},
-		{
-			std::regex("Stop Opp Bonus"),
-			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::StopOppBonus{
-				});
-			}
-		},
 	};
+	return vec;
 }
 
 template<typename WrapperFN>
-static std::vector<MatcherEntry> genMatchersAttack(const WrapperFN& wfn) {
-	return std::vector<MatcherEntry> {
+static const std::vector<MatcherEntry>& genMatchersAttack(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
 		{
 			std::regex("([+-]) ([0-9]+) Opp Attack Min ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
@@ -118,11 +133,12 @@ static std::vector<MatcherEntry> genMatchersAttack(const WrapperFN& wfn) {
 			}
 		},
 	};
+	return vec;
 }
 
 template<typename WrapperFN>
-static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
-	return std::vector<MatcherEntry> {
+static const std::vector<MatcherEntry>& genMatchersPostAttack(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
 		{
 			std::regex("([+-]) ([0-9]+) Opp Life Min ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
@@ -184,6 +200,20 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 			}
 		},
 		{
+			std::regex("Recover 1 of 2 Potion"),
+			[&](const std::smatch&, auto& _a) {
+				_a = wfn(Abilities::RecoverPotions{
+				});
+			}
+		},
+	};
+	return vec;
+}
+
+template<typename WrapperFN>
+static const std::vector<MatcherEntry>& genMatchersSteal(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
+		{
 			std::regex("Steal ([0-9]+) Life Min ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
 				_a = wfn(Abilities::StealLife{
@@ -201,6 +231,13 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 				});
 			}
 		},
+	};
+	return vec;
+}
+
+template<typename WrapperFN>
+static const std::vector<MatcherEntry>& genMatchersHealPoison(const WrapperFN& wfn) {
+	static std::vector<MatcherEntry> vec{
 		{
 			std::regex("Heal ([0-9]+) Max ([0-9]+)"),
 			[&](const std::smatch& m, auto& _a) {
@@ -228,19 +265,13 @@ static std::vector<MatcherEntry> genMatchersPostAttack(const WrapperFN& wfn) {
 				});
 			}
 		},
-		{
-			std::regex("Recover 1 of 2 Potion"),
-			[&](const std::smatch&, auto& _a) {
-				_a = wfn(Abilities::RecoverPotions{
-				});
-			}
-		},
 	};
+	return vec;
 }
 
 static auto empty_fn = [](auto&& a){ return a; };
 
-bool applyRegexMatchers(const std::string& string, std::vector<MatcherEntry>& matchers, decltype(Ability::a)& a) {
+bool applyRegexMatchers(const std::string& string, const std::vector<MatcherEntry>& matchers, decltype(Ability::a)& a) {
 	for (const auto& it : matchers) {
 		std::smatch m;
 		if (!std::regex_match(string, m, it.r)) {
@@ -255,72 +286,65 @@ bool applyRegexMatchers(const std::string& string, std::vector<MatcherEntry>& ma
 Ability::Ability(const std::string& _string) : string(_string) {
 	if (string.starts_with("Defeat: ")) {
 		static auto fn = [](auto&& a_){ return Abilities::Defeat{std::move(a_)}; };
-		static auto dmvPostA = genMatchersPostAttack(fn);
-
 		const auto substring = string.substr(std::string_view{"Defeat: "}.size());
 
-		if (applyRegexMatchers(substring, dmvPostA, a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPostAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersHealPoison(fn), a)) { return; }
 	} else if (string.starts_with("Stop: ")) {
 		static auto fn = [](auto&& a_){ return Abilities::Stop{std::move(a_)}; };
-		static auto smvPreA = genMatchersPreAttack(fn);
-		static auto smvA = genMatchersAttack(fn);
-		static auto smvPostA = genMatchersPostAttack(fn);
-
 		const auto substring = string.substr(std::string_view{"Stop: "}.size());
 
-		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-		if (applyRegexMatchers(substring, smvA, a)) { return; }
-		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersStopOpp(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersCopy(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPreAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPostAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersSteal(fn), a)) { return; }
 	} else if (string.starts_with("Courage: ")) {
 		static auto fn = [](auto&& a_){ return Abilities::Courage{std::move(a_)}; };
-		static auto smvPreA = genMatchersPreAttack(fn);
-		static auto smvA = genMatchersAttack(fn);
-
 		const auto substring = string.substr(std::string_view{"Courage: "}.size());
 
-		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-		if (applyRegexMatchers(substring, smvA, a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersStopOpp(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersCopy(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPreAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersSteal(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersHealPoison(fn), a)) { return; }
 	} else if (string.starts_with("Revenge: ")) {
 		static auto fn = [](auto&& a_){ return Abilities::Revenge{std::move(a_)}; };
-		static auto smvPreA = genMatchersPreAttack(fn);
-		static auto smvA = genMatchersAttack(fn);
-		static auto smvPostA = genMatchersPostAttack(fn);
-
 		const auto substring = string.substr(std::string_view{"Revenge: "}.size());
 
-		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-		if (applyRegexMatchers(substring, smvA, a)) { return; }
-		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersStopOpp(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersCopy(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPreAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPostAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersSteal(fn), a)) { return; }
 	} else if (string.starts_with("Team: ")) {
 		static auto fn = [](auto&& a_){ return Abilities::Team{std::move(a_)}; };
-		static auto smvPreA = genMatchersPreAttack(fn);
-		static auto smvA = genMatchersAttack(fn);
-		static auto smvPostA = genMatchersPostAttack(fn);
-
 		const auto substring = string.substr(std::string_view{"Team: "}.size());
 
-		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-		if (applyRegexMatchers(substring, smvA, a)) { return; }
-		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
-	} else if (string.starts_with("Backlash: ")) {
-		// does nothing special
-		static auto smvPreA = genMatchersPreAttack(empty_fn);
-		static auto smvA = genMatchersAttack(empty_fn);
-		static auto smvPostA = genMatchersPostAttack(empty_fn);
-
-		const auto substring = string.substr(std::string_view{"Backlash: "}.size());
-
-		if (applyRegexMatchers(substring, smvPreA, a)) { return; }
-		if (applyRegexMatchers(substring, smvA, a)) { return; }
-		if (applyRegexMatchers(substring, smvPostA, a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersStopOpp(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersCopy(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPreAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPostAttack(fn), a)) { return; }
 	} else {
-		static auto mvPreA = genMatchersPreAttack(empty_fn);
-		static auto mvA = genMatchersAttack(empty_fn);
-		static auto mvPostA = genMatchersPostAttack(empty_fn);
+		auto substring = string;
 
-		if (applyRegexMatchers(string, mvPreA, a)) { return; }
-		if (applyRegexMatchers(string, mvA, a)) { return; }
-		if (applyRegexMatchers(string, mvPostA, a)) { return; }
+		// does nothing special
+		if (string.starts_with("Backlash: ")) {
+			substring = string.substr(std::string_view{"Backlash: "}.size());
+		}
+
+		const auto& fn = empty_fn;
+		if (applyRegexMatchers(substring, genMatchersStopOpp(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersCopy(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPreAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersPostAttack(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersSteal(fn), a)) { return; }
+		if (applyRegexMatchers(substring, genMatchersHealPoison(fn), a)) { return; }
 	}
 
 	throw std::runtime_error("unknown ability, did not match");

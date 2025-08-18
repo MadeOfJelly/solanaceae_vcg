@@ -37,9 +37,6 @@ bool holds_stop_activation(const Ability& a) {
 		std::holds_alternative<Abilities::Stop<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::LifePerDamage>>(a.a) ||
-		std::holds_alternative<Abilities::Stop<Abilities::Heal>>(a.a) ||
-		std::holds_alternative<Abilities::Stop<Abilities::Poison>>(a.a) ||
-		std::holds_alternative<Abilities::Stop<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Stop<Abilities::StopOppBonus>>(a.a)
@@ -80,9 +77,6 @@ bool holds_revenge(const Ability& a) {
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::LifePerDamage>>(a.a) ||
-		std::holds_alternative<Abilities::Revenge<Abilities::Heal>>(a.a) ||
-		std::holds_alternative<Abilities::Revenge<Abilities::Poison>>(a.a) ||
-		std::holds_alternative<Abilities::Revenge<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Revenge<Abilities::StopOppBonus>>(a.a)
@@ -108,9 +102,6 @@ bool holds_team(const Ability& a) {
 		std::holds_alternative<Abilities::Team<Abilities::CopyDamage>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::CopyPower>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::LifePerDamage>>(a.a) ||
-		std::holds_alternative<Abilities::Team<Abilities::Heal>>(a.a) ||
-		std::holds_alternative<Abilities::Team<Abilities::Poison>>(a.a) ||
-		std::holds_alternative<Abilities::Team<Abilities::SelfPoison>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::RecoverPotions>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::StopOppAbility>>(a.a) ||
 		std::holds_alternative<Abilities::Team<Abilities::StopOppBonus>>(a.a)
