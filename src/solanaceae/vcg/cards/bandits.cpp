@@ -19,7 +19,7 @@ std::vector<Card> Cards::bandits(void) {
 		{"Outcast",2,5,3,{"Stop: Steal 1 Potion Min 1"},{"Team: + 3 Attack"},"Wrapped in dirty rags, the Oatcast will do anything to get back at those who wronged him, though taking from the innocent is also alright."},
 		{"Former Noble",5,6,7,{"Team: - 3 Opp Attack Min 12"},{"Team: + 3 Attack"},"As a former noble, the Former Noble still has some connections that allow him to know where nobles will travel. Even though he now wears a heavy leather armor, he can't let go of his golden rings."},
 		{"Inciter",5,7,5,{"Team: + 1 Damage"},{"Team: + 3 Attack"},"Rarely unable to procure the equipment one needs, the Inciter has a silver tongue, literally. He always knows what to say to get his peers riled up and ready to take some caravans on."},
-		{"Old Captain",4,4,6,{"Team: + 1 Power"},{"Team: + 3 Attack"},"This Old Captain stepped out of retired to get some more money. He kept his heavy armor and his heavy greatsword, but he might need some help putting it on."},
+		{"Old Captain",4,4,6,{"Team: + 1 Power"},{"Team: + 3 Attack"},"This Old Captain stepped out of retirement to get some more money. He kept his heavy armor and his heavy greatsword, but he might need some help putting it on."},
 		{"Camp Cook",3,4,5,{"Team: + 3 Attack"},{"Team: + 3 Attack"},"Out in the forest, the Camp Cook can create a hearty meal from stolen goods. Don't ever get on his bad side, because else the entire camp will hunt you down. He still wears his old white cooks clothing, though they have become a bit dirty over the years."},
 	};
 }

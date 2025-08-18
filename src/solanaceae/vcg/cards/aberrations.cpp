@@ -17,7 +17,7 @@ std::vector<Card> Cards::aberrations(void) {
 		{"Amalgamation",5,7,7,{"Heal 1 Max 15"},{"Stop Opp Bonus"},"A light-yellow mass that can shoot energy beams by absorbing energy from the surrounding area."},
 		{"Green Gazer",2,6,2,{"Poison 1 Min 1"},{"Stop Opp Bonus"},"A small creature with hard, stone-like skin that has two green eyes that are above each other. It has vile vomit that it can spit on other creatures."},
 		{"Hulking Frogman",4,8,2,{"Poison 2 Min 0"},{"Stop Opp Bonus"},"A huge humanoid creature with a teeth-spiked frog mouth that is dripping with poison."},
-		{"Mindflayer",4,7,3,{"Steal 2 Life Min 1"},{"Stop Opp Bonus"},"A mindflayer with an octopus like head that sucks the brain out of people's skulls."},
+		{"Brain Eater",4,7,3,{"Steal 2 Life Min 1"},{"Stop Opp Bonus"},"A Brain Eater is a humanoid creature with a mouth so big it can fit entire heads into it to suck the brains out of people's skulls."},
 		{"Void Horror",5,8,2,{"Steal 3 Life Min 1"},{"Stop Opp Bonus"},"A dark cloud of mist from which long insectoid claw-like blades emerge."},
 		{"Brain Dragon",5,7,7,{"Stop Opp Ability"},{"Stop Opp Bonus"},"A dragon with a gigantic brain mounted on its back that slithers to the wings and its head."},
 		{"Evil Eye",4,6,6,{"Stop Opp Ability"},{"Stop Opp Bonus"},"A flying eye with immense pressure it opposes on creatures around it."},

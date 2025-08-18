@@ -10,7 +10,7 @@ std::vector<Card> Cards::clerics(void) {
 		{"Water Cleric",4,5,6,{"+ 12 Attack"},{"Stop Opp Ability"},"The Water Cleric wears bright blue robes and is mostly found blessing barrels and fountains of water."},
 		{"Life Cleric",5,6,2,{"+ 3 Life per Damage"},{"Stop Opp Ability"},"The Life Cleric wears golden robes and heals everyone, poor or rings."},
 		{"Nature Cleric",3,7,2,{"+ 3 Potion"},{"Stop Opp Ability"},"The Nature Cleric has green robes and knows how to tend plants."},
-		{"War Cleric",4,7,5,{"Courage: + 3 Power"},{"Stop Opp Ability"},"The War Cleric wears heavy metal armor underneath his robes and carries a battleaxe and shield."},
+		{"War Cleric",4,7,5,{"Courage: Heal 2 Max 15"},{"Stop Opp Ability"},"The War Cleric wears heavy metal armor underneath his robes and carries a battleaxe and shield."},
 		{"Oracle",4,5,5,{"Defeat: - 3 Opp Life Min 0"},{"Stop Opp Ability"},"The Oracle wears ragged clothing and is mostly found in its room with different smells and scents."},
 		{"Acolyte",3,7,3,{"Heal 1 Max 15"},{"Stop Opp Ability"},"The Acolyte is there to help in the masses and help the Clerics with things."},
 		{"Preacher",2,6,2,{"Heal 2 Max 10"},{"Stop Opp Ability"},"The Preacher stands out on the marketplace and ushers citizens to the temples of the Clerics."},

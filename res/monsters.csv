@@ -7,16 +7,16 @@ Blood Fly,2,5,4,+ 1 Life,"Blood flies have different colors based on the fauna t
 Red Dragon,5,8,6,+ 2 Damage,A red dragon that spews mountains of fire at its victims.,+ 2 Power
 Burrower,3,6,4,+ 2 Power,A mole like creature with blade-like claws and a sturdy armor like an armadillo.,+ 2 Power
 Giant Centipede,2,4,4,+ 8 Attack,A giant centipede.,+ 2 Power
-Slicing Mantis,4,6,6,Courage: + 3 Power,A mantis like monster with wings. Extremely dangerous and hungry.,+ 2 Power
+Slicing Mantis,4,6,5,Courage: Steal 2 Life Min 1,A mantis like monster with wings. Extremely dangerous and hungry.,+ 2 Power
 Storm Shark,3,8,3,Defeat: - 1 Opp Life Min 4,A snake like creature with small legs that moves very fast. Lightning arcs across its greyish blue body.,+ 2 Power
 Troll,3,6,3,Heal 2 Max 13,"A large troll that regenerates from wounds. It has brackish skin and is otherwise humanoid, though quite ugly.",+ 2 Power
-Hell Hornet,3,6,3,Poison 1 Min 0,A giant red-black hornet with a burning venom in its stinger.,+ 2 Power
+Poison Lizard,3,6,3,Poison 1 Min 0,"A poisonous lizard, which is emitting a disgusting stench.",+ 2 Power
 Sea Serpent,5,7,7,Poison 1 Min 1,A gargantuan serpent that not only poisons but also devours its victims entirely if they are small enough.,+ 2 Power
 Rabies Bison,2,5,2,Power = Opp Power,A bison with rabies. It is volatile and angry.,+ 2 Power
 Mutated Gorilla,4,7,6,Revenge: + 1 Power,"Usually found in jungle-like biomes, this gorilla like monster possesses 4 massive arms to are able to break any creature.",+ 2 Power
 Flooded Spirit,3,6,5,Revenge: Stop Opp Bonus,A creature made of mud that can cover large distances quickly and resembles a flowing humanoid.,+ 2 Power
 Werewolf,3,5,5,Steal 1 Life Min 1,A fucking werewolf.,+ 2 Power
-Poison Lizard,3,6,4,Stop Opp Ability,"A poisonous lizard, which is emitting a disgusting stench.",+ 2 Power
+Hell Hornet,3,6,4,Stop Opp Ability,A giant red-black hornet with a burning venom in its stinger.,+ 2 Power
 Hydra,4,8,4,Stop: - 3 Opp Life Min 2,A five-headed hydra.,+ 2 Power
 Sandworm,4,6,7,Stop: + 1 Power,A gargantuan sandworm that expulses sand at high speeds from its body and grinds down its victims with endless teeth.,+ 2 Power
 Snapper,3,7,2,Team: + 1 Damage,"A small, t-rex like creature that hunts in packs.",+ 2 Power

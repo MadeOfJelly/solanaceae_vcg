@@ -7,7 +7,7 @@ Tempest Cleric,3,8,2,- 8 Opp Attack Min 3,"The Tempest Cleric's robes are of gre
 Water Cleric,4,5,6,+ 12 Attack,The Water Cleric wears bright blue robes and is mostly found blessing barrels and fountains of water.,Stop Opp Ability
 Life Cleric,5,6,2,+ 3 Life per Damage,"The Life Cleric wears golden robes and heals everyone, poor or rings.",Stop Opp Ability
 Nature Cleric,3,7,2,+ 3 Potion,The Nature Cleric has green robes and knows how to tend plants.,Stop Opp Ability
-War Cleric,4,7,5,Courage: + 3 Power,The War Cleric wears heavy metal armor underneath his robes and carries a battleaxe and shield.,Stop Opp Ability
+War Cleric,4,7,5,Courage: Heal 2 Max 15,The War Cleric wears heavy metal armor underneath his robes and carries a battleaxe and shield.,Stop Opp Ability
 Oracle,4,5,5,Defeat: - 3 Opp Life Min 0,The Oracle wears ragged clothing and is mostly found in its room with different smells and scents.,Stop Opp Ability
 Acolyte,3,7,3,Heal 1 Max 15,The Acolyte is there to help in the masses and help the Clerics with things.,Stop Opp Ability
 Preacher,2,6,2,Heal 2 Max 10,The Preacher stands out on the marketplace and ushers citizens to the temples of the Clerics.,Stop Opp Ability
