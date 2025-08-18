@@ -145,28 +145,6 @@ int main(void) {
 		//"Team: Stop Opp Bonus",
 	};
 
-	//std::vector<std::string> ability_prefix_string {
-	//    //Backlash: XYZ,A Backlash Ability triggers upon winning a Battle with the Card. You yourself are affected by this Ability and not your enemy.
-	//    "Backlash:",
-	//    //Confidence (most likely not integrating it?),This Ability activates when one of your Cards won the last Battle.
-	//    //"Confidence:",
-	//    //Courage: XYZ,An Ability with Courage gets activated when the Card gets played first for a Battle.
-	//    "Courage:",
-	//    //Revenge: XYZ,This Ability activates when one of your Cards lost the last Battle.
-	//    "Revenge:",
-	//    //Ruler: XYZ,Ruler abilities are applied to all of your Cards on every Battle.
-	//    "Ruler:",
-	//    //Stop: XYZ,This Ability activates when the opposing Card possesses „Stop Opp Ability“.
-	//    "Stop:",
-	//    //Support: XYZ,A Support ability increases in strength for each member of the Faction drawn.
-	//    "Support:",
-	//    //Win: XYZ,The effect triggers when this Card wins the batte.
-	//    "Win:",
-	//    "Defeat:",
-
-	//    //"Steal:",
-	//};
-
 	bool failed {false};
 	for (const auto& astr : ability_strings) {
 		std::cout << "parsing '" << astr << "'\n";

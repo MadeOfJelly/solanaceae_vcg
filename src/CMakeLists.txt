@@ -118,12 +118,12 @@ target_link_libraries(vcg_test1 PUBLIC solanaceae_vcg)
 ########################################
 
 if(SOLANACEAE_VCG_BUILD_TESTING)
-	add_executable(vcg_test_abilities
-		./solanaceae/vcg/test_abilities.cpp
+	add_executable(vcg_test_parse_abilities
+		./solanaceae/vcg/test_parse_abilities.cpp
 	)
 
-	target_link_libraries(vcg_test_abilities PUBLIC solanaceae_vcg)
-	add_test(NAME vcg_test_abilities COMMAND vcg_test_abilities)
+	target_link_libraries(vcg_test_parse_abilities PUBLIC solanaceae_vcg)
+	add_test(NAME vcg_test_parse_abilities COMMAND vcg_test_parse_abilities)
 
 ########################################
 
