@@ -133,5 +133,14 @@ if(SOLANACEAE_VCG_BUILD_TESTING)
 
 	target_link_libraries(vcg_test_parse_all_cards PUBLIC solanaceae_vcg)
 	add_test(NAME vcg_test_parse_all_cards COMMAND vcg_test_parse_all_cards)
+
+########################################
+
+	add_executable(vcg_test_battle
+		./solanaceae/vcg/test_battle.cpp
+	)
+
+	target_link_libraries(vcg_test_battle PUBLIC solanaceae_vcg)
+	add_test(NAME vcg_test_battle COMMAND vcg_test_battle)
 endif()
 
