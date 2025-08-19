@@ -2,6 +2,7 @@
 
 #include "./monsters.hpp"
 #include "./clerics.hpp"
+#include "./junkies.hpp"
 #include "./aberrations.hpp"
 #include "./parasites.hpp"
 
@@ -16,7 +17,7 @@ static const Card& find_from_deck(const std::vector<Card>& deck, const std::stri
 	throw std::runtime_error(name + " not found in deck");
 }
 
-std::vector<Card> Cards::monster_deck1(void) {
+std::vector<Card> Cards::monsters_deck1(void) {
 	const auto monsters_faction_deck = monsters();
 	return {
 		find_from_deck(monsters_faction_deck, "Living Gargoyle"),
@@ -30,7 +31,7 @@ std::vector<Card> Cards::monster_deck1(void) {
 	};
 }
 
-std::vector<Card> Cards::monster_cleric_deck1(void) {
+std::vector<Card> Cards::monsters_clerics_deck1(void) {
 	const auto monsters_faction_deck = monsters();
 	const auto clerics_faction_deck = clerics();
 	return {
@@ -46,7 +47,23 @@ std::vector<Card> Cards::monster_cleric_deck1(void) {
 	};
 }
 
-std::vector<Card> Cards::aberration_parasites_deck1(void) {
+std::vector<Card> Cards::clerics_junkies_deck1(void) {
+	const auto clerics_faction_deck = clerics();
+	const auto junkies_faction_deck = junkies();
+	return {
+		find_from_deck(clerics_faction_deck, "Life Cleric"),
+		find_from_deck(clerics_faction_deck, "War Cleric"),
+		find_from_deck(clerics_faction_deck, "Tempest Cleric"),
+		find_from_deck(clerics_faction_deck, "Mass Servant"),
+
+		find_from_deck(junkies_faction_deck, "Ultraspritzer"),
+		find_from_deck(junkies_faction_deck, "Glue Sniffer"),
+		find_from_deck(junkies_faction_deck, "Dope Fiend"),
+		find_from_deck(junkies_faction_deck, "Gambler"),
+	};
+}
+
+std::vector<Card> Cards::aberrations_parasites_deck1(void) {
 	const auto aberrations_faction_deck = aberrations();
 	const auto parasites_faction_deck = parasites();
 	return {

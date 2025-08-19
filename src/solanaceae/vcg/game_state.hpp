@@ -71,6 +71,10 @@ struct Round {
 		WinReason reason{WinReason::DEFAULT};
 	};
 	win decide_winning_card (void) const;
+
+	size_t player2ridx(size_t p) const {
+		return players.at(0) == p ? 0 : 1;
+	}
 };
 
 // holds the current game state
@@ -120,7 +124,6 @@ struct GameState {
 	bool update(
 		const Round& round
 	);
-
 
 	std::string toString(void) const;
 };

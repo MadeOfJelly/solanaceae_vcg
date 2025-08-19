@@ -76,12 +76,13 @@ float VCGSPGUI::render(float delta) {
 	if (ImGui::Begin("VCG sp")) {
 		struct Deck {
 			const char* name;
-			decltype(Cards::monster_deck1)& get_deck;
+			decltype(Cards::monsters_deck1)& get_deck;
 		};
 		static const std::vector<Deck> decks{
-			Deck{"monster1", Cards::monster_deck1},
-			Deck{"monsters+clerics1", Cards::monster_cleric_deck1},
-			Deck{"aberrations+parasites1", Cards::aberration_parasites_deck1},
+			Deck{"monster1", Cards::monsters_deck1},
+			Deck{"monsters+clerics1", Cards::monsters_clerics_deck1},
+			Deck{"clerics+junkies1", Cards::clerics_junkies_deck1},
+			Deck{"aberrations+parasites1", Cards::aberrations_parasites_deck1},
 
 			Deck{"full aberrations faction", Cards::aberrations},
 			Deck{"full assassins faction", Cards::assassins},

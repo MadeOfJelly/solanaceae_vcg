@@ -90,5 +90,6 @@ If both players get reduced to 0 Life in the same turn, it is a draw. Additional
 ## Authors
 
 Game Design by Bankraeuber
-Programming by @Green-Sky
+
+Programming by https://github.com/Green-Sky
 

@@ -95,6 +95,13 @@ std::unique_ptr<PhaseI> PhaseCardSelectionHuman::render_impl(GameState& gs, std:
 	}
 	ImGui::Unindent();
 
+	{ // check selection
+		if (gs.cards_used.at(0).at(_turn.card_idx)) {
+			// lazy
+			_turn.card_idx = (_turn.card_idx+1)%_turn.deck.size();
+		}
+	}
+
 	ImGui::TextUnformatted("> select a card, pots and frenzy");
 
 	ImGui::Text("have pots: %d", gs.vols.at(0).pots);

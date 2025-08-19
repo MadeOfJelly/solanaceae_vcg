@@ -92,66 +92,23 @@ bool battle(GameState& gs, Round& round) {
 	}
 
 	{ // tick heal
-		int16_t strongst_heal_p0 {0};
-		int16_t strongst_heal_p1 {0};
-
 		// curr round
 		size_t ridx_p0 = round.players.at(0) == 0 ? 0 : 1;
 		size_t ridx_p1 = (ridx_p0+1)%2;
 
-		for (const auto& prev_round : gs.rounds) {
-			// prev round
-			size_t pridx_p0 = prev_round.players.at(0) == 0 ? 0 : 1;
-			size_t pridx_p1 = (pridx_p0+1)%2;
-			for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p0)) {
-				auto nt = std::min<int16_t>(round.volatile_temps.at(ridx_p0).hp + h_v, h_m);
-				auto diff = nt - round.volatile_temps.at(ridx_p0).hp;
-				if (diff > strongst_heal_p0) {
-					strongst_heal_p0 = diff;
-				}
-			}
-			for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p1)) {
-				auto nt = std::min<int16_t>(round.volatile_temps.at(ridx_p1).hp + h_v, h_m);
-				auto diff = nt - round.volatile_temps.at(ridx_p1).hp;
-				if (diff > strongst_heal_p1) {
-					strongst_heal_p1 = diff;
-				}
-			}
-		}
+		const auto [strongest_heal_p0, strongest_heal_p1] = getStrongestHeals(gs, round);
 
-		round.volatile_temps.at(ridx_p0).hp += strongst_heal_p0;
-		round.volatile_temps.at(ridx_p1).hp += strongst_heal_p1;
+		round.volatile_temps.at(ridx_p0).hp += strongest_heal_p0;
+		round.volatile_temps.at(ridx_p1).hp += strongest_heal_p1;
 	}
 	{ // tick poison
-		int16_t strongst_poison_p0 {0};
-		int16_t strongst_poison_p1 {0};
-
 		// curr round
 		size_t ridx_p0 = round.players.at(0) == 0 ? 0 : 1;
 		size_t ridx_p1 = (ridx_p0+1)%2;
 
-		for (const auto& prev_round : gs.rounds) {
-			// prev round
-			size_t pridx_p0 = prev_round.players.at(0) == 0 ? 0 : 1;
-			size_t pridx_p1 = (pridx_p0+1)%2;
-			for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p0)) {
-				auto nt = std::max<int16_t>(round.volatile_temps.at(ridx_p0).hp - p_v, p_m);
-				auto diff = nt - round.volatile_temps.at(ridx_p0).hp;
-				if (diff < strongst_poison_p0) {
-					strongst_poison_p0 = diff;
-				}
-			}
-			for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p1)) {
-				auto nt = std::max<int16_t>(round.volatile_temps.at(ridx_p1).hp - p_v, p_m);
-				auto diff = nt - round.volatile_temps.at(ridx_p1).hp;
-				if (diff < strongst_poison_p1) {
-					strongst_poison_p1 = diff;
-				}
-			}
-		}
-
-		round.volatile_temps.at(ridx_p0).hp += strongst_poison_p0;
-		round.volatile_temps.at(ridx_p1).hp += strongst_poison_p1;
+		const auto [strongest_poison_p0, strongest_poison_p1] = getStrongestPoisons(gs, round);
+		round.volatile_temps.at(ridx_p0).hp += strongest_poison_p0;
+		round.volatile_temps.at(ridx_p1).hp += strongest_poison_p1;
 	}
 
 	// sanitize pots
@@ -159,5 +116,86 @@ bool battle(GameState& gs, Round& round) {
 	round.volatile_temps.at(1).pots = std::max<int16_t>(round.volatile_temps.at(1).pots, 0);
 
 	return true;
+}
+
+StrongestHeals getStrongestHeals(const GameState& gs, const Round& curr_round) {
+	int16_t strongest_heal_p0 {0};
+	int16_t strongest_heal_p1 {0};
+
+	// curr round
+	size_t ridx_p0 = curr_round.player2ridx(0);
+	size_t ridx_p1 = curr_round.player2ridx(1);
+
+	for (const auto& prev_round : gs.rounds) {
+		// prev round
+		size_t pridx_p0 = prev_round.player2ridx(0);
+		size_t pridx_p1 = prev_round.player2ridx(1);
+		for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p0)) {
+			auto nt = std::min<int16_t>(curr_round.volatile_temps.at(ridx_p0).hp + h_v, h_m);
+			auto diff = nt - curr_round.volatile_temps.at(ridx_p0).hp;
+			if (diff > strongest_heal_p0) {
+				strongest_heal_p0 = diff;
+			}
+		}
+		for (const auto& [h_v, h_m] : prev_round.heals.at(pridx_p1)) {
+			auto nt = std::min<int16_t>(curr_round.volatile_temps.at(ridx_p1).hp + h_v, h_m);
+			auto diff = nt - curr_round.volatile_temps.at(ridx_p1).hp;
+			if (diff > strongest_heal_p1) {
+				strongest_heal_p1 = diff;
+			}
+		}
+	}
+
+	return {strongest_heal_p0, strongest_heal_p1};
+}
+
+StrongestPoisons getStrongestPoisons(const GameState& gs, const Round& curr_round) {
+	int16_t strongest_poison_p0 {0};
+	int16_t strongest_poison_p1 {0};
+
+	// curr round
+	size_t ridx_p0 = curr_round.player2ridx(0);
+	size_t ridx_p1 = curr_round.player2ridx(1);
+
+	for (const auto& prev_round : gs.rounds) {
+		// prev round
+		size_t pridx_p0 = prev_round.player2ridx(0);
+		size_t pridx_p1 = prev_round.player2ridx(1);
+		for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p0)) {
+			auto nt = std::max<int16_t>(curr_round.volatile_temps.at(ridx_p0).hp - p_v, p_m);
+			auto diff = nt - curr_round.volatile_temps.at(ridx_p0).hp;
+			if (diff < strongest_poison_p0) {
+				strongest_poison_p0 = diff;
+			}
+		}
+		for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p1)) {
+			auto nt = std::max<int16_t>(curr_round.volatile_temps.at(ridx_p1).hp - p_v, p_m);
+			auto diff = nt - curr_round.volatile_temps.at(ridx_p1).hp;
+			if (diff < strongest_poison_p1) {
+				strongest_poison_p1 = diff;
+			}
+		}
+	}
+	return {strongest_poison_p0, strongest_poison_p1};
+}
+
+bool hasHeal(const GameState& gs, std::size_t player) {
+	for (const auto& prev_round : gs.rounds) {
+		size_t pridx_p = prev_round.player2ridx(player);
+		for (const auto& [p_v, p_m] : prev_round.heals.at(pridx_p)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool hasPoison(const GameState& gs, std::size_t player) {
+	for (const auto& prev_round : gs.rounds) {
+		size_t pridx_p = prev_round.player2ridx(player);
+		for (const auto& [p_v, p_m] : prev_round.poisons.at(pridx_p)) {
+			return true;
+		}
+	}
+	return false;
 }
 
