@@ -54,7 +54,12 @@ bool holds_courage(const Ability& a) {
 		std::holds_alternative<Abilities::Courage<Abilities::Power>>(a.a) ||
 		std::holds_alternative<Abilities::Courage<Abilities::Attack>>(a.a) ||
 		std::holds_alternative<Abilities::Courage<Abilities::StopOppAbility>>(a.a) ||
-		std::holds_alternative<Abilities::Courage<Abilities::StopOppBonus>>(a.a)
+		std::holds_alternative<Abilities::Courage<Abilities::StopOppBonus>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::StealLife>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::StealPotion>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::Heal>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::Poison>>(a.a) ||
+		std::holds_alternative<Abilities::Courage<Abilities::SelfPoison>>(a.a)
 	;
 }
 
