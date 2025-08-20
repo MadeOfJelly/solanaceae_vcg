@@ -12,15 +12,15 @@ struct TurnSelection {
 
 	// extra pots
 	size_t pots {0};
-	bool frenzy {false};
+	bool focus {false};
 
 	TurnSelection(const std::vector<Card>& _deck) : deck(_deck) {}
 	TurnSelection(
 		const std::vector<Card>& _deck,
 		size_t _card_idx,
 		size_t _pots,
-		bool _frenzy
-	) : deck(_deck), card_idx(_card_idx), pots(_pots), frenzy(_frenzy) {}
+		bool _focus
+	) : deck(_deck), card_idx(_card_idx), pots(_pots), focus(_focus) {}
 
 	const Card& card(void) const { return deck.at(card_idx); }
 

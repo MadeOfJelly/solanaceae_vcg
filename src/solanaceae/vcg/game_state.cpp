@@ -35,8 +35,8 @@ size_t TurnSelection::sameFaction(void) const {
 std::string TurnSelection::toString(void) const {
 	std::string str;
 	str += "{" + card().toStringNLPD() + "},pots:" + std::to_string(pots);
-	if (frenzy) {
-		str += ",frenzy";
+	if (focus) {
+		str += ",focus";
 	}
 	return str;
 }
@@ -45,8 +45,8 @@ void TurnSelection::printSelection(void) const {
 	std::cout << " " << toString() << "\n";
 	//std::cout << " '" << card().name << "' P:" << card().power << " L:" << card().level << " D:" << card().damage << "\n";
 	//std::cout << "  " << pots << " pots\n";
-	//if (frenzy) {
-	//    std::cout << "  and frenzy\n";
+	//if (focus) {
+	//    std::cout << "  and focus\n";
 	//}
 }
 

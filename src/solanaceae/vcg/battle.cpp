@@ -14,21 +14,21 @@ bool battle(GameState& gs, Round& round) {
 		Abilities::StopOppBonus
 	>(gs, round);
 
-	// copy abilities (before frenzy)
+	// copy abilities (before focus)
 	doAbilities<
 		Abilities::CopyPower,
 		Abilities::CopyDamage
 	>(gs, round);
 
 	for (size_t i = 0; i < round.card_temps.size(); i++) { // fill in base
-		// apply frenzy dmg bonus
-		if (round.turns.at(i).frenzy) {
+		// apply focus dmg bonus
+		if (round.turns.at(i).focus) {
 			round.card_temps.at(i).damage += 2;
 		}
 
 		// init temp vols, so we can edit them in respects to min/max
 		round.volatile_temps.at(i).life = gs.vols.at(round.players.at(i)).life;
-		round.volatile_temps.at(i).pots = gs.vols.at(round.players.at(i)).pots - (round.turns.at(i).pots + round.turns.at(i).frenzy*3);
+		round.volatile_temps.at(i).pots = gs.vols.at(round.players.at(i)).pots - (round.turns.at(i).pots + round.turns.at(i).focus*3);
 	}
 
 	// apply power and dmg

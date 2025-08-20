@@ -23,7 +23,7 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 		extra_pots = rng()%(vol.pots + 1);
 	}
 
-	bool frenzy = (vol.pots - extra_pots) >= 3 ? rng()%10 == 0 : false;
+	bool focus = (vol.pots - extra_pots) >= 3 ? rng()%10 == 0 : false;
 
 	size_t card_idx = rng()%cards.size();
 	while (cards_used.at(card_idx)) {
@@ -34,7 +34,7 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 		cards,
 		card_idx,
 		extra_pots,
-		frenzy,
+		focus,
 	};
 }
 
@@ -102,18 +102,18 @@ std::unique_ptr<PhaseI> PhaseCardSelectionHuman::render_impl(GameState& gs, std:
 		}
 	}
 
-	ImGui::TextUnformatted("> select a card, pots and frenzy");
+	ImGui::TextUnformatted("> select a card, pots and focus");
 
 	ImGui::Text("have pots: %d", gs.vols.at(0).pots);
 	{
 		const size_t min_v {0};
-		const size_t max_v {static_cast<size_t>(std::max(0, gs.vols.at(0).pots - _turn.frenzy*3))};
+		const size_t max_v {static_cast<size_t>(std::max(0, gs.vols.at(0).pots - _turn.focus*3))};
 		ImGui::SliderScalar("extra pots", ImGuiDataType_U64, &_turn.pots, &min_v, &max_v);
 	}
 
-	if (ImGui::Checkbox("frenzy (+2 dmg for 3 pots)", &_turn.frenzy)) {
-		if (int64_t(_turn.pots + _turn.frenzy*3) > int64_t(gs.vols.at(0).pots)) {
-			_turn.frenzy = false;
+	if (ImGui::Checkbox("focus (+2 dmg for 3 pots)", &_turn.focus)) {
+		if (int64_t(_turn.pots + _turn.focus*3) > int64_t(gs.vols.at(0).pots)) {
+			_turn.focus = false;
 		}
 	}
 
@@ -152,8 +152,8 @@ std::unique_ptr<PhaseI> PhaseRevealSelections::render_impl(GameState& gs, std::o
 		ImGui::TextUnformatted("you have faction bonus.");
 	}
 
-	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
-	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).focus ? ", and focus" : "");
+	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).focus ? ", and focus" : "");
 	if (ImGui::Button("continue to battle")) {
 		return std::make_unique<PhaseBattle>();
 	}
@@ -183,8 +183,8 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 		ImGui::TextUnformatted("you have faction bonus.");
 	}
 
-	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).frenzy ? ", and frenzy" : "");
-	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).frenzy ? ", and frenzy" : "");
+	ImGui::Text("bot chose 1+%zu pots%s.", round->turns.at(bot_idx).pots, round->turns.at(bot_idx).focus ? ", and focus" : "");
+	ImGui::Text("you chose 1+%zu pots%s.", round->turns.at(human_idx).pots, round->turns.at(human_idx).focus ? ", and focus" : "");
 
 	// show values
 	ImGui::Text("bot  attack: %hd", round->card_temps.at(bot_idx).attack);

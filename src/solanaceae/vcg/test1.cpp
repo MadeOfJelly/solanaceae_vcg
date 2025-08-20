@@ -54,8 +54,8 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 	size_t extra_pots = rng()%(vol.pots + 1);
 	vol.pots -= extra_pots;
 
-	bool frenzy = vol.pots >= 3 ? rng()%10 == 0 : false;
-	if (frenzy) { vol.pots -= 3; }
+	bool focus = vol.pots >= 3 ? rng()%10 == 0 : false;
+	if (focus) { vol.pots -= 3; }
 
 	size_t card_idx = rng()%cards.size();
 	while (cards_used.at(card_idx)) {
@@ -67,7 +67,7 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 		cards,
 		card_idx,
 		1 + extra_pots,
-		frenzy,
+		focus,
 	};
 }
 
@@ -166,13 +166,13 @@ int main(void) {
 			round.turns.back().printSelection();
 		}
 		//std::cout << "Turn1\n";
-		//// turn 1 - starting_player chooses card open and pots+frenzy hidden
+		//// turn 1 - starting_player chooses card open and pots+focus hidden
 		//round.turns.emplace_back(turnSelectRandom(rng, game.cards.at(round.t1_player), game.vols.at(round.t1_player)));
 		//std::cout << "  p" << round.t1_player+1 << " chose";
 		//round.turns.back().printSelection();
 
 		//std::cout << "Turn2\n";
-		//// turn 2 - other_player chooses card to counter and pots+frenzy
+		//// turn 2 - other_player chooses card to counter and pots+focus
 		//round.turns.emplace_back(turnSelectRandom(rng, game.cards.at(round.t2_player), game.vols.at(round.t2_player)));
 		//std::cout << "  p" << round.t2_player+1 << " chose";
 		//round.turns.back().printSelection();
@@ -186,9 +186,9 @@ int main(void) {
 			std::cout << "  p" << round.players.at(i)+1 << " base power:" << round.card_temps.at(i).power << " damage:" << round.card_temps.at(i).damage << "\n";
 		}
 
-		// apply frenzy dmg bonus
+		// apply focus dmg bonus
 		for (size_t i = 0; i < round.card_temps.size(); i++) {
-			if (round.turns.at(i).frenzy) {
+			if (round.turns.at(i).focus) {
 				round.card_temps.at(i).damage += 2;
 			}
 		}
