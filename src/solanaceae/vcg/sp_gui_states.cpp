@@ -212,8 +212,8 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 	}
 
 	ImGui::SeparatorText("resulting in");
-	ImGui::Text("bot  hp: %d (%+d)", round->volatile_temps.at(bot_idx).hp, round->volatile_temps.at(bot_idx).hp - gs.vols.at(1).hp);
-	ImGui::Text("your hp: %d (%+d)", round->volatile_temps.at(human_idx).hp, round->volatile_temps.at(human_idx).hp - gs.vols.at(0).hp);
+	ImGui::Text("bot  life: %d (%+d)", round->volatile_temps.at(bot_idx).life, round->volatile_temps.at(bot_idx).life - gs.vols.at(1).life);
+	ImGui::Text("your life: %d (%+d)", round->volatile_temps.at(human_idx).life, round->volatile_temps.at(human_idx).life - gs.vols.at(0).life);
 	ImGui::Text("bot  pots: %d (%+d)", round->volatile_temps.at(bot_idx).pots, round->volatile_temps.at(bot_idx).pots - gs.vols.at(1).pots);
 	ImGui::Text("your pots: %d (%+d)", round->volatile_temps.at(human_idx).pots, round->volatile_temps.at(human_idx).pots - gs.vols.at(0).pots);
 
@@ -259,7 +259,7 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 
 		std::cout << "--- round ---\n";
 
-		if (gs.rounds.size() == 4 || gs.vols.at(0).hp <= 0 || gs.vols.at(1).hp <= 0) {
+		if (gs.rounds.size() == 4 || gs.vols.at(0).life <= 0 || gs.vols.at(1).life <= 0) {
 			return std::make_unique<PhaseEndScreen>();
 		} else {
 			return std::make_unique<PhaseCardSelection>();
@@ -272,9 +272,9 @@ std::unique_ptr<PhaseI> PhaseBattleEnd::render_impl(GameState& gs, std::optional
 std::unique_ptr<PhaseI> PhaseEndScreen::render_impl(GameState& gs, std::optional<Round>& round, float) {
 	assert(!round);
 
-	if (gs.vols.at(0).hp > gs.vols.at(1).hp) {
+	if (gs.vols.at(0).life > gs.vols.at(1).life) {
 		ImGui::TextUnformatted("You won!");
-	} else if (gs.vols.at(0).hp < gs.vols.at(1).hp) {
+	} else if (gs.vols.at(0).life < gs.vols.at(1).life) {
 		ImGui::TextUnformatted("Bot won.");
 	} else {
 		ImGui::TextUnformatted("Draw!");

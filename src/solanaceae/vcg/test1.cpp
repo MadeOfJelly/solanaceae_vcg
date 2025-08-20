@@ -236,26 +236,26 @@ int main(void) {
 		const size_t round_winning_player = round.players.at(winning_card);
 		std::cout << "p" << round_winning_player+1 << " deals " << round.card_temps.at(winning_card).damage << " damage\n";
 
-		game.vols.at((round_winning_player+1)%2).hp -= round.card_temps.at(winning_card).damage;
+		game.vols.at((round_winning_player+1)%2).life -= round.card_temps.at(winning_card).damage;
 
 		for (size_t i = 0; i < game.vols.size(); i++) {
-			std::cout << "p" << i+1 << " pots:" << game.vols.at(i).pots << " hp:" << game.vols.at(i).hp << "\n";
+			std::cout << "p" << i+1 << " pots:" << game.vols.at(i).pots << " life:" << game.vols.at(i).life << "\n";
 		}
 
-		if (game.vols.at(0).hp <= 0) {
+		if (game.vols.at(0).life <= 0) {
 			std::cout << "p1 died, p2 won\n";
 			break;
-		} else if (game.vols.at(1).hp <= 0) {
+		} else if (game.vols.at(1).life <= 0) {
 			std::cout << "p2 died, p1 won\n";
 			break;
 		}
 	}
 
-	if (game.vols.at(0).hp > 0 && game.vols.at(1).hp > 0) {
-		if (game.vols.at(0).hp > game.vols.at(1).hp) {
-			std::cout << "p2 has less hp, p1 won\n";
-		} else if (game.vols.at(1).hp > game.vols.at(0).hp) {
-			std::cout << "p1 has less hp, p0 won\n";
+	if (game.vols.at(0).life > 0 && game.vols.at(1).life > 0) {
+		if (game.vols.at(0).life > game.vols.at(1).life) {
+			std::cout << "p2 has less life, p1 won\n";
+		} else if (game.vols.at(1).life > game.vols.at(0).life) {
+			std::cout << "p1 has less life, p0 won\n";
 		} else {
 			std::cout << "draw\n";
 		}

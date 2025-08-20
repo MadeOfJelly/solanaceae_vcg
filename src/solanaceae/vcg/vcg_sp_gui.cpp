@@ -150,7 +150,7 @@ float VCGSPGUI::render(float delta) {
 			const bool can_show_human_selection = _game->round->turns.size() == 2 || (_game->round->turns.size() == 1 && human_rindex == 0);
 			const bool can_show_bot_selection = _game->round->turns.size() == 2 || (_game->round->turns.size() == 1 && bot_rindex == 0);
 
-			ImGui::Text("Bot Pots:%d HP:%d cards:", gs.vols.at(1).pots, gs.vols.at(1).hp);
+			ImGui::Text("Bot Pots:%d Life:%d cards:", gs.vols.at(1).pots, gs.vols.at(1).life);
 			ImGui::Indent();
 			ImGui::PushID(1); // bot
 			for (size_t i = 0; i < gs.cards.at(1).size(); i++) {
@@ -171,7 +171,7 @@ float VCGSPGUI::render(float delta) {
 			// bot flavor text here?
 			//_game->phase->
 
-			ImGui::Text("Your Pots:%d HP:%d cards:", gs.vols.at(0).pots, gs.vols.at(0).hp);
+			ImGui::Text("Your Pots:%d Life:%d cards:", gs.vols.at(0).pots, gs.vols.at(0).life);
 			if (_game->phase->showPlayerCards()) {
 				// TODO: toggle render, or inject selectable?
 				ImGui::Indent();

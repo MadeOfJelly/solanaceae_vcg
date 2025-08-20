@@ -109,9 +109,9 @@ bool GameState::update(
 	cards_used.at(player0).at(round.turns.at(0).card_idx) = true;
 	cards_used.at(player1).at(round.turns.at(1).card_idx) = true;
 
-	vols.at(player0).hp = round.volatile_temps.at(0).hp;
+	vols.at(player0).life = round.volatile_temps.at(0).life;
 	vols.at(player0).pots = std::max<int16_t>(round.volatile_temps.at(0).pots, 0);
-	vols.at(player1).hp = round.volatile_temps.at(1).hp;
+	vols.at(player1).life = round.volatile_temps.at(1).life;
 	vols.at(player1).pots = std::max<int16_t>(round.volatile_temps.at(1).pots, 0);
 
 	return true;

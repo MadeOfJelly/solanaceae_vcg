@@ -67,8 +67,8 @@ bool simple_full_battle1(void) {
 
 		A(gs.update(round));
 
-		A(gs.vols.at(0).hp == 12);
-		A(gs.vols.at(1).hp == 6);
+		A(gs.vols.at(0).life == 12);
+		A(gs.vols.at(1).life == 6);
 	}
 
 	{ // round invalid
@@ -165,8 +165,8 @@ bool courage_heal(void) {
 
 		A(gs.update(round));
 
-		A(gs.vols.at(0).hp == 12);
-		A(gs.vols.at(1).hp == 9);
+		A(gs.vols.at(0).life == 12);
+		A(gs.vols.at(1).life == 9);
 	}
 
 	return true;

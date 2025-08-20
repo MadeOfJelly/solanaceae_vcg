@@ -126,7 +126,7 @@ requires
 	same_as_variants<T, Abilities::LifeMin>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	apply_value_ability<T>(
-		round.volatile_temps.at(ridx).hp,
+		round.volatile_temps.at(ridx).life,
 		ability
 	);
 }
@@ -137,7 +137,7 @@ requires
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
 	apply_value_ability<T>(
-		round.volatile_temps.at(opp_ridx).hp,
+		round.volatile_temps.at(opp_ridx).life,
 		ability
 	);
 }
@@ -147,14 +147,14 @@ requires
 	same_as_variants<T, Abilities::StealLife>
 void doAbility(Round& round, size_t ridx, const Ability& ability) {
 	size_t opp_ridx = (ridx+1)%2;
-	const auto value_before = round.volatile_temps.at(opp_ridx).hp;
+	const auto value_before = round.volatile_temps.at(opp_ridx).life;
 	apply_value_ability<T>(
-		round.volatile_temps.at(opp_ridx).hp,
+		round.volatile_temps.at(opp_ridx).life,
 		ability,
 		true
 	);
-	const auto diff = value_before - round.volatile_temps.at(opp_ridx).hp;
-	round.volatile_temps.at(ridx).hp += diff; // steal
+	const auto diff = value_before - round.volatile_temps.at(opp_ridx).life;
+	round.volatile_temps.at(ridx).life += diff; // steal
 }
 
 template<typename T>
@@ -214,7 +214,7 @@ void doAbility(Round& round, size_t ridx, const Ability& ability) {
 		return;
 	}
 	const auto& a_v = std::get<Abilities::LifePerDamage>(ability.a);
-	round.volatile_temps.at(ridx).hp += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
+	round.volatile_temps.at(ridx).life += get_ability_value(a_v) * round.card_temps.at(ridx).damage;
 }
 
 template<typename T>
