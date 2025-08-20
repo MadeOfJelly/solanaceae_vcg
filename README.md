@@ -10,41 +10,36 @@ Down the road there is multiplayer, using cryptographically secure [random numbe
 
 ### Basic Gameplay rundown
 
-Players chose a deck of 8 different cards each to play.
-4 of these cards get drawn to be used in a match.
-
-Alternating, one player will play one of their cards, while the other player then plays of of their cards.
-However, the players can invest a limited resource to increase the attack of their cards. The amount of resource used is only revealed, when both players played their cards.
-
-After the stronger cards is decided, effects will play out, depending on the abilities of the cards. (????)
-
-Every card can only be played once per match.
-The player that reduces their opponent to 0 Life first wins. Alternatively, the player with more remaining Life after all cards have been played wins.
+- Players chose a deck of 8 different cards each to play.
+- 4 of these cards get drawn to be used in a match. Every card can only be played once per match.
+- Alternating, one player will play one of their cards, while the other player then plays of of their cards.
+- The players can invest a limited resource to increase the attack of their cards. The amount of resource used is only revealed when both players played their cards.
+- After the stronger cards is decided it deals Damage. Each card then triggers its corresponding win/defeat effects.
+- The player that reduces their opponent to 0 Life first wins. Alternatively, the player with more remaining Life after all cards have been played wins.
 
 ### Detailed Gameplay rundown
 
-Players chose a deck of 8 different cards each to play.
-4 of these cards get drawn to be used in a match.
-Every player starts with 12 Potions and 12 Life.
-Every dard has a Level, Power, Damage, a Faction Bonus and can have an Ability.
-After the Cards are drawn, the player with more total Levels drawn has to play their card first (if the same amount of total Levels is drawn one of the players starts at random).
-The starting player plays one of their cards and secretly sets the amounts of Potions their card will be getting and whether or not the card will be getting Focus, which costs 3 Potions and increases the Damage of the card by 2.
-The other player will respond by doing the same.
-Every card has 1 free Potion, upon which the chosen Potions are added.
-Abilities and Faction Bonuses can affect the battle between cards, but also what happens after a battle.
-Abilities are either always active or conditional, while a Faction Bonus is only active when at least 2 cards from the same Faction/with the same Faction Bonus are drawn.
-Abilities and Factions Bonuses with a "Min" are applied in the order of highest Min to lowest Min.
-Attack is calculated by multiplying the Power of the card with the Potions it uses and adding and substracting any additional manipulation results in the Attack of the card.
-The card with more Attack wins. If both have the same Attack the card with the lower Level wins. If both also have the same Level, the card that was played first wins.
-The winning card substracts its Damage from the opposing player's Life and triggers all Abilities and its Faction Bonus if those trigger on a Win.
-The losing card triggers all Abilities and its Faction Bonus if those trigger on a Defeat.
-By default, most abilities help in the battle themselves or trigger on a Win.
-After that, Heal and Poison apply their effects, if this was not the battle that they were applied in.
-Both players then get to see the resulting gamestate, while the player that responded by playing a card has to play first now.
-Every card can only be played once.
-This repeats until either every card has been played or one of the players is reduced to 0 Life.
-The player that reduces their opponent to 0 Life first wins. Alternatively, the player with more remaining Life after all cards have been played wins.
-If both players get reduced to 0 Life in the same turn, it is a draw. Additionally, if both players have the same amount of Life after all cards have been played, the match is also a draw.
+- Players chose a deck of 8 different cards each to play.
+- Every player starts with 12 Potions and 12 Life.
+- 4 of the 8 cards in the deck get drawn to be used in a match. Every card can only be played once.
+  - Every card has 1 free Potion, upon which the chosen Potions are added.
+  - Every card has a Level, Power, Damage, a Faction Bonus and can have an Ability.
+- After the Cards are drawn, the player with more total Levels drawn has to play their card first (if the same amount of total Levels is drawn one of the players starts at random).
+  - The starting player plays one of their cards and secretly sets the amounts of Potions their card will be getting and whether or not the card will be getting Focus, which costs 3 Potions and increases the Damage of the card by 2.
+  - The other player will respond by doing the same.
+- Abilities and Faction Bonuses can affect the battle between cards, but also what happens after a battle.
+  - Abilities are either always active or conditional, while a Faction Bonus is only active when at least 2 cards from the same Faction/with the same Faction Bonus are drawn.
+  - Abilities and Factions Bonuses with a "Min" are applied in the order of highest Min to lowest Min.
+  - By default, most abilities help in the battle themselves or trigger on a Win.
+- Attack is calculated by multiplying the Power of the card with the Potions it uses and adding and substracting any additional manipulation results in the Attack of the card.
+- The card with more Attack wins. If both have the same Attack the card with the lower Level wins. If both also have the same Level, the card that was played first wins.
+  - The winning card substracts its Damage from the opposing player's Life and triggers all Abilities and its Faction Bonus if those trigger on a Win.
+  - The losing card triggers all Abilities and its Faction Bonus if those trigger on a Defeat.
+  - After that, Heal and Poison apply their effects, if this was not the battle that they were applied in.
+- Both players then get to see the resulting gamestate, while the player that responded by playing a card has to play first now.
+  - This repeats until either every card has been played or one of the players is reduced to 0 Life.
+- The player that reduces their opponent to 0 Life first wins. Alternatively, the player with more remaining Life after all cards have been played wins.
+  - If both players get reduced to 0 Life in the same turn, it is a draw. Additionally, if both players have the same amount of Life after all cards have been played, the match is also a draw.
 
 ## Glossary
 
@@ -59,7 +54,7 @@ If both players get reduced to 0 Life in the same turn, it is a draw. Additional
 | + X Life per Damage  | If this Card wins the Battle, you gain Lives equal to X-times the Damage the Card dealt. |
 | + X Potion           | When this Card wins you get X Potion. |
 | Ability              | Every Card can have an Ability that grants the Card bonuses during or after Battles. |
-| Attack (Att)         | By multiplying the Power of the Card with the Potions it uses and adding and substracting any additional manipulation results in the Attack of the Card. In general, the Card with more Attack wins the Battle. |
+| Attack (Atk)         | By multiplying the Power of the Card with the Potions it uses and adding and substracting any additional manipulation results in the Attack of the Card. In general, the Card with more Attack wins the Battle. |
 | Backlash: XYZ        | A Backlash Ability triggers upon winning a Battle with the Card. You yourself are affected by this Ability and not your enemy. |
 | Battle               | A Battle is when 2 Cards are fighting against each other. The Card with more Attack wins. If both have the same Attack the Card with the lower Level wins. If both also have the same Level, the Card that was played first wins. |
 | Cards                | Cards are what is used to determine who wins the game. Every Card has a Level, Power, Damage, a Faction Bonus and can have an Ability. |
