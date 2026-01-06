@@ -5,7 +5,7 @@ project(solanaceae)
 # TODO: proper lib
 
 add_library(solanaceae_p2prng INTERFACE
-	./p2prng.hpp
+	#./p2prng.hpp
 )
 
 target_include_directories(solanaceae_p2prng INTERFACE .)
