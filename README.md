@@ -79,7 +79,7 @@ Down the road there is multiplayer, using cryptographically secure [random numbe
 | Stop Opp Ability     | The opponent's Card's Ability is ignored. |
 | Stop Opp Bonus       | The opponent's Card's Faction Bonus is ignored. |
 | Stop: XYZ            | This Ability activates when the opposing Card possesses "Stop Opp Ability". |
-| Team: XYZ            | A Support ability increases in strength for each member of the Faction drawn. |
+| Team: XYZ            | A Team ability increases in strength for each member of the Faction drawn. |
 
 
 ## Authors
