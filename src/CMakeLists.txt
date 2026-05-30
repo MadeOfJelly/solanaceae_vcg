@@ -63,12 +63,12 @@ function(cards2cpp faction)
 	# simple hack, since we write the files to the soruce tree
 	if(NOT CMAKE_CROSSCOMPILING)
 		add_custom_target(cards2cpp_${faction}
-			vcg_csv_to_cpp ${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv ${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards
+			vcg_csv_to_cpp ${CMAKE_CURRENT_SOURCE_DIR}/../res/factions/${faction}.csv ${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards
 			BYPRODUCTS
 				${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.hpp
 				${CMAKE_CURRENT_SOURCE_DIR}/solanaceae/vcg/cards/${faction}.cpp
 			SOURCES
-				${CMAKE_CURRENT_SOURCE_DIR}/../res/${faction}.csv
+				${CMAKE_CURRENT_SOURCE_DIR}/../res/factions/${faction}.csv
 		)
 	endif()
 
