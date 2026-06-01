@@ -10,25 +10,45 @@
 #include <memory>
 #include <numeric>
 #include <optional>
+#include <random>
 
 #include <iostream>
 
 template<typename RNG>
 static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, const std::vector<bool>& cards_used, const PlayerVolatiles& vol) {
+	const bool first_round = std::accumulate(cards_used.cbegin(), cards_used.cend(), 0) == 0;
 	const bool last_round = std::accumulate(cards_used.cbegin(), cards_used.cend(), 0) == 3;
-	size_t extra_pots = 0;
-	if (last_round) {
-		extra_pots = vol.pots;
-	} else {
-		extra_pots = rng()%(vol.pots + 1);
-	}
-
-	bool focus = (vol.pots - extra_pots) >= 3 ? rng()%10 == 0 : false;
 
 	size_t card_idx = rng()%cards.size();
 	while (cards_used.at(card_idx)) {
 		card_idx = (card_idx+1)%cards.size();
 	}
+
+	size_t extra_pots = 0;
+
+	if (last_round) {
+		extra_pots = vol.pots;
+	} else if (first_round) {
+		assert(vol.pots >= 8);
+
+		std::discrete_distribution d;
+		switch (cards[card_idx].level) {
+			case 2: d = {0.15,0.20,0.18,0.16,0.11,0.10,0.06,0.03,0.01}; break;
+			case 3: d = {0.14,0.18,0.15,0.15,0.13,0.10,0.06,0.05,0.03,0.01}; break;
+			case 4: d = {0.08,0.10,0.13,0.13,0.15,0.13,0.10,0.08,0.06,0.03,0.01}; break;
+			case 5: d = {0.10,0.10,0.10,0.10,0.10,0.11,0.10,0.10,0.08,0.06,0.05}; break;
+			default: assert(false && "uhhh"); break;
+		}
+
+		// roll + clip (normal game modes will always have enough pots)
+		extra_pots = d(rng)%(vol.pots + 1);
+
+		//extra_pots = rng()%((vol.pots+1)/2 + 1);
+	} else {
+		extra_pots = rng()%(vol.pots + 1);
+	}
+
+	bool focus = (vol.pots - extra_pots) >= 3 ? rng()%10 == 0 : false;
 
 	return {
 		cards,
