@@ -33,10 +33,10 @@ static TurnSelection turnSelectRandom(RNG& rng, const std::vector<Card>& cards, 
 
 		std::discrete_distribution d;
 		switch (cards[card_idx].level) {
-			case 2: d = {0.15,0.20,0.18,0.16,0.11,0.10,0.06,0.03,0.01}; break;
+			case 2: d = {0.15,0.20,0.18,0.17,0.11,0.10,0.07,0.02}; break;
 			case 3: d = {0.14,0.18,0.15,0.15,0.13,0.10,0.06,0.05,0.03,0.01}; break;
-			case 4: d = {0.08,0.10,0.13,0.13,0.15,0.13,0.10,0.08,0.06,0.03,0.01}; break;
-			case 5: d = {0.10,0.10,0.10,0.10,0.10,0.11,0.10,0.10,0.08,0.06,0.05}; break;
+			case 4: d = {0.11,0.11,0.13,0.13,0.16,0.13,0.11,0.06,0.04,0.02}; break;
+			case 5: d = {0.11,0.14,0.11,0.10,0.11,0.12,0.11,0.10,0.05,0.03,0.02}; break;
 			default: assert(false && "uhhh"); break;
 		}
 
