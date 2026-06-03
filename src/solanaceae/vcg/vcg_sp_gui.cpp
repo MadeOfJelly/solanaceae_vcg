@@ -72,37 +72,78 @@ VCGSPGUI::VCGSPGUI(void) {
 VCGSPGUI::~VCGSPGUI(void) {
 }
 
+struct Deck {
+	const char* name;
+	decltype(Cards::monsters_deck1)* get_deck;
+};
+
+std::vector<Deck> gen_deck_list(void) {
+	std::vector<Deck> list;
+	list.push_back(
+		Deck{
+			"lvl25 solofaction - random",
+			[]() -> std::vector<Card> {
+				const auto inner_list = Cards::level25_semirandom_solofaction_list();
+				assert(inner_list.size() > 0);
+				std::default_random_engine rng{std::random_device{}()};
+				return Cards::level25_semirandom_solofaction(inner_list.at(rng()%inner_list.size()));
+			}
+		}
+	);
+	list.push_back(
+		Deck{
+			"lvl25 dualfaction - random",
+			[]() -> std::vector<Card> {
+				const auto inner_list = Cards::level25_semirandom_dualfaction_list();
+				assert(inner_list.size() > 0);
+				std::default_random_engine rng{std::random_device{}()};
+				return Cards::level25_semirandom_dualfaction(inner_list.at(rng()%inner_list.size()));
+			}
+		}
+	);
+	list.push_back(
+		Deck{
+			"lvlopen solofaction - random",
+			[]() -> std::vector<Card> {
+				const auto inner_list = Cards::levelopen_semirandom_solofaction_list();
+				assert(inner_list.size() > 0);
+				std::default_random_engine rng{std::random_device{}()};
+				return Cards::levelopen_semirandom_solofaction(inner_list.at(rng()%inner_list.size()));
+			}
+		}
+	);
+	list.insert(list.cend(), {
+		Deck{"monster1", Cards::monsters_deck1},
+		Deck{"monsters+clerics1", Cards::monsters_clerics_deck1},
+		Deck{"clerics+junkies1", Cards::clerics_junkies_deck1},
+		Deck{"aberrations+parasites1", Cards::aberrations_parasites_deck1},
+
+		Deck{"full aberrations faction", Cards::aberrations},
+		Deck{"full assassins faction", Cards::assassins},
+		Deck{"full bandits faction", Cards::bandits},
+		Deck{"full clerics faction", Cards::clerics},
+		Deck{"full crafters faction", Cards::crafters},
+		Deck{"full cultists faction", Cards::cultists},
+		Deck{"full easy_cards faction", Cards::easy_cards},
+		Deck{"full farmers faction", Cards::farmers},
+		Deck{"full invaders faction", Cards::invaders},
+		Deck{"full junkies faction", Cards::junkies},
+		Deck{"full mages faction", Cards::mages},
+		Deck{"full merchants faction", Cards::merchants},
+		Deck{"full monsters faction", Cards::monsters},
+		Deck{"full nobles faction", Cards::nobles},
+		Deck{"full parasites faction", Cards::parasites},
+		Deck{"full thieves faction", Cards::thieves},
+
+		Deck{"dev (ignore)", Cards::random},
+	});
+
+	return list;
+};
+
 float VCGSPGUI::render(float delta) {
 	if (ImGui::Begin("VCG sp")) {
-		struct Deck {
-			const char* name;
-			decltype(Cards::monsters_deck1)& get_deck;
-		};
-		static const std::vector<Deck> decks{
-			Deck{"monster1", Cards::monsters_deck1},
-			Deck{"monsters+clerics1", Cards::monsters_clerics_deck1},
-			Deck{"clerics+junkies1", Cards::clerics_junkies_deck1},
-			Deck{"aberrations+parasites1", Cards::aberrations_parasites_deck1},
-
-			Deck{"full aberrations faction", Cards::aberrations},
-			Deck{"full assassins faction", Cards::assassins},
-			Deck{"full bandits faction", Cards::bandits},
-			Deck{"full clerics faction", Cards::clerics},
-			Deck{"full crafters faction", Cards::crafters},
-			Deck{"full cultists faction", Cards::cultists},
-			Deck{"full easy_cards faction", Cards::easy_cards},
-			Deck{"full farmers faction", Cards::farmers},
-			Deck{"full invaders faction", Cards::invaders},
-			Deck{"full junkies faction", Cards::junkies},
-			Deck{"full mages faction", Cards::mages},
-			Deck{"full merchants faction", Cards::merchants},
-			Deck{"full monsters faction", Cards::monsters},
-			Deck{"full nobles faction", Cards::nobles},
-			Deck{"full parasites faction", Cards::parasites},
-			Deck{"full thieves faction", Cards::thieves},
-
-			Deck{"dev (ignore)", Cards::random},
-		};
+		static const std::vector<Deck> decks = gen_deck_list();
 		static int deck_selection {0};
 		if (ImGui::Button("new game")) {
 			const std::vector<Card> cards = decks.at(deck_selection).get_deck();

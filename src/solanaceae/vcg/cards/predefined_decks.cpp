@@ -123,7 +123,7 @@ Card Cards::get_from_all_factions(const std::string& name) {
 		} catch(...) {}
 	}
 
-	throw std::runtime_error(name + " not found");
+	throw std::runtime_error(name + " card not found in any faction");
 }
 
 std::vector<Card> Cards::monsters_deck1(void) {
@@ -191,7 +191,7 @@ std::vector<Card> Cards::aberrations_parasites_deck1(void) {
 static const std::map<std::string, std::vector<std::string>> g_level25_semirandom_solofaction{
 	{"Aberration1", {"Brain Dragon", "Razer", "Enabler", "Ripper", "Devourer", "Shellshocker", "Gobbler", "Green Gazer"}},
 	{"Aberration2", {"Tendril Bearer", "Amalgamation", "Ripper", "Gobbler", "Razer", "Green Gazer", "Cloaker", "Doppelganger"}},
-	{"Aberration3", {"Hulking Frogman", "Brain Eater", "Ripper", "Bone Monger", "Cloaker", "Slitherer", "Spitter", "Eye Wolf"}},
+	{"Aberration3", {"Hulking Frogman", "Brain Eater", "Ripper", "Bone Monger", "Cloaker", "Slitherer", "Splitter", "Eye Wolf"}},
 	{"Assassin1", {"Coordinator", "Tracker", "Sister Jealousy", "Number A", "Detective", "Dissolver", "Madlad", "Suicide Bomber"}},
 	{"Assassin2", {"Brother Rage", "Mr. Plan Z", "Frontman", "Fake Colleague", "Detective", "Tracker", "Poisoner", "Overwhelmer"}},
 	{"Assassin3", {"Mass Murderer", "Butcher", "Blackmailer", "Tracker", "Detective", "Infiltrator", "Coordinator", "Separator"}},
@@ -271,7 +271,7 @@ static const std::map<std::string, std::vector<std::string>> g_levelopen_semiran
 	{"ThiefBig", {"Mastermind", "Stash Keeper", "Noble's Horror", "Chokehold", "Trade Route Camper", "Smuggler", "Childless Parent", "Thug"}},
 };
 
-std::vector<std::string> Cards::level25_semirandom_solofaction_list(const std::string) {
+std::vector<std::string> Cards::level25_semirandom_solofaction_list(void) {
 	std::vector<std::string> list;
 	for (const auto& [key, _] : g_level25_semirandom_solofaction) {
 		list.push_back(key);
@@ -293,7 +293,7 @@ std::vector<Card> Cards::level25_semirandom_solofaction(const std::string& name)
 	return res;
 }
 
-std::vector<std::string> Cards::level25_semirandom_dualfaction_list(const std::string) {
+std::vector<std::string> Cards::level25_semirandom_dualfaction_list(void) {
 	std::vector<std::string> list;
 	for (const auto& [key, _] : g_level25_semirandom_dualfaction) {
 		list.push_back(key);
@@ -315,7 +315,7 @@ std::vector<Card> Cards::level25_semirandom_dualfaction(const std::string& name)
 	return res;
 }
 
-std::vector<std::string> Cards::levelopen_semirandom_solofaction_list(const std::string) {
+std::vector<std::string> Cards::levelopen_semirandom_solofaction_list(void) {
 	std::vector<std::string> list;
 	for (const auto& [key, _] : g_levelopen_semirandom_solofaction) {
 		list.push_back(key);
